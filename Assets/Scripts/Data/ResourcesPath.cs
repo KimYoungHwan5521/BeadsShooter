@@ -3,6 +3,8 @@ public class ResourcesPath
     public static string[] PrefabPathArray =
     {
         "Prefabs/Projectiles/NormalBullet",
+
+        "Prefabs/Enemies/Slime",
     };
 
 

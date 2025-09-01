@@ -3,6 +3,8 @@ namespace ResourceEnum
     public enum Prefab
     {
         NormalBullet,
+
+        Slime,
     }
 
     public enum Sprite

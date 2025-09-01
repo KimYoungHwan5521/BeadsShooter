@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class Projectile : CustomObject
 {
     [SerializeField] float damage;
     [SerializeField] float speed;
@@ -19,9 +19,9 @@ public class Projectile : MonoBehaviour
         initiated = true;
     }
 
-    private void Update()
+    protected override void MyUpdate()
     {
         if (!initiated) return;
-        transform.position += (Vector3)direction.normalized * speed;
+        transform.position += (Vector3)direction.normalized * speed * Time.deltaTime;
     }
 }

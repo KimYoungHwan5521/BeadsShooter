@@ -18,7 +18,7 @@ public class Barrel : CustomObject
         {
             curShotCool = 0;
             GameObject projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalBullet, muzzle.transform.position);
-            projectile.GetComponent<Projectile>().Initialize(10, 0.1f, 0, 0, muzzle.transform.position - transform.position);
+            projectile.GetComponent<Projectile>().Initialize(10, 3f, 0, 0, muzzle.transform.position - transform.position);
         }
     }
 }
