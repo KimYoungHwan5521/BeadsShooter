@@ -52,7 +52,7 @@ public class PoolManager
         poolDictionary[target].Enqueue(inst);
     }
 
-    public static GameObject Spawn(ResourceEnum.Prefab target)
+    static GameObject PoolPrefab(ResourceEnum.Prefab target)
     {
         if (poolDictionary.TryGetValue(target, out Queue<GameObject> result))
         {
@@ -71,13 +71,22 @@ public class PoolManager
             poolDictionary.TryGetValue(target, out result);
         }
         GameObject inst = result.Dequeue();
+        return inst;
+
+    }
+
+    public static GameObject Spawn(ResourceEnum.Prefab target)
+    {
+        GameObject inst = PoolPrefab(target);
         inst.SetActive(true);
         return inst;
     }
+
     public static GameObject Spawn(ResourceEnum.Prefab target, Vector3 pos)
     {
-        GameObject inst = Spawn(target);
+        GameObject inst = PoolPrefab(target);
         inst.transform.position = pos;
+        inst.SetActive(true);
         return inst;
     }
     public static GameObject Spawn(ResourceEnum.Prefab target, Vector3 pos, Vector3 euler)

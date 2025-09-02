@@ -7,7 +7,7 @@ public class Projectile : CustomObject
     [SerializeField] int penetrationNumber;
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
-    bool initiated;
+    bool activated;
 
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
     {
@@ -16,12 +16,23 @@ public class Projectile : CustomObject
         this.penetrationNumber = penetrationNumber;
         this.criticalRate = criticalRate;
         this.direction = direction;
-        initiated = true;
+        activated = true;
     }
 
     protected override void MyUpdate()
     {
-        if (!initiated) return;
+        if (!activated) return;
         transform.position += (Vector3)direction.normalized * speed * Time.deltaTime;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!activated) return;
+        if(collision.TryGetComponent(out Enemy enemy))
+        {
+            enemy.TakeDamage(damage);
+            PoolManager.Despawn(gameObject);
+            activated = false;
+        }
     }
 }

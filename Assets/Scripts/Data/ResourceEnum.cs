@@ -2,9 +2,11 @@ namespace ResourceEnum
 {
     public enum Prefab
     {
-        NormalBullet,
+        NormalBead,
 
         Slime,
+
+        GreenGem,
     }
 
     public enum Sprite

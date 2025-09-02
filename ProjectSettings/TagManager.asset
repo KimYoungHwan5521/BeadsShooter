@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Boderline
+  - Enemy
   layers:
   - Default
   - TransparentFX

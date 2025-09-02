@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -48,10 +49,10 @@ public class GameManager : MonoBehaviour
         //}
     }
 
-    private void OnApplicationQuit()
-    {
-        //SteamAPI.Shutdown();
-    }
+    //private void OnApplicationQuit()
+    //{
+    //    SteamAPI.Shutdown();
+    //}
 
     bool gameReady;
     public IEnumerator Start()
@@ -64,12 +65,13 @@ public class GameManager : MonoBehaviour
         yield return poolManager.Initiate();
 
         gameReady = true;
+        ManagerUpdate += BattlePhaseUpdate;
         //CloseLoadInfo();
     }
 
     void Update()
     {
-        if (!gameReady) return;
+        if (!gameReady || phase != Phase.BattlePhase) return;
         //SteamAPI.RunCallbacks(); // ÇÊ¼ö!
 
         ManagerStart?.Invoke();
@@ -82,6 +84,41 @@ public class GameManager : MonoBehaviour
 
         ObjectDestroy?.Invoke();
         ObjectDestroy = null;
+    }
+
+    enum Phase { BattlePhase, UpgradePhase };
+    Phase phase;
+    [SerializeField] TextMeshProUGUI roundTimeLeftText;
+    [SerializeField] float roundTime = 30f;
+    [SerializeField] float curRoundTimeLeft = 30f;
+    float CurRoundTimeLeft
+    {
+        get => curRoundTimeLeft;
+        set
+        {
+            curRoundTimeLeft = value;
+            if (roundTime > 60) roundTimeLeftText.text = $"{CurRoundTimeLeft / 60:0} : {CurRoundTimeLeft % 60:00}";
+            else roundTimeLeftText.text = $"{CurRoundTimeLeft:00}";
+        }
+    }
+    [SerializeField] GameObject upgradeWindow;
+
+    void BattlePhaseUpdate()
+    {
+        if (phase != Phase.BattlePhase) return;
+        CurRoundTimeLeft -= Time.deltaTime;
+        if(CurRoundTimeLeft < 0)
+        {
+            upgradeWindow.SetActive(true);
+            phase = Phase.UpgradePhase;
+        }
+    }
+
+    public void StartBattlePhase()
+    {
+        upgradeWindow.SetActive(false);
+        CurRoundTimeLeft = roundTime;
+        phase = Phase.BattlePhase;
     }
 
     public static void ClaimLoadInfo(string info, int numerator = 0, int denominator = 1)

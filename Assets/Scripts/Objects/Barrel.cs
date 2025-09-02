@@ -17,7 +17,7 @@ public class Barrel : CustomObject
         if(curShotCool > shotCool)
         {
             curShotCool = 0;
-            GameObject projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalBullet, muzzle.transform.position);
+            GameObject projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, muzzle.transform.position);
             projectile.GetComponent<Projectile>().Initialize(10, 3f, 0, 0, muzzle.transform.position - transform.position);
         }
     }
