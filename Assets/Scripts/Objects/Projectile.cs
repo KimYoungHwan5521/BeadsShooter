@@ -7,6 +7,7 @@ public class Projectile : CustomObject
     [SerializeField] int penetrationNumber;
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
+    public Vector2 Direction => direction;
     bool activated;
 
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
@@ -34,5 +35,10 @@ public class Projectile : CustomObject
             PoolManager.Despawn(gameObject);
             activated = false;
         }
+    }
+
+    public void SetDirection(Vector2 wantDirection)
+    {
+        direction = wantDirection;
     }
 }

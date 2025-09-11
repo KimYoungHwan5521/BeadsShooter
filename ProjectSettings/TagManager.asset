@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Boderline
   - Enemy
+  - Bottom
   layers:
   - Default
   - TransparentFX
