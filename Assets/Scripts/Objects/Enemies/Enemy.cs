@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class Enemy : CustomObject
 {
-    Animator animator;
-    [SerializeField] Image hpBar;
+    //Animator animator;
+    //[SerializeField] Image hpBar;
 
     [SerializeField] Vector2 moveDirection = Vector2.down;
     [SerializeField] float moveSpeed = 1f;
@@ -15,7 +15,8 @@ public class Enemy : CustomObject
         set
         {
             isDead = value;
-            animator.SetTrigger("Dead");
+            //animator.SetTrigger("Dead");
+            PoolManager.Despawn(transform.parent.gameObject);
         }
     }
     [SerializeField]float maxHP;
@@ -26,7 +27,7 @@ public class Enemy : CustomObject
         set
         {
             curHP = value;
-            hpBar.fillAmount = curHP / maxHP;
+            //hpBar.fillAmount = curHP / maxHP;
         }
     }
 
@@ -36,14 +37,14 @@ public class Enemy : CustomObject
         set
         {
             moveSpeed = value;
-            animator.SetFloat("moveSpeed", value);
+            //animator.SetFloat("moveSpeed", value);
         }
     }
 
     protected override void Start()
     {
-        animator = GetComponent<Animator>();
-        animator.SetFloat("moveSpeed", moveSpeed);
+        //animator = GetComponent<Animator>();
+        //animator.SetFloat("moveSpeed", moveSpeed);
         base.Start();
     }
 
@@ -62,7 +63,7 @@ public class Enemy : CustomObject
     {
         if (collision.CompareTag("Boderline"))
         {
-            PoolManager.Despawn(gameObject);
+            PoolManager.Despawn(transform.parent.gameObject);
         }
     }
 

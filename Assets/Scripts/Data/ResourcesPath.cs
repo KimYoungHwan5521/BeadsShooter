@@ -5,6 +5,7 @@ public class ResourcesPath
         "Prefabs/Projectiles/NormalBead",
 
         "Prefabs/Enemies/Slime",
+        "Prefabs/Enemies/Block",
 
         "Prefabs/Gems/GreenGem",
     };

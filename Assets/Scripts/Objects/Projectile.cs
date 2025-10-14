@@ -8,7 +8,13 @@ public class Projectile : CustomObject
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
     public Vector2 Direction => direction;
-    bool activated;
+    public bool activated;
+
+    protected override void MyStart()
+    {
+        base.MyStart();
+        activated = true;
+    }
 
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
     {
@@ -29,11 +35,17 @@ public class Projectile : CustomObject
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!activated) return;
-        if(collision.TryGetComponent(out Enemy enemy))
+        if (collision.TryGetComponent(out Enemy enemy))
         {
+            Vector2 normalVector = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
+            SetDirection(Vector2.Reflect(direction, normalVector.normalized));
             enemy.TakeDamage(damage);
-            PoolManager.Despawn(gameObject);
-            activated = false;
+            //PoolManager.Despawn(gameObject);
+            //activated = false;
+        }
+        if (collision.TryGetComponent(out Bar bar))
+        {
+            SetDirection(transform.position - bar.transform.position);
         }
     }
 

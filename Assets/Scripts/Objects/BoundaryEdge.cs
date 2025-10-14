@@ -10,6 +10,7 @@ public class BoundaryEdge : CustomObject
         {
             if (edgeType == 0)
             {
+                projectile.activated = false;
                 PoolManager.Despawn(projectile.gameObject);
                 return;
             }

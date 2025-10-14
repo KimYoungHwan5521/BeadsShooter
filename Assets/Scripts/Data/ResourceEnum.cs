@@ -5,6 +5,7 @@ namespace ResourceEnum
         NormalBead,
 
         Slime,
+        Block,
 
         GreenGem,
     }

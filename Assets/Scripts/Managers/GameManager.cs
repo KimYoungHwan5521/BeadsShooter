@@ -88,36 +88,36 @@ public class GameManager : MonoBehaviour
 
     enum Phase { BattlePhase, UpgradePhase };
     Phase phase;
-    [SerializeField] TextMeshProUGUI roundTimeLeftText;
-    [SerializeField] float roundTime = 30f;
-    [SerializeField] float curRoundTimeLeft = 30f;
-    float CurRoundTimeLeft
-    {
-        get => curRoundTimeLeft;
-        set
-        {
-            curRoundTimeLeft = value;
-            if (roundTime > 60) roundTimeLeftText.text = $"{CurRoundTimeLeft / 60:0} : {CurRoundTimeLeft % 60:00}";
-            else roundTimeLeftText.text = $"{CurRoundTimeLeft:00}";
-        }
-    }
+    //[SerializeField] TextMeshProUGUI roundTimeLeftText;
+    //[SerializeField] float roundTime = 30f;
+    //[SerializeField] float curRoundTimeLeft = 30f;
+    //float CurRoundTimeLeft
+    //{
+    //    get => curRoundTimeLeft;
+    //    set
+    //    {
+    //        curRoundTimeLeft = value;
+    //        if (roundTime > 60) roundTimeLeftText.text = $"{CurRoundTimeLeft / 60:0} : {CurRoundTimeLeft % 60:00}";
+    //        else roundTimeLeftText.text = $"{CurRoundTimeLeft:00}";
+    //    }
+    //}
     [SerializeField] GameObject upgradeWindow;
 
     void BattlePhaseUpdate()
     {
-        if (phase != Phase.BattlePhase) return;
-        CurRoundTimeLeft -= Time.deltaTime;
-        if(CurRoundTimeLeft < 0)
-        {
-            upgradeWindow.SetActive(true);
-            phase = Phase.UpgradePhase;
-        }
+        //if (phase != Phase.BattlePhase) return;
+        //CurRoundTimeLeft -= Time.deltaTime;
+        //if(CurRoundTimeLeft < 0)
+        //{
+        //    upgradeWindow.SetActive(true);
+        //    phase = Phase.UpgradePhase;
+        //}
     }
 
     public void StartBattlePhase()
     {
         upgradeWindow.SetActive(false);
-        CurRoundTimeLeft = roundTime;
+        //CurRoundTimeLeft = roundTime;
         phase = Phase.BattlePhase;
     }
 
