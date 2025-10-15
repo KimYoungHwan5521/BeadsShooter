@@ -13,7 +13,6 @@ public class Projectile : CustomObject
     protected override void MyStart()
     {
         base.MyStart();
-        activated = true;
     }
 
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)

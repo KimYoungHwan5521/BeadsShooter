@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Enemy : CustomObject
 {
@@ -16,18 +15,19 @@ public class Enemy : CustomObject
         {
             isDead = value;
             //animator.SetTrigger("Dead");
-            PoolManager.Despawn(transform.parent.gameObject);
+            if(value) PoolManager.Despawn(gameObject);
         }
     }
     [SerializeField]float maxHP;
     [SerializeField]float curHP;
-    public float CurHP
+    public virtual float CurHP
     {
         get => curHP;
         set
         {
             curHP = value;
             //hpBar.fillAmount = curHP / maxHP;
+            if (curHP <= 0) IsDead = true;
         }
     }
 
@@ -56,6 +56,7 @@ public class Enemy : CustomObject
 
     private void OnEnable()
     {
+        IsDead = false;
         CurHP = maxHP;
     }
 
@@ -63,13 +64,13 @@ public class Enemy : CustomObject
     {
         if (collision.CompareTag("Boderline"))
         {
-            PoolManager.Despawn(transform.parent.gameObject);
+            IsDead = true;
+            PoolManager.Despawn(gameObject);
         }
     }
 
     public virtual void TakeDamage(float damage)
     {
         CurHP -= damage;
-        if (curHP <= 0) IsDead = true;
     }
 }

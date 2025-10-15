@@ -1,18 +1,35 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bar : CustomObject
 {
-    [SerializeField] float barLength = 1;
+    public float barLength = 1;
+    [SerializeField] List<Projectile> grabbedBeads;
+    float yPos;
 
     protected override void MyStart()
     {
         base.MyStart();
         transform.localScale = new(barLength, 0.1f);
+        yPos = transform.position.y;
     }
+
     protected override void MyUpdate()
     {
-        if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
-        float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Vector3.zero).x + barLength / 2, Camera.main.ScreenToWorldPoint(new(Screen.width, 0)).x - barLength / 2);
-        transform.position = new(xPos, -3);
+    }
+
+    public void MoveBar(float xPos)
+    {
+        transform.position = new(xPos, yPos);
+    }
+
+    public void ReleaseBeads()
+    {
+        foreach(var bead in grabbedBeads)
+        {
+            bead.SetDirection(bead.transform.position - transform.position);
+            bead.activated = true;
+        }
+        grabbedBeads.Clear();
     }
 }
