@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -11,8 +12,11 @@ public class InputManager : MonoBehaviour
         bar.MoveBar(xPos);
     }
 
-    void OnClick()
+    void OnClick(InputValue value)
     {
-        bar.ReleaseBeads();
+        if(GameManager.Instance.phase == GameManager.Phase.BattlePhase)
+        {
+            if(value.Get<float>() == 0) bar.ReleaseBeads();
+        }
     }
 }

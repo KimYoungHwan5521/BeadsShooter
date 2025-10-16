@@ -21,9 +21,9 @@ public class Block : Enemy
                 return;
             }
 
-            if ((int)CurHP < ColorInfo.color.Length)
+            if ((int)value < ColorInfo.color.Length && (int)value >= 0)
             {
-                sprite.color = ColorInfo.color[(int)CurHP];
+                sprite.color = ColorInfo.color[(int)value];
             }
             else sprite.color = ColorInfo.color[^1];
         }

@@ -28,7 +28,8 @@ public class GameManager : MonoBehaviour
     public SoundManager SoundManager => soundManager;
     PoolManager poolManager;
     public PoolManager PoolManager => poolManager;
-
+    StageManager stageManager;
+    public StageManager StageManager => stageManager;
     //public LoadingCanvas loadingCanvas;
 
     public GameObject description;
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(this);
+        stageManager = GetComponent<StageManager>();
         //if (!SteamAPI.Init())
         //{
         //    Debug.LogError("SteamAPI 초기화 실패");
@@ -71,11 +73,13 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (!gameReady || phase != Phase.BattlePhase) return;
+        if (!gameReady) return;
         //SteamAPI.RunCallbacks(); // 필수!
 
         ManagerStart?.Invoke();
         ManagerStart = null;
+
+        if (phase != Phase.BattlePhase) return;
         ObjectStart?.Invoke();
         ObjectStart = null;
 
@@ -86,40 +90,28 @@ public class GameManager : MonoBehaviour
         ObjectDestroy = null;
     }
 
-    enum Phase { BattlePhase, UpgradePhase };
-    Phase phase;
-    //[SerializeField] TextMeshProUGUI roundTimeLeftText;
-    //[SerializeField] float roundTime = 30f;
-    //[SerializeField] float curRoundTimeLeft = 30f;
-    //float CurRoundTimeLeft
-    //{
-    //    get => curRoundTimeLeft;
-    //    set
-    //    {
-    //        curRoundTimeLeft = value;
-    //        if (roundTime > 60) roundTimeLeftText.text = $"{CurRoundTimeLeft / 60:0} : {CurRoundTimeLeft % 60:00}";
-    //        else roundTimeLeftText.text = $"{CurRoundTimeLeft:00}";
-    //    }
-    //}
+    public enum Phase { None, BattlePhase, ReadyPhase };
+    public Phase phase = Phase.None;
     [SerializeField] GameObject upgradeWindow;
-
-    void BattlePhaseUpdate()
-    {
-        //if (phase != Phase.BattlePhase) return;
-        //CurRoundTimeLeft -= Time.deltaTime;
-        //if(CurRoundTimeLeft < 0)
-        //{
-        //    upgradeWindow.SetActive(true);
-        //    phase = Phase.UpgradePhase;
-        //}
-    }
 
     public void StartBattlePhase()
     {
         upgradeWindow.SetActive(false);
         //CurRoundTimeLeft = roundTime;
         phase = Phase.BattlePhase;
+        stageManager.StageSetting();
     }
+
+    void BattlePhaseUpdate()
+    {
+    }
+
+    public void ReadyPhase()
+    {
+        upgradeWindow.SetActive(true);
+        phase = Phase.ReadyPhase;
+    }
+
 
     public static void ClaimLoadInfo(string info, int numerator = 0, int denominator = 1)
     {

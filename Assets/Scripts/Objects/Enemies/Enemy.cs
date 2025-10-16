@@ -4,7 +4,7 @@ public class Enemy : CustomObject
 {
     //Animator animator;
     //[SerializeField] Image hpBar;
-
+    int stage;
     [SerializeField] Vector2 moveDirection = Vector2.down;
     [SerializeField] float moveSpeed = 1f;
     bool isDead;
@@ -15,7 +15,13 @@ public class Enemy : CustomObject
         {
             isDead = value;
             //animator.SetTrigger("Dead");
-            if(value) PoolManager.Despawn(gameObject);
+            if(value)
+            {
+                GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
+                GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
+                PoolManager.Despawn(gameObject);
+                GameManager.Instance.StageManager.StageClearCheck();
+            }
         }
     }
     [SerializeField]float maxHP;
@@ -51,7 +57,10 @@ public class Enemy : CustomObject
     protected override void MyUpdate()
     {
         if (IsDead) return;
-        transform.position += moveSpeed * Time.deltaTime * (Vector3)moveDirection.normalized;
+        if (stage <= GameManager.Instance.StageManager.currentStage)
+        {
+            transform.position += moveSpeed * Time.deltaTime * (Vector3)moveDirection.normalized;
+        }
     }
 
     private void OnEnable()
@@ -67,6 +76,13 @@ public class Enemy : CustomObject
             IsDead = true;
             PoolManager.Despawn(gameObject);
         }
+    }
+
+    public virtual void SetInfo(int stage, float maxHP, float moveSpeed = 0.1f)
+    { 
+        this.stage = stage;
+        CurHP = this.maxHP = maxHP;
+        MoveSpeed = moveSpeed;
     }
 
     public virtual void TakeDamage(float damage)

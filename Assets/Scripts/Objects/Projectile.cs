@@ -36,7 +36,27 @@ public class Projectile : CustomObject
         if (!activated) return;
         if (collision.TryGetComponent(out Enemy enemy))
         {
-            Vector2 normalVector = collision.ClosestPoint(transform.position) - (Vector2)transform.position;
+            Vector2 normalVector = Vector2.zero;
+            if (collision is BoxCollider2D boxCollision)
+            {
+                Vector2 collisionVector = collision.ClosestPoint(transform.position) - (Vector2)collision.transform.position;
+                float theta = Mathf.Atan2(boxCollision.size.x, boxCollision.size.y) * Mathf.Rad2Deg;
+                Debug.Log($"collisionVector : {collisionVector}, Angle : {Vector2.Angle(collisionVector, Vector2.up)}, theta : {theta}");
+                if(Vector2.Angle(collisionVector, Vector2.up) < theta)
+                {
+                    normalVector = Vector2.up;
+                }
+                else if(Vector2.Angle(collisionVector, Vector2.up) < 180 - theta)
+                {
+                    if (collision.ClosestPoint(transform.position).x > collision.transform.position.x) normalVector = Vector2.right;
+                    else normalVector = Vector2.left;
+                }
+                else
+                {
+                    normalVector = Vector2.down;
+                }
+            }
+            Debug.Log(normalVector.normalized);
             SetDirection(Vector2.Reflect(direction, normalVector.normalized));
             enemy.TakeDamage(damage);
             //PoolManager.Despawn(gameObject);

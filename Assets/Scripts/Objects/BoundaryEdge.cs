@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BoundaryEdge : CustomObject
 {
-    // edgeType - 0: Bottom, 1: Top, 2: Left/Right
+    // edgeType - 0: Bottom, 1: Top, 2: Left, 3: Right
     public int edgeType;
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -16,11 +16,15 @@ public class BoundaryEdge : CustomObject
             }
             else if (edgeType == 1)
             {
-                projectile.SetDirection(new(projectile.Direction.x, -projectile.Direction.y));
+                projectile.SetDirection(new(projectile.Direction.x, - Mathf.Abs(projectile.Direction.y)));
             }
             else if (edgeType == 2)
             {
-                projectile.SetDirection(new(-projectile.Direction.x, projectile.Direction.y));
+                projectile.SetDirection(new(Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
+            }
+            else if (edgeType == 3)
+            {
+                projectile.SetDirection(new(- Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
             }
         }
     }
