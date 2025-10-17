@@ -6,7 +6,6 @@ public class Enemy : CustomObject
     //[SerializeField] Image hpBar;
     int stage;
     [SerializeField] Vector2 moveDirection = Vector2.down;
-    [SerializeField] float moveSpeed = 1f;
     bool isDead;
     public bool IsDead
     {
@@ -37,30 +36,11 @@ public class Enemy : CustomObject
         }
     }
 
-    public float MoveSpeed
-    {
-        get => moveSpeed;
-        set
-        {
-            moveSpeed = value;
-            //animator.SetFloat("moveSpeed", value);
-        }
-    }
-
     protected override void Start()
     {
         //animator = GetComponent<Animator>();
         //animator.SetFloat("moveSpeed", moveSpeed);
         base.Start();
-    }
-
-    protected override void MyUpdate()
-    {
-        if (IsDead) return;
-        if (stage <= GameManager.Instance.StageManager.currentStage)
-        {
-            transform.position += moveSpeed * Time.deltaTime * (Vector3)moveDirection.normalized;
-        }
     }
 
     private void OnEnable()
@@ -78,11 +58,10 @@ public class Enemy : CustomObject
         }
     }
 
-    public virtual void SetInfo(int stage, float maxHP, float moveSpeed = 0.1f)
+    public virtual void SetInfo(int stage, float maxHP)
     { 
         this.stage = stage;
         CurHP = this.maxHP = maxHP;
-        MoveSpeed = moveSpeed;
     }
 
     public virtual void TakeDamage(float damage)

@@ -56,7 +56,7 @@ public class Projectile : CustomObject
                     normalVector = Vector2.down;
                 }
             }
-            Debug.Log(normalVector.normalized);
+            //Debug.Log(normalVector.normalized);
             SetDirection(Vector2.Reflect(direction, normalVector.normalized));
             enemy.TakeDamage(damage);
             //PoolManager.Despawn(gameObject);

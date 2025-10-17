@@ -5,17 +5,8 @@ public class Bar : CustomObject
 {
     public float barLength = 1;
     [SerializeField] List<Projectile> grabbedBeads;
-    float yPos = -3.5f;
+    float yPos = -17.5f;
 
-    protected override void MyStart()
-    {
-        base.MyStart();
-        transform.localScale = new(barLength, 0.1f);
-    }
-
-    protected override void MyUpdate()
-    {
-    }
 
     public void MoveBar(float xPos)
     {
