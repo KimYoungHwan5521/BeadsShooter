@@ -98,8 +98,14 @@ public class GameManager : MonoBehaviour
     {
         upgradeWindow.SetActive(false);
         //CurRoundTimeLeft = roundTime;
-        phase = Phase.BattlePhase;
         stageManager.StageSetting();
+    }
+
+    public void BattlePhaseStart()
+    {
+        phase = Phase.BattlePhase;
+        Time.timeScale = 1f;
+
     }
 
     void BattlePhaseUpdate()
@@ -110,6 +116,7 @@ public class GameManager : MonoBehaviour
     {
         upgradeWindow.SetActive(true);
         phase = Phase.ReadyPhase;
+        Time.timeScale = 0f;
     }
 
 

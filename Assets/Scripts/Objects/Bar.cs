@@ -4,7 +4,7 @@ using UnityEngine;
 public class Bar : CustomObject
 {
     public float barLength = 1;
-    [SerializeField] List<Projectile> grabbedBeads;
+    public List<Projectile> grabbedBeads;
     float yPos = -17.5f;
 
 

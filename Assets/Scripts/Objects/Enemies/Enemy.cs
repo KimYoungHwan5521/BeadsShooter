@@ -49,15 +49,6 @@ public class Enemy : CustomObject
         CurHP = maxHP;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Boderline"))
-        {
-            IsDead = true;
-            PoolManager.Despawn(gameObject);
-        }
-    }
-
     public virtual void SetInfo(int stage, float maxHP)
     { 
         this.stage = stage;

@@ -12,6 +12,10 @@ public class BoundaryEdge : CustomObject
             {
                 projectile.activated = false;
                 PoolManager.Despawn(projectile.gameObject);
+                Projectile newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(1, 0.5f, 0)).GetComponent<Projectile>();
+                newBead.Initialize(1, 25, 0, 0, new());
+                GameManager.Instance.StageManager.projectiles.Add(newBead);
+                GameManager.Instance.StageManager.bar.grabbedBeads.Add(newBead);
                 return;
             }
             else if (edgeType == 1)

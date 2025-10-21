@@ -9,6 +9,8 @@ public class StageManager : MonoBehaviour
     public List<Enemy> nextStageEnemies;
     public List<GameObject> currentStageWalls;
     public List<GameObject> nextStageWalls;
+    public Bar bar;
+    public List<Projectile> projectiles;
 
     public class EnemyArrangementInfo
     {
@@ -35,7 +37,7 @@ public class StageManager : MonoBehaviour
 
     public StageInfo[] stageInfos = {
         // Stage 0
-        new(new EnemyArrangementInfo[] { new(new(0, 12), 1), new(new(1, 12), 1), new(new(2, 12), 1), new(new(3, 12), 1),new(new(4, 12), 1), new(new(5, 12), 1), new(new(6, 12), 1), new(new(7, 12), 1), new(new(8, 12), 1),}),
+        new(new EnemyArrangementInfo[] { new(new(0, 10), 1), new(new(1, 10), 1), new(new(2, 10), 1), new(new(3, 10), 1),new(new(4, 10), 1), new(new(5, 10), 1), new(new(6, 10), 1), new(new(7, 10), 1), new(new(8, 10), 1),}),
         // Stage 1
         new(new EnemyArrangementInfo[] { new(new(0, 7), 2), new(new(1, 7), 2), new(new(2, 7), 2), new(new(3, 7), 2),new(new(4, 7), 2), new(new(5, 7), 2), new(new(6, 7), 2), new(new(7, 7), 2), new(new(8, 7), 2),}),
         // Stage 2
@@ -43,6 +45,18 @@ public class StageManager : MonoBehaviour
         // Stage 3
         new(new EnemyArrangementInfo[] { new(new(0, 7), 4), new(new(1, 7), 4), new(new(2, 7), 4), new(new(3, 7), 4),new(new(4, 7), 4), new(new(5, 7), 4), new(new(6, 7), 4), new(new(7, 7), 4), new(new(8, 7), 4),}),
     };
+
+    float wantDown;
+
+    private void Update()
+    {
+        if (wantDown > 0)
+        {
+            board.transform.position += Vector3.down * 0.2f;
+            wantDown -= 0.2f;
+            if(wantDown <= 0) GameManager.Instance.BattlePhaseStart();
+        }
+    }
 
     public void StageSetting()
     {
@@ -74,7 +88,7 @@ public class StageManager : MonoBehaviour
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 4);
+            block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 16);
             Debug.Log($"block : {block.transform.position}");
             block.transform.SetParent(board, true);
             if (currentStage > 0) block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
@@ -90,16 +104,14 @@ public class StageManager : MonoBehaviour
         if(!clearBothStage) currentStageWalls = nextStageWalls;
         else currentStageWalls.Clear();
         nextStageWalls.Clear();
-        for(int i=0; i<9; i++)
+        for(int i=-11; i<=11; i++)
         {
-            if (clearBothStage && (i == 0 || i == 8)) continue;
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            block.transform.position = new(i * 2 - 10, 8);
+            block.transform.position = new(i, 30);
             Debug.Log($"wall : {block.transform.position}");
             block.transform.SetParent(board, true);
             block.SetInfo(currentStage, float.MaxValue);
-            if(clearBothStage || i == 0 || i == 8) currentStageWalls.Add(block.gameObject);
-            else nextStageWalls.Add(block.gameObject);
+            currentStageWalls.Add(block.gameObject);
         }
         // 2스테이지 동시에 깬 경우 다다음 스테이지
         if(clearBothStage)
@@ -109,7 +121,7 @@ public class StageManager : MonoBehaviour
             foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 12);
+                block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 30);
                 Debug.Log($"block : {block.transform.position}");
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, enemyArrangementInfo.maxHP);
@@ -120,19 +132,21 @@ public class StageManager : MonoBehaviour
                 PoolManager.Despawn(wall);
             }
             nextStageWalls.Clear();
-            for (int i = 0; i < 9; i++)
+            for (int i = -11; i <= 11; i++)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.transform.position = new(i * 2 - 10, 16);
+                block.transform.position = new(i, 45);
                 Debug.Log($"wall : {block.transform.position}");
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, float.MaxValue);
-                if (i == 0 || i == 8) currentStageWalls.Add(block.gameObject);
-                else nextStageWalls.Add(block.gameObject);
+                nextStageWalls.Add(block.gameObject);
             }
         }
-        if (!clearBothStage) board.transform.position += Vector3.down * 3;
-        else board.transform.position += Vector3.down * 6;
+
+        // 내려가는 애니메이션
+        //if (!clearBothStage) board.transform.position += Vector3.down * 13;
+        //else board.transform.position += Vector3.down * 26;
+        wantDown = clearBothStage ? 26 : 13;
     }
 
     public void StageClearCheck()
