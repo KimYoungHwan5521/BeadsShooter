@@ -17,38 +17,49 @@ public class StageManager : MonoBehaviour
     public class EnemyArrangementInfo
     {
         public Vector2Int position;
+        public Vector2Int size;
         public float maxHP;
 
-        public EnemyArrangementInfo(Vector2Int position, float maxHP)
+        public EnemyArrangementInfo(Vector2Int position)
         {
             this.position = position;
-            this.maxHP = maxHP;
+            size = new Vector2Int(1, 1);
+            maxHP = 1;
+        }
+
+        public EnemyArrangementInfo(Vector2Int position, Vector2Int size)
+        {
+            this.position = position;
+            this.size = size;
+            maxHP = size.x * size.y;
         }
     }
 
     public class StageInfo
     {
         // Stage 크기 : 가로 0~8, 세로 0~13
-        public EnemyArrangementInfo[] enemyArrangementInfo;
+        public List<EnemyArrangementInfo> enemyArrangementInfo;
 
         public StageInfo(EnemyArrangementInfo[] enemyArrangementInfo)
         {
-            this.enemyArrangementInfo = enemyArrangementInfo;
+            this.enemyArrangementInfo = enemyArrangementInfo.ToList();
         }
     }
 
-    public StageInfo[] stageInfos = {
-        // Stage 0
-        new(new EnemyArrangementInfo[] { new(new(0, 10), 1), new(new(1, 10), 1), new(new(2, 10), 1), new(new(3, 10), 1),new(new(4, 10), 1), new(new(5, 10), 1), new(new(6, 10), 1), new(new(7, 10), 1), new(new(8, 10), 1),}),
-        // Stage 1
-        new(new EnemyArrangementInfo[] { new(new(0, 7), 2), new(new(1, 7), 2), new(new(2, 7), 2), new(new(3, 7), 2),new(new(4, 7), 2), new(new(5, 7), 2), new(new(6, 7), 2), new(new(7, 7), 2), new(new(8, 7), 2),}),
-        // Stage 2
-        new(new EnemyArrangementInfo[] { new(new(0, 7), 3), new(new(1, 7), 3), new(new(2, 7), 3), new(new(3, 7), 3),new(new(4, 7), 3), new(new(5, 7), 3), new(new(6, 7), 3), new(new(7, 7), 3), new(new(8, 7), 3),}),
-        // Stage 3
-        new(new EnemyArrangementInfo[] { new(new(0, 7), 4), new(new(1, 7), 4), new(new(2, 7), 4), new(new(3, 7), 4),new(new(4, 7), 4), new(new(5, 7), 4), new(new(6, 7), 4), new(new(7, 7), 4), new(new(8, 7), 4),}),
-    };
+    public StageInfo[] stageInfos;
 
     float wantDown;
+
+    private void Start()
+    {
+        stageInfos = new[]
+        {
+            // Stage 0
+            RandomStageGenerate((new(1,1), 10)),
+            // Stage 1
+            RandomStageGenerate((new(1,1), 10), (new(2, 1), 5), (new(1, 2), 5)),
+        };
+    }
 
     private void Update()
     {
@@ -87,16 +98,13 @@ public class StageManager : MonoBehaviour
         }
         if (wantStage >= stageInfos.Length) nextStageInfo = stageInfos[^1];
         else nextStageInfo = stageInfos[wantStage];
-        int index = 0;
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 14 + 2);
-            else block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 16 + 3);
-            Debug.Log($"Old name : {block.gameObject.name}");
-            block.gameObject.name = $"block {wantStage} - {index}";
-            index++;
-            Debug.Log($"{block.gameObject.name} : {block.transform.position}");
+            if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x - 11, enemyArrangementInfo.position.y + 14 + 2);
+            else block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 6);
+            block.GetComponent<BoxCollider2D>().size = enemyArrangementInfo.size;
+            block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
             block.transform.SetParent(board, true);
             if (currentStage > 0) block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
             else block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
@@ -114,10 +122,8 @@ public class StageManager : MonoBehaviour
         for(int i=-11; i<=11; i++)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            block.gameObject.name = $"wall{wantStage} - {i}";
             if (currentStage == 0) block.transform.position = new(i, 13 + 14 + 3);
             else block.transform.position = new(i, 3 + 30);
-            Debug.Log($"wall : {block.transform.position}");
             block.transform.SetParent(board, true);
             block.SetInfo(currentStage, float.MaxValue);
             if (clearBothStage) currentStageWalls.Add(block.gameObject);
@@ -128,14 +134,12 @@ public class StageManager : MonoBehaviour
         {
             if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
             else nextStageInfo = stageInfos[^1];
-            index = 0;
             foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 14 + 2 + 15);
-                block.gameObject.name = $"block {wantStage + 1} - {index}";
-                index++;
-                Debug.Log($"{block.gameObject.name} : {block.transform.position}");
+                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 11, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 2 + 15);
+                block.GetComponent<BoxCollider2D>().size = enemyArrangementInfo.size;
+                block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, enemyArrangementInfo.maxHP);
                 nextStageEnemies.Add(block);
@@ -148,9 +152,7 @@ public class StageManager : MonoBehaviour
             for (int i = -11; i <= 11; i++)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.gameObject.name = $"wall{wantStage + 1} - {i}";
                 block.transform.position = new(i, 14 + 2 + 29);
-                Debug.Log($"wall : {block.transform.position}");
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, float.MaxValue);
                 nextStageWalls.Add(block.gameObject);
@@ -170,5 +172,58 @@ public class StageManager : MonoBehaviour
             GameManager.Instance.ReadyPhase();
             currentStage++;
         }
+    }
+
+    // Input : (Size Vector(x, y), count)
+    StageInfo RandomStageGenerate(params (Vector2Int, int)[] wantForms)
+    {
+        StageInfo result = null;
+        int[,] stageBoard = new int[13, 23];
+        foreach(var form in wantForms)
+        {
+            int exit = 0;
+            for(int i=0; i<form.Item2; i++)
+            {
+                if(++exit > 10000)
+                {
+                    Debug.LogWarning("Infinity loop has detected!");
+                    break;
+                }
+                // 랜덤하게 배치 시도
+                bool discrimination = true;
+                int xPos = Random.Range(0, stageBoard.GetLength(1) - form.Item1.x + 1);
+                int yPos = Random.Range(0, stageBoard.GetLength(0) - form.Item1.y + 1);
+                // 다른 블록이 이미 배치 되어있는지 판별
+                for(int wantY = 0; wantY < form.Item1.y; wantY++)
+                {
+                    for(int wantX = 0; wantX < form.Item1.x; wantX++)
+                    {
+                        if (stageBoard[yPos + wantY, xPos + wantX] == 1)
+                        {
+                            discrimination = false;
+                            break;
+                        }
+                    }
+                    if (!discrimination) break;
+                }
+                // 이미 다른 블록이 있으면 다시
+                if(!discrimination)
+                {
+                    i--;
+                    continue;
+                }
+                // 배치
+                if (result == null) result = new(new EnemyArrangementInfo[]{new(new(xPos, yPos), form.Item1)});
+                else result.enemyArrangementInfo.Add(new(new(xPos, yPos), form.Item1));
+                for (int wantY = 0; wantY < form.Item1.y; wantY++)
+                {
+                    for (int wantX = 0; wantX < form.Item1.x; wantX++)
+                    {
+                        stageBoard[yPos + wantY, xPos + wantX] = 1;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
