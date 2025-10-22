@@ -1,5 +1,7 @@
-using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Android.Gradle;
+using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
@@ -65,7 +67,7 @@ public class StageManager : MonoBehaviour
         Debug.Log($"currentStage : {currentStage}");
         if (!clearBothStage)
         {
-            currentStageEnemies = nextStageEnemies;
+            currentStageEnemies = nextStageEnemies.ToList();
             nextStageEnemies = new();
         }
 
@@ -85,11 +87,16 @@ public class StageManager : MonoBehaviour
         }
         if (wantStage >= stageInfos.Length) nextStageInfo = stageInfos[^1];
         else nextStageInfo = stageInfos[wantStage];
+        int index = 0;
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 16);
-            Debug.Log($"block : {block.transform.position}");
+            if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 14 + 2);
+            else block.transform.position = new(enemyArrangementInfo.position.x - 10, enemyArrangementInfo.position.y + 16 + 3);
+            Debug.Log($"Old name : {block.gameObject.name}");
+            block.gameObject.name = $"block {wantStage} - {index}";
+            index++;
+            Debug.Log($"{block.gameObject.name} : {block.transform.position}");
             block.transform.SetParent(board, true);
             if (currentStage > 0) block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
             else block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
@@ -101,28 +108,34 @@ public class StageManager : MonoBehaviour
         {
             PoolManager.Despawn(wall);
         }
-        if(!clearBothStage) currentStageWalls = nextStageWalls;
+        if(!clearBothStage) currentStageWalls = nextStageWalls.ToList();
         else currentStageWalls.Clear();
         nextStageWalls.Clear();
         for(int i=-11; i<=11; i++)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-            block.transform.position = new(i, 30);
+            block.gameObject.name = $"wall{wantStage} - {i}";
+            if (currentStage == 0) block.transform.position = new(i, 13 + 14 + 3);
+            else block.transform.position = new(i, 3 + 30);
             Debug.Log($"wall : {block.transform.position}");
             block.transform.SetParent(board, true);
             block.SetInfo(currentStage, float.MaxValue);
-            currentStageWalls.Add(block.gameObject);
+            if (clearBothStage) currentStageWalls.Add(block.gameObject);
+            else nextStageWalls.Add(block.gameObject);
         }
         // 2스테이지 동시에 깬 경우 다다음 스테이지
         if(clearBothStage)
         {
             if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
             else nextStageInfo = stageInfos[^1];
+            index = 0;
             foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 30);
-                Debug.Log($"block : {block.transform.position}");
+                block.transform.position = new(enemyArrangementInfo.position.x * 2 - 10, enemyArrangementInfo.position.y + 14 + 2 + 15);
+                block.gameObject.name = $"block {wantStage + 1} - {index}";
+                index++;
+                Debug.Log($"{block.gameObject.name} : {block.transform.position}");
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, enemyArrangementInfo.maxHP);
                 nextStageEnemies.Add(block);
@@ -135,7 +148,8 @@ public class StageManager : MonoBehaviour
             for (int i = -11; i <= 11; i++)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.Block).GetComponent<Block>();
-                block.transform.position = new(i, 45);
+                block.gameObject.name = $"wall{wantStage + 1} - {i}";
+                block.transform.position = new(i, 14 + 2 + 29);
                 Debug.Log($"wall : {block.transform.position}");
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, float.MaxValue);
@@ -146,12 +160,12 @@ public class StageManager : MonoBehaviour
         // 내려가는 애니메이션
         //if (!clearBothStage) board.transform.position += Vector3.down * 13;
         //else board.transform.position += Vector3.down * 26;
-        wantDown = clearBothStage ? 26 : 13;
+        wantDown = clearBothStage ? 28 : 14;
     }
 
     public void StageClearCheck()
     {
-        if(currentStageEnemies.Count == 0)
+        if(currentStageEnemies.Count == 0 && GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
             GameManager.Instance.ReadyPhase();
             currentStage++;

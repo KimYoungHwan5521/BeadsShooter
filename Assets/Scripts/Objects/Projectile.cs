@@ -32,6 +32,12 @@ public class Projectile : CustomObject
         activated = true;
     }
 
+    private void FixedUpdate()
+    {
+        if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase) return;
+        rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * speed;
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

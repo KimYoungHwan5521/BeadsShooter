@@ -12,15 +12,15 @@ public class Enemy : CustomObject
         get => isDead;
         set
         {
-            isDead = value;
             //animator.SetTrigger("Dead");
-            if(value)
+            if(value && isDead != value)
             {
                 GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
                 GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
                 PoolManager.Despawn(gameObject);
                 GameManager.Instance.StageManager.StageClearCheck();
             }
+            isDead = value;
         }
     }
     [SerializeField]float maxHP;
