@@ -21,11 +21,11 @@ public class Block : Enemy
                 return;
             }
 
-            if ((int)value < ColorInfo.color.Length && (int)value >= 0)
-            {
-                sprite.color = ColorInfo.color[(int)value];
-            }
-            else sprite.color = ColorInfo.color[^1];
+            //if ((int)value < ColorInfo.color.Length && (int)value >= 0)
+            //{
+            //    sprite.color = ColorInfo.color[(int)value];
+            //}
+            //else sprite.color = ColorInfo.color[^1];
         }
     }
 }

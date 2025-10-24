@@ -42,7 +42,7 @@ public class Projectile : CustomObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
-        if(collision.gameObject.TryGetComponent(out Enemy enemy))
+        if(collision.collider.gameObject.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage(damage);
         }
