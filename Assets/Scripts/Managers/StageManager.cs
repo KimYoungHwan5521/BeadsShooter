@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Android.Gradle;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class StageManager : MonoBehaviour
 {
@@ -18,7 +16,7 @@ public class StageManager : MonoBehaviour
     public Bar bar;
     public List<Projectile> projectiles;
 
-    public enum BlockType { Normal, Hide, Reflect, Flower, SpeedUp, Illusion }
+    public enum BlockType { Normal, Hide, Counter, Flower, SpeedUp, Illusion }
 
     public class BlockForm
     {
@@ -82,7 +80,8 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            RandomStageGenerate((new(BlockType.Normal, new(1,1)), 5), new(new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new(1,1)), 10), (new(BlockType.Counter), 5)),
+            //RandomStageGenerate((new(BlockType.Normal, new(1,1)), 5), new(new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 1)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(3,1)), 5), (new(BlockType.Normal, new(1,3)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 5)),
         };
@@ -180,6 +179,7 @@ public class StageManager : MonoBehaviour
                 block = PoolManager.Spawn(ResourceEnum.Prefab.HideBlock).GetComponent<HideBlock>();
                 ((HideBlock)block).SetShield(enemyArrangementInfo.position.x >= column / 2 + 1, enemyArrangementInfo.position.x < column / 2);
             }
+            else if(enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
             else block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
             if (frontStage)
             {

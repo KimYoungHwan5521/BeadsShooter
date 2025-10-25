@@ -7,6 +7,7 @@ public class ResourcesPath
         "Prefabs/Enemies/Slime",
         "Prefabs/Enemies/NormalBlock",
         "Prefabs/Enemies/HideBlock",
+        "Prefabs/Enemies/CounterBlock",
 
         "Prefabs/Gems/GreenGem",
     };

@@ -3,7 +3,11 @@ using UnityEngine;
 public class Projectile : CustomObject
 {
     [SerializeField] float damage;
-    [SerializeField] float speed;
+    [SerializeField] float defaultSpeed;
+    public float speedMagnification = 1;
+    public float speedCorrection = 0;
+    float CurrentSpeed => (defaultSpeed * speedMagnification) + speedCorrection;
+    public bool stop = false;
     [SerializeField] int penetrationNumber;
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
@@ -25,17 +29,24 @@ public class Projectile : CustomObject
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
     {
         this.damage = damage;
-        this.speed = speed;
+        defaultSpeed = speed;
         this.penetrationNumber = penetrationNumber;
         this.criticalRate = criticalRate;
         this.direction = direction;
         activated = true;
     }
 
+    private void OnEnable()
+    {
+        speedMagnification = 1f;
+        speedCorrection = 0f;
+    }
+
     private void FixedUpdate()
     {
         if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase) return;
-        rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * speed;
+        if (!stop) rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
+        else rigidBody.linearVelocity = Vector2.zero;
     }
 
 
@@ -54,6 +65,6 @@ public class Projectile : CustomObject
 
     public void SetDirection(Vector2 wantDirection)
     {
-        rigidBody.linearVelocity = wantDirection.normalized * speed;
+        rigidBody.linearVelocity = wantDirection.normalized * CurrentSpeed;
     }
 }

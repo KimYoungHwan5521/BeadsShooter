@@ -43,7 +43,7 @@ public class Enemy : CustomObject
         base.Start();
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         IsDead = false;
         CurHP = maxHP;
