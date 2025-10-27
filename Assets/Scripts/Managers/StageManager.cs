@@ -80,10 +80,10 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            RandomStageGenerate((new(BlockType.Normal, new(1,1)), 10), (new(BlockType.Counter), 5)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.Counter), 5)),
             //RandomStageGenerate((new(BlockType.Normal, new(1,1)), 5), new(new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 1)),
             // Stage 1
-            RandomStageGenerate((new(BlockType.Normal, new(3,1)), 5), (new(BlockType.Normal, new(1,3)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 5)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 5)),
         };
     }
 
@@ -235,7 +235,10 @@ public class StageManager : MonoBehaviour
                 // 랜덤하게 배치 시도
                 bool discrimination = true;
                 int xPos = Random.Range(0, column - form.Item1.size.x + 1);
-                int yPos = Random.Range(0, row - form.Item1.size.y + 1);
+                int yPos;
+                if (form.Item1.blockType == BlockType.Hide) yPos = Random.Range(0, (row - form.Item1.size.y + 1) * 2 / 3);
+                else if (form.Item1.blockType == BlockType.Counter) yPos = Random.Range(0, row - form.Item1.size.y + 1);
+                else yPos = Random.Range((row - form.Item1.size.y + 1) / 2, row - form.Item1.size.y + 1);
                 // 다른 블록이 이미 배치 되어있는지 판별
                 for(int wantY = 0; wantY < form.Item1.size.y; wantY++)
                 {

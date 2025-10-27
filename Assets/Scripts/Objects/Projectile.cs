@@ -5,9 +5,11 @@ public class Projectile : CustomObject
     [SerializeField] float damage;
     [SerializeField] float defaultSpeed;
     public float speedMagnification = 1;
+    public float temporarySpeedMagnification = 1;
     public float speedCorrection = 0;
-    float CurrentSpeed => (defaultSpeed * speedMagnification) + speedCorrection;
+    float CurrentSpeed => (defaultSpeed * speedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
+    TrailRenderer trail;
     [SerializeField] int penetrationNumber;
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
@@ -19,6 +21,7 @@ public class Projectile : CustomObject
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        trail = GetComponent<TrailRenderer>();
     }
 
     protected override void MyStart()
@@ -44,9 +47,27 @@ public class Projectile : CustomObject
 
     private void FixedUpdate()
     {
+        trail.enabled = activated;
         if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase) return;
-        if (!stop) rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
-        else rigidBody.linearVelocity = Vector2.zero;
+        if (!stop)
+        {
+            // 수평 최소각
+            if(Vector2.Angle(Vector2.right, rigidBody.linearVelocity) < 3)
+            {
+                if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) < 3) SetDirection(new(15, 1));
+                else if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) > -3) SetDirection(new(15, -1));
+            }
+            else if (Vector2.Angle(Vector2.left, rigidBody.linearVelocity) < 3)
+            {
+                if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) < 3) SetDirection(new(-15, -1));
+                else if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) > -3) SetDirection(new(-15, 1));
+            }
+            rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
+        }
+        else
+        {
+            rigidBody.linearVelocity = Vector2.zero;
+        }
     }
 
 
@@ -59,6 +80,7 @@ public class Projectile : CustomObject
         }
         else if (collision.gameObject.TryGetComponent(out Bar bar) && !bar.grabbedBeads.Contains(this))
         {
+            temporarySpeedMagnification = 1;
             SetDirection(transform.position - bar.transform.position);
         }
     }

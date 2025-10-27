@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Bar : CustomObject
 {
+    public Transform barBody;
     public float barLength = 1;
     public List<Projectile> grabbedBeads;
     float yPos = -17.5f;

@@ -30,7 +30,7 @@ public class CounterBlock : Block
             if(curCaughtTime > caughtTime)
             {
                 caughted.SetDirection(Vector2.down + Vector2.right * Random.Range(-1f, 1f));
-                caughted.speedMagnification *= 1.3f;
+                caughted.temporarySpeedMagnification *= 1.3f;
                 caughted.stop = false;
                 curCaughtTime = 0;
             }
