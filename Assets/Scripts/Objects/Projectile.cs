@@ -9,7 +9,7 @@ public class Projectile : CustomObject
     public float speedCorrection = 0;
     float CurrentSpeed => (defaultSpeed * speedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
-    TrailRenderer trail;
+    public TrailRenderer trail;
     [SerializeField] int penetrationNumber;
     [SerializeField] float criticalRate;
     [SerializeField] Vector2 direction;
@@ -36,6 +36,7 @@ public class Projectile : CustomObject
         this.penetrationNumber = penetrationNumber;
         this.criticalRate = criticalRate;
         this.direction = direction;
+        trail.Clear();
         activated = true;
     }
 

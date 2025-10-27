@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -8,6 +9,7 @@ public class StageManager : MonoBehaviour
     const int column = 23;
 
     [SerializeField] Transform board;
+    [SerializeField] TextMeshProUGUI stageStartCountText;
     public int currentStage = 0;
     public List<Enemy> currentStageEnemies;
     public List<Enemy> nextStageEnemies;
@@ -15,6 +17,9 @@ public class StageManager : MonoBehaviour
     public List<GameObject> nextStageWalls;
     public Bar bar;
     public List<Projectile> projectiles;
+
+    readonly float stageStartCount = 3f;
+    [SerializeField]float curStageStartCount;
 
     public enum BlockType { Normal, Hide, Counter, Flower, SpeedUp, Illusion }
 
@@ -92,8 +97,39 @@ public class StageManager : MonoBehaviour
         if (wantDown > 0)
         {
             board.transform.position += Vector3.down * 0.2f;
+            foreach(var projectile in projectiles)
+            {
+                if (projectile.transform.position.y > bar.transform.position.y + 3)
+                {
+                    projectile.transform.position += Vector3.down * 0.2f;
+                    Vector3[] points = new Vector3[projectile.trail.positionCount];
+                    projectile.trail.GetPositions(points);
+                    for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
+                    projectile.trail.SetPositions(points);
+                }
+            }
             wantDown -= 0.2f;
-            if(wantDown <= 0) GameManager.Instance.BattlePhaseStart();
+            if(wantDown <= 0)
+            {
+                if (currentStage > 0)
+                {
+                    curStageStartCount = stageStartCount;
+                    stageStartCountText.gameObject.SetActive(true);
+                }
+                else
+                    GameManager.Instance.BattlePhaseStart();
+            }
+        }
+        if(curStageStartCount > 0)
+        {
+            curStageStartCount -= Time.unscaledDeltaTime;
+            stageStartCountText.text = $"{(int)curStageStartCount + 1}";
+            if(curStageStartCount <= 0)
+            {
+                stageStartCountText.gameObject.SetActive(false);
+                foreach (var projectile in projectiles) projectile.trail.emitting = true;
+                GameManager.Instance.BattlePhaseStart();
+            }
         }
     }
 
@@ -213,6 +249,7 @@ public class StageManager : MonoBehaviour
         if(currentStageEnemies.Count == 0 && GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
             GameManager.Instance.ReadyPhase();
+            foreach(var projectile in projectiles) projectile.trail.emitting = false;
             currentStage++;
         }
     }
@@ -237,8 +274,8 @@ public class StageManager : MonoBehaviour
                 int xPos = Random.Range(0, column - form.Item1.size.x + 1);
                 int yPos;
                 if (form.Item1.blockType == BlockType.Hide) yPos = Random.Range(0, (row - form.Item1.size.y + 1) * 2 / 3);
-                else if (form.Item1.blockType == BlockType.Counter) yPos = Random.Range(0, row - form.Item1.size.y + 1);
-                else yPos = Random.Range((row - form.Item1.size.y + 1) / 2, row - form.Item1.size.y + 1);
+                else if (form.Item1.blockType == BlockType.Counter) yPos = Random.Range((row - form.Item1.size.y + 1) / 2, row - form.Item1.size.y + 1);
+                else yPos = Random.Range(0, row - form.Item1.size.y + 1);
                 // 다른 블록이 이미 배치 되어있는지 판별
                 for(int wantY = 0; wantY < form.Item1.size.y; wantY++)
                 {
