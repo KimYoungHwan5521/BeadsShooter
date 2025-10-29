@@ -43,6 +43,7 @@ public class Projectile : CustomObject
     private void OnEnable()
     {
         speedMagnification = 1f;
+        temporarySpeedMagnification = 1f;
         speedCorrection = 0f;
     }
 

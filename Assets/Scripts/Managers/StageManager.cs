@@ -6,7 +6,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     const int row = 13;
-    const int column = 23;
+    const int column = 22;
 
     [SerializeField] Transform board;
     [SerializeField] TextMeshProUGUI stageStartCountText;
@@ -61,13 +61,12 @@ public class StageManager : MonoBehaviour
             this.blockType = blockType;
             this.position = position;
             this.size = size;
-            maxHP = size.x * size.y;
+            maxHP = Mathf.Max(size.x * size.y / 2, 1);
         }
     }
 
     public class StageInfo
     {
-        // Stage 크기 : 가로 0~8, 세로 0~13
         public List<EnemyArrangementInfo> enemyArrangementInfo;
 
         public StageInfo(EnemyArrangementInfo[] enemyArrangementInfo)
@@ -157,7 +156,7 @@ public class StageManager : MonoBehaviour
         {
             wantStage = currentStage + 1;
         }
-        if (wantStage >= stageInfos.Length) nextStageInfo = stageInfos[^1];
+        if (wantStage >= stageInfos.Length) nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Hide), 5));
         else nextStageInfo = stageInfos[wantStage];
         SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
 
@@ -168,11 +167,11 @@ public class StageManager : MonoBehaviour
         if(!clearBothStage) currentStageWalls = nextStageWalls.ToList();
         else currentStageWalls.Clear();
         nextStageWalls.Clear();
-        for(int i=-11; i<=11; i++)
+        for(int i=-11; i<11; i++)
         {
             Block block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-            if (currentStage == 0) block.transform.position = new(i, 13 + 14 + 3);
-            else block.transform.position = new(i, 3 + 30);
+            if (currentStage == 0) block.transform.position = new(i + 0.5f, 14 + 14 + 3);
+            else block.transform.position = new(i + 0.5f, 3 + 30);
             block.transform.SetParent(board, true);
             block.SetInfo(currentStage, float.MaxValue);
             if (clearBothStage) currentStageWalls.Add(block.gameObject);
@@ -182,26 +181,23 @@ public class StageManager : MonoBehaviour
         if(clearBothStage)
         {
             if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
-            else nextStageInfo = stageInfos[^1];
+            else nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Hide), 5));
             SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
             foreach (GameObject wall in nextStageWalls)
             {
                 PoolManager.Despawn(wall);
             }
             nextStageWalls.Clear();
-            for (int i = -11; i <= 11; i++)
+            for (int i = -11; i < 11; i++)
             {
                 Block block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                block.transform.position = new(i, 14 + 2 + 29);
+                block.transform.position = new(i + 0.5f, 14 + 33);
                 block.transform.SetParent(board, true);
                 block.SetInfo(currentStage + 1, float.MaxValue);
                 nextStageWalls.Add(block.gameObject);
             }
         }
 
-        // 내려가는 애니메이션
-        //if (!clearBothStage) board.transform.position += Vector3.down * 13;
-        //else board.transform.position += Vector3.down * 26;
         wantDown = clearBothStage ? 28 : 14;
     }
 
@@ -219,12 +215,12 @@ public class StageManager : MonoBehaviour
             else block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
             if (frontStage)
             {
-                if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 11, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 2);
+                if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 3);
                 else block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 11, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 6);
             }
             else
             {
-                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 11, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 2 + 15);
+                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 3 + 15);
             }
             block.GetComponent<BoxCollider2D>().size = enemyArrangementInfo.size;
             block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
