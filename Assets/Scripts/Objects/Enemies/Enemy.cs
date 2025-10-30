@@ -17,6 +17,7 @@ public class Enemy : CustomObject
             {
                 GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
                 GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
+                GameManager.Instance.StageManager.currentStageWalls.Remove(gameObject);
                 PoolManager.Despawn(gameObject);
                 GameManager.Instance.StageManager.StageClearCheck();
             }

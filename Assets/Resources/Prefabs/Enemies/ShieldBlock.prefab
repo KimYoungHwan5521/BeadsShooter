@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 7122125524507949614}
   - component: {fileID: 1251512919808503999}
   m_Layer: 0
-  m_Name: HideBlock
+  m_Name: ShieldBlock
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

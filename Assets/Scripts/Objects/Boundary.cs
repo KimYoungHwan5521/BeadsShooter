@@ -21,7 +21,7 @@ public class Boundary : CustomObject
         // bottom
         edges[0].transform.position = new(0, - safeHeight / 2, 0);
         edges[0].size = new(safeHeight, 2);
-        edges[0].offset = new(0, -1);
+        edges[0].offset = new(0, 0);
         // right
         edges[1].transform.position = new(safeWidth / 2, 0, 0);
         edges[1].size = new(2, safeHeight);
@@ -29,7 +29,7 @@ public class Boundary : CustomObject
         // top
         edges[2].transform.position = new(0, safeHeight / 2, 0);
         edges[2].size = new(safeHeight, 2);
-        edges[2].offset = new(0, 1);
+        edges[2].offset = new(0, -2);
         // left
         edges[3].transform.position = new(-safeWidth / 2, 0, 0);
         edges[3].size = new(2, safeHeight);

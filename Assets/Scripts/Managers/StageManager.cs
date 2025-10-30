@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    const int row = 13;
+    const int row = 14;
     const int column = 22;
+    const int term = 5;
 
     [SerializeField] Transform board;
     [SerializeField] TextMeshProUGUI stageStartCountText;
@@ -21,7 +22,7 @@ public class StageManager : MonoBehaviour
     readonly float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
 
-    public enum BlockType { Normal, Hide, Counter, Flower, SpeedUp, Illusion }
+    public enum BlockType { Normal, Wall, Shield, Counter, Flower, SpeedUp, Illusion }
 
     public class BlockForm
     {
@@ -87,13 +88,13 @@ public class StageManager : MonoBehaviour
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.Counter), 5)),
             //RandomStageGenerate((new(BlockType.Normal, new(1,1)), 5), new(new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 1)),
             // Stage 1
-            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Hide), 5)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(1,2)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Shield), 5)),
         };
     }
 
     private void Update()
     {
-        if (wantDown > 0)
+        if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
             foreach(var projectile in projectiles)
@@ -108,7 +109,7 @@ public class StageManager : MonoBehaviour
                 }
             }
             wantDown -= 0.2f;
-            if(wantDown <= 0)
+            if(wantDown < 0.1f)
             {
                 if (currentStage > 0)
                 {
@@ -156,7 +157,7 @@ public class StageManager : MonoBehaviour
         {
             wantStage = currentStage + 1;
         }
-        if (wantStage >= stageInfos.Length) nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Hide), 5));
+        if (wantStage >= stageInfos.Length) nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Shield), 2));
         else nextStageInfo = stageInfos[wantStage];
         SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
 
@@ -167,38 +168,44 @@ public class StageManager : MonoBehaviour
         if(!clearBothStage) currentStageWalls = nextStageWalls.ToList();
         else currentStageWalls.Clear();
         nextStageWalls.Clear();
-        for(int i=-11; i<11; i++)
+        for(int i=-5; i<=5; i++)
         {
-            Block block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-            if (currentStage == 0) block.transform.position = new(i + 0.5f, 14 + 14 + 3);
-            else block.transform.position = new(i + 0.5f, 3 + 30);
-            block.transform.SetParent(board, true);
-            block.SetInfo(currentStage, float.MaxValue);
-            if (clearBothStage) currentStageWalls.Add(block.gameObject);
-            else nextStageWalls.Add(block.gameObject);
+            Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+            if (currentStage == 0) wall.transform.position = new(i * 2, row + 1 + term + row + 1);
+            else wall.transform.position = new(i * 2, row + 1 + term + row + 1);
+            wall.transform.SetParent(board, true);
+            wall.GetComponent<BoxCollider2D>().size = new(2,1);
+            wall.GetComponent<SpriteRenderer>().size = new(2,1);
+            wall.GetComponent<SpriteRenderer>().color = Color.gray;
+            wall.SetInfo(currentStage, 3);
+            if (clearBothStage) currentStageWalls.Add(wall.gameObject);
+            else nextStageWalls.Add(wall.gameObject);
         }
         // 2스테이지 동시에 깬 경우 다다음 스테이지
         if(clearBothStage)
         {
             if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
-            else nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Hide), 5));
+            else nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new(2, 1)), 5), (new(BlockType.Normal, new(1, 2)), 5), (new(BlockType.Normal, new(2, 2)), 5), (new(BlockType.Shield), 2));
             SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
             foreach (GameObject wall in nextStageWalls)
             {
                 PoolManager.Despawn(wall);
             }
             nextStageWalls.Clear();
-            for (int i = -11; i < 11; i++)
+            for (int i = -5; i <= 5; i++)
             {
-                Block block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                block.transform.position = new(i + 0.5f, 14 + 33);
-                block.transform.SetParent(board, true);
-                block.SetInfo(currentStage + 1, float.MaxValue);
-                nextStageWalls.Add(block.gameObject);
+                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                wall.transform.position = new(i * 2, row + 1 + term + row + 1 + row + 1);
+                wall.transform.SetParent(board, true);
+                wall.GetComponent<BoxCollider2D>().size = new(2, 1);
+                wall.GetComponent<SpriteRenderer>().size = new(2, 1);
+                wall.GetComponent<SpriteRenderer>().color = Color.gray;
+                wall.SetInfo(currentStage + 1, 3);
+                nextStageWalls.Add(wall.gameObject);
             }
         }
 
-        wantDown = clearBothStage ? 28 : 14;
+        wantDown = clearBothStage ? (row + 1) * 2 : row + 1;
     }
 
     void SpawnBlocks(StageInfo nextStageInfo, int wantStage, bool clearBothStage, bool frontStage)
@@ -206,21 +213,25 @@ public class StageManager : MonoBehaviour
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block;
-            if(enemyArrangementInfo.blockType == BlockType.Hide)
+            if(enemyArrangementInfo.blockType == BlockType.Shield)
             {
-                block = PoolManager.Spawn(ResourceEnum.Prefab.HideBlock).GetComponent<HideBlock>();
+                block = PoolManager.Spawn(ResourceEnum.Prefab.ShieldBlock).GetComponent<HideBlock>();
                 ((HideBlock)block).SetShield(enemyArrangementInfo.position.x >= column / 2 + 1, enemyArrangementInfo.position.x < column / 2);
             }
             else if(enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
-            else block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+            else
+            {
+                block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                block.GetComponent<SpriteRenderer>().color = Color.white;
+            }
             if (frontStage)
             {
-                if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 3);
-                else block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 11, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 6);
+                if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + row + 1 + term + 1);
+                else block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + row + 1 + term);
             }
             else
             {
-                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + 14 + 3 + 15);
+                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f + row + 1 + term + row + 1);
             }
             block.GetComponent<BoxCollider2D>().size = enemyArrangementInfo.size;
             block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
@@ -269,7 +280,7 @@ public class StageManager : MonoBehaviour
                 bool discrimination = true;
                 int xPos = Random.Range(0, column - form.Item1.size.x + 1);
                 int yPos;
-                if (form.Item1.blockType == BlockType.Hide) yPos = Random.Range(0, (row - form.Item1.size.y + 1) * 2 / 3);
+                if (form.Item1.blockType == BlockType.Shield) yPos = Random.Range(0, (row - form.Item1.size.y + 1) * 2 / 3);
                 else if (form.Item1.blockType == BlockType.Counter) yPos = Random.Range((row - form.Item1.size.y + 1) / 2, row - form.Item1.size.y + 1);
                 else yPos = Random.Range(0, row - form.Item1.size.y + 1);
                 // 다른 블록이 이미 배치 되어있는지 판별
@@ -286,7 +297,7 @@ public class StageManager : MonoBehaviour
                     if (!discrimination) break;
                 }
                 // HideBlock은 좌/우, 아래도 확인
-                if(discrimination && form.Item1.blockType == BlockType.Hide)
+                if(discrimination && form.Item1.blockType == BlockType.Shield)
                 {
                     if(yPos > 0)
                     {
@@ -327,7 +338,7 @@ public class StageManager : MonoBehaviour
                         stageBoard[yPos + wantY, xPos + wantX] = 1;
                     }
                 }
-                if(form.Item1.blockType == BlockType.Hide)
+                if(form.Item1.blockType == BlockType.Shield)
                 {
                     if (xPos <= column / 2) stageBoard[yPos, xPos + 1] = 1;
                     else if (xPos > column / 2 + 1) stageBoard[yPos, xPos - 1] = 1;
@@ -341,7 +352,7 @@ public class StageManager : MonoBehaviour
             }
         }
         string log = "";
-        for (int y = row - 1; y > 0; y--)
+        for (int y = row - 1; y >= 0; y--)
         {
             string line = "";
             for (int x = 0; x < column; x++)

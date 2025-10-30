@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public delegate void CustomStart();
 public delegate void CustomUpdate();
@@ -42,12 +43,12 @@ public class GameManager : MonoBehaviour
         stageManager = GetComponent<StageManager>();
         //if (!SteamAPI.Init())
         //{
-        //    Debug.LogError("SteamAPI �ʱ�ȭ ����");
+        //    Debug.LogError("SteamAPI 초기화 실패");
         //    //Application.Quit();
         //}
         //else
         //{
-        //    Debug.Log("SteamAPI �ʱ�ȭ ����");
+        //    Debug.Log("SteamAPI 초기화 성공");
         //}
     }
 
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
         yield return poolManager.Initiate();
 
         gameReady = true;
+        SetCameraAspect();
         ManagerUpdate += BattlePhaseUpdate;
         //CloseLoadInfo();
     }
@@ -74,7 +76,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (!gameReady) return;
-        //SteamAPI.RunCallbacks(); // �ʼ�!
+        //SteamAPI.RunCallbacks(); // 필수!
 
         ManagerStart?.Invoke();
         ManagerStart = null;
@@ -93,6 +95,38 @@ public class GameManager : MonoBehaviour
     public enum Phase { None, BattlePhase, ReadyPhase };
     public Phase phase = Phase.None;
     [SerializeField] GameObject upgradeWindow;
+
+    void SetCameraAspect()
+    {
+        // 아이폰12 기준 비율 (가로/세로)
+        float targetAspect = 1170f / 2532f; // ≈ 0.4620853f
+
+        // 현재 기기 비율 (가로/세로)
+        float currentAspect = (float)Screen.width / Screen.height;
+
+        Camera cam = Camera.main;
+
+        // "아이폰12 환경에서 작업하던 그대로의 orthographicSize"
+        // 즉, 기준 구도일 때 카메라에 세팅돼 있던 값
+        float baseOrtho = cam.orthographicSize;
+
+        // 기본은 그대로 쓴다
+        float newOrtho = baseOrtho;
+
+        // 만약 현재 화면이 더 세로로 길어서 (currentAspect < targetAspect)
+        // 좌우가 잘릴 위험이 있다면, 더 많이 보이도록 orthographicSize를 키운다.
+        float worldScale = targetAspect / currentAspect;
+        newOrtho = baseOrtho * worldScale;
+        if (currentAspect > targetAspect)
+        {
+        }
+
+        cam.orthographicSize = newOrtho;
+
+        // 여백은 검게
+        cam.clearFlags = CameraClearFlags.SolidColor;
+        cam.backgroundColor = Color.black;
+    }
 
     public void StartBattlePhase()
     {

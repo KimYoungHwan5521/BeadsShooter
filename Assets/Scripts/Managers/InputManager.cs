@@ -8,7 +8,8 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
-        float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Vector3.zero).x + (bar.barBody.localScale.x + 1) * bar.barLength / 2, Camera.main.ScreenToWorldPoint(new(Screen.width, 0)).x - (bar.barBody.localScale.x + 1) * bar.barLength / 2);
+        float xOffset = (Screen.width / 1170f) / 2;
+        float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Vector3.zero).x + (bar.barBody.localScale.x + 1) * bar.barLength / 2 + xOffset, Camera.main.ScreenToWorldPoint(new(1170, 0)).x - (bar.barBody.localScale.x + 1) * bar.barLength / 2 + xOffset);
         bar.MoveBar(xPos);
     }
 
