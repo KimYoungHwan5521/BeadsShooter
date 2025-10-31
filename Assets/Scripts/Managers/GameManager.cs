@@ -116,9 +116,13 @@ public class GameManager : MonoBehaviour
         // 만약 현재 화면이 더 세로로 길어서 (currentAspect < targetAspect)
         // 좌우가 잘릴 위험이 있다면, 더 많이 보이도록 orthographicSize를 키운다.
         float worldScale = targetAspect / currentAspect;
-        newOrtho = baseOrtho * worldScale;
         if (currentAspect > targetAspect)
         {
+            newOrtho = baseOrtho / worldScale;
+        }
+        else
+        {
+            newOrtho = baseOrtho * worldScale;
         }
 
         cam.orthographicSize = newOrtho;

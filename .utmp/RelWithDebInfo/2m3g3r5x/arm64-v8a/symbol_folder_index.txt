@@ -1,0 +1,1 @@
+C:\Users\aorks\Desktop\My Games\Beads Shooter\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\2m3g3r5x\obj\arm64-v8a

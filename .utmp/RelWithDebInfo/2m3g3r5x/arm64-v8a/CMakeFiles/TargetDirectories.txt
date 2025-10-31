@@ -1,0 +1,8 @@
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/CMakeFiles/rebuild_cache.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/GameActivity/CMakeFiles/game.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+C:/Users/aorks/Desktop/My Games/Beads Shooter/.utmp/RelWithDebInfo/2m3g3r5x/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

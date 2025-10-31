@@ -1,0 +1,3 @@
+C:\Users\aorks\Desktop\My Games\Beads Shooter\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\aorks\Desktop\My Games\Beads Shooter\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+C:\Users\aorks\Desktop\My Games\Beads Shooter\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt
