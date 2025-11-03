@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
@@ -9,6 +10,45 @@ public class StageManager : MonoBehaviour
     const int column = 22;
     const int term = 6;
 
+    [Header("Header UI")]
+    [SerializeField] Image feverGaugeImage;
+    [SerializeField] Sprite[] feverGaugeSprites;
+    int feverGauge;
+    public int FeverGauge
+    {
+        get => feverGauge;
+        set
+        {
+            if(value >= feverGaugeSprites.Length)
+            {
+                Fever();
+                FeverGauge = 0;
+                return;
+            }
+            feverGauge = value;
+            feverGaugeImage.sprite = feverGaugeSprites[value];
+        }
+    }
+    bool feverHalf;
+    public bool FeverHalf
+    {
+        get => feverHalf;
+        set
+        {
+            if(value)
+            {
+                if (feverHalf)
+                {
+                    FeverGauge++;
+                    feverHalf = false;
+                }
+                else feverHalf = true;
+            }
+            else feverHalf = false;
+        }
+    }
+
+    [Header("Ingame")]
     [SerializeField] Transform board;
     [SerializeField] TextMeshProUGUI stageStartCountText;
     public int currentStage = 0;
@@ -22,7 +62,7 @@ public class StageManager : MonoBehaviour
     readonly float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
 
-    public enum BlockType { Normal, Wall, Shield, Counter, Flower, SpeedUp, Illusion }
+    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion }
 
     public class BlockForm
     {
@@ -96,7 +136,7 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 8), (new(BlockType.Normal, new(1,2)), 8), (new(BlockType.Shield, new(2,1)), 4)),
             // ...
@@ -243,6 +283,7 @@ public class StageManager : MonoBehaviour
                 ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
             }
             else if(enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
+            else if(enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
             else
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
@@ -257,8 +298,11 @@ public class StageManager : MonoBehaviour
             {
                 block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term + row + 1);
             }
-            block.GetComponent<BoxCollider2D>().size = enemyArrangementInfo.size;
-            block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
+            if(block.TryGetComponent(out BoxCollider2D boxCollider))
+            {
+                boxCollider.size = enemyArrangementInfo.size;
+                block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
+            }
             block.transform.SetParent(board, true);
             if(frontStage)
             {
@@ -423,4 +467,10 @@ public class StageManager : MonoBehaviour
         Debug.Log(log);
         return result;
     }
+
+    void Fever()
+    {
+        Debug.Log("Fever!");
+    }
+
 }

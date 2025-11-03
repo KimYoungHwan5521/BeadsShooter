@@ -1042,6 +1042,7 @@ GameObject:
   - component: {fileID: 287033149}
   - component: {fileID: 287033148}
   - component: {fileID: 287033147}
+  - component: {fileID: 287033151}
   m_Layer: 0
   m_Name: Border
   m_TagString: Untagged
@@ -1306,6 +1307,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.05, y: 4.27}
   m_EdgeRadius: 0
+--- !u!114 &287033151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287033144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13120eefc41cce34fa09596704bd91e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BoundaryEdge
+  edgeType: 0
 --- !u!1 &462776514
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,6 +3476,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf3dc5c5c5ea3f459f4b6fe2f0e2f92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageManager
+  feverGaugeImage: {fileID: 1573250553}
+  feverGaugeSprites:
+  - {fileID: 3666395730429428221, guid: d276efd7e176ac248988a21e787e9e55, type: 3}
+  - {fileID: -8142078518724970007, guid: d276efd7e176ac248988a21e787e9e55, type: 3}
+  - {fileID: 5321405506712674580, guid: d276efd7e176ac248988a21e787e9e55, type: 3}
+  - {fileID: -3460609258686177541, guid: d276efd7e176ac248988a21e787e9e55, type: 3}
+  - {fileID: -7310718435115833628, guid: d276efd7e176ac248988a21e787e9e55, type: 3}
   board: {fileID: 242551441}
   stageStartCountText: {fileID: 802914565}
   currentStage: 0
@@ -4344,9 +4365,9 @@ SceneRoots:
   - {fileID: 579070714}
   - {fileID: 65572703}
   - {fileID: 1047459770}
+  - {fileID: 287033146}
   - {fileID: 1176680256}
   - {fileID: 173030810}
   - {fileID: 753466821}
   - {fileID: 1611540040}
   - {fileID: 242551441}
-  - {fileID: 287033146}

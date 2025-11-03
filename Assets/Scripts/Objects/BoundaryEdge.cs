@@ -23,15 +23,26 @@ public class BoundaryEdge : CustomObject
             else if (edgeType == 1)
             {
                 projectile.SetDirection(new(projectile.Direction.x, - Mathf.Abs(projectile.Direction.y)));
+                GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 2)
             {
                 projectile.SetDirection(new(Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
+                GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 3)
             {
                 projectile.SetDirection(new(- Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
+                GameManager.Instance.StageManager.FeverHalf = true;
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out Projectile projectile) && projectile.gameObject.activeSelf)
+        {
+            GameManager.Instance.StageManager.FeverHalf = true;
         }
     }
 }

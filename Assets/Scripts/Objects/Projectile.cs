@@ -79,11 +79,13 @@ public class Projectile : CustomObject
         if(collision.collider.gameObject.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage(damage);
+            GameManager.Instance.StageManager.FeverGauge++;
         }
         else if (collision.gameObject.TryGetComponent(out Bar bar) && !bar.grabbedBeads.Contains(this))
         {
             temporarySpeedMagnification = 1;
             SetDirection(transform.position - bar.transform.position);
+            GameManager.Instance.StageManager.FeverHalf = true;
         }
     }
 

@@ -8,6 +8,7 @@ namespace ResourceEnum
         NormalBlock,
         ShieldBlock,
         CounterBlock,
+        PentagonalBlock,
 
         GreenGem,
     }

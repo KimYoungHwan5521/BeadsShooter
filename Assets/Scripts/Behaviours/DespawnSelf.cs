@@ -17,7 +17,13 @@ public class DespawnSelf : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //PoolManager.Despawn(animator.gameObject);
+        if(animator.TryGetComponent(out Enemy enemy))
+        {
+            if (GameManager.Instance.StageManager.currentStageEnemies.Contains(enemy)) GameManager.Instance.StageManager.currentStageEnemies.Remove(enemy);
+            else if (GameManager.Instance.StageManager.nextStageEnemies.Contains(enemy)) GameManager.Instance.StageManager.nextStageEnemies.Remove(enemy);
+            GameManager.Instance.StageManager.StageClearCheck();
+        }
+        PoolManager.Despawn(animator.gameObject);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
