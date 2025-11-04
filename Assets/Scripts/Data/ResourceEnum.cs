@@ -11,6 +11,8 @@ namespace ResourceEnum
         PentagonalBlock,
 
         GreenGem,
+
+        FeverAttack,
     }
 
     public enum Sprite

@@ -9,18 +9,21 @@ public class Projectile : CustomObject
     public float speedCorrection = 0;
     float CurrentSpeed => (defaultSpeed * speedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
-    public TrailRenderer trail;
-    [SerializeField] int penetrationNumber;
-    [SerializeField] float criticalRate;
-    [SerializeField] Vector2 direction;
 
     Rigidbody2D rigidBody;
-    public Vector2 Direction => direction;
+    public SpriteRenderer spriteRenderer;
+    public TrailRenderer trail;
+    
+    [SerializeField] int penetrationNumber;
+    [SerializeField] float criticalRate;
+    public Vector2 Direction => rigidBody.linearVelocity;
+
     public bool activated;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         trail = GetComponent<TrailRenderer>();
     }
 
@@ -35,7 +38,7 @@ public class Projectile : CustomObject
         defaultSpeed = speed;
         this.penetrationNumber = penetrationNumber;
         this.criticalRate = criticalRate;
-        this.direction = direction;
+        SetDirection(direction);
         trail.Clear();
         activated = true;
     }

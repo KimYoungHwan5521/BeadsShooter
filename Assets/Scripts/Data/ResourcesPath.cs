@@ -11,6 +11,8 @@ public class ResourcesPath
         "Prefabs/Enemies/PentagonalBlock",
 
         "Prefabs/Gems/GreenGem",
+
+        "Prefabs/ETC/FeverAttack",
     };
 
 

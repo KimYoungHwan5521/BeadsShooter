@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -470,7 +471,11 @@ public class StageManager : MonoBehaviour
 
     void Fever()
     {
-        Debug.Log("Fever!");
+        int rand = Random.Range(0, currentStageEnemies.Count);
+        Enemy target = currentStageEnemies[rand];
+        LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverAttack).GetComponent<LineRenderer>();
+        line.SetPositions(new Vector3[]{ bar.transform.position, target.transform.position });
+        target.TakeDamage(1);
     }
 
 }
