@@ -137,7 +137,7 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 8), (new(BlockType.Normal, new(1,2)), 8), (new(BlockType.Shield, new(2,1)), 4)),
             // ...
@@ -277,14 +277,15 @@ public class StageManager : MonoBehaviour
                 bool rightShield = false;
                 bool downShield = false;
                 bool upShield = false;
-                if (enemyArrangementInfo.shieldPosition == 0) leftShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 1) rightShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 2) upShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 3) downShield = true;
+                if (enemyArrangementInfo.shieldPosition == 0) downShield = true;
+                else if(enemyArrangementInfo.shieldPosition == 1) leftShield = true;
+                else if(enemyArrangementInfo.shieldPosition == 2) rightShield = true;
+                else if(enemyArrangementInfo.shieldPosition == 3) upShield = true;
                 ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
             }
             else if(enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
             else if(enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
+            else if (enemyArrangementInfo.blockType == BlockType.SpeedUp) block = PoolManager.Spawn(ResourceEnum.Prefab.SpeedUpBlock).GetComponent<SpeedUpBlock>();
             else
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();

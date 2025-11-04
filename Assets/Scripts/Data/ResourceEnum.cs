@@ -9,6 +9,7 @@ namespace ResourceEnum
         ShieldBlock,
         CounterBlock,
         PentagonalBlock,
+        SpeedUpBlock,
 
         GreenGem,
 

@@ -5,9 +5,11 @@ public class Projectile : CustomObject
     [SerializeField] float damage;
     [SerializeField] float defaultSpeed;
     public float speedMagnification = 1;
+    public float timeLimitedSpeedMagnification = 1;
+    public float timeLimitedSpeedMagnificationTime;
     public float temporarySpeedMagnification = 1;
     public float speedCorrection = 0;
-    float CurrentSpeed => (defaultSpeed * speedMagnification * temporarySpeedMagnification) + speedCorrection;
+    float CurrentSpeed => (defaultSpeed * speedMagnification * timeLimitedSpeedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
 
     Rigidbody2D rigidBody;
@@ -46,6 +48,7 @@ public class Projectile : CustomObject
     private void OnEnable()
     {
         speedMagnification = 1f;
+        timeLimitedSpeedMagnification = 1f;
         temporarySpeedMagnification = 1f;
         speedCorrection = 0f;
     }
@@ -73,6 +76,13 @@ public class Projectile : CustomObject
         {
             rigidBody.linearVelocity = Vector2.zero;
         }
+
+        if (timeLimitedSpeedMagnificationTime > 0)
+        {
+            timeLimitedSpeedMagnificationTime -= Time.deltaTime;
+            timeLimitedSpeedMagnification = 1.3f;
+        }
+        else timeLimitedSpeedMagnification = 1f;
     }
 
 
