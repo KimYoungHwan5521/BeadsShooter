@@ -10,6 +10,7 @@ public class ResourcesPath
         "Prefabs/Enemies/CounterBlock",
         "Prefabs/Enemies/PentagonalBlock",
         "Prefabs/Enemies/SpeedUpBlock",
+        "Prefabs/Enemies/IllusionBlock",
 
         "Prefabs/Gems/GreenGem",
 

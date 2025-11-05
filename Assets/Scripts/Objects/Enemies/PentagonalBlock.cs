@@ -13,7 +13,7 @@ public class PentagonalBlock : Block
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Projectile projectile) && caughted == null)
+        if(collision.TryGetComponent(out Projectile projectile) && caughted == null && !projectile.IsFake)
         {
             anim.SetTrigger("Active");
             caughted = projectile;

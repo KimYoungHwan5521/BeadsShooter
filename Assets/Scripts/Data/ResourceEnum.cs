@@ -10,6 +10,7 @@ namespace ResourceEnum
         CounterBlock,
         PentagonalBlock,
         SpeedUpBlock,
+        IllusionBlock,
 
         GreenGem,
 

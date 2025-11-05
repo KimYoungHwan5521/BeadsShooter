@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 8408928158139507800}
   - component: {fileID: 7122125524507949614}
   - component: {fileID: 3495102628204063195}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ShieldBlock
   m_TagString: Enemy
   m_Icon: {fileID: 0}

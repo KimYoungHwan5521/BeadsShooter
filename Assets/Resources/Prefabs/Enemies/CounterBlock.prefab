@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8408928158139507800}
   - component: {fileID: 7122125524507949614}
   - component: {fileID: 8697220619727116060}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CounterBlock
   m_TagString: Enemy
   m_Icon: {fileID: 0}

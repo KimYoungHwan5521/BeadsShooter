@@ -21,6 +21,17 @@ public class Projectile : CustomObject
     public Vector2 Direction => rigidBody.linearVelocity;
 
     public bool activated;
+    [SerializeField] bool isFake;
+    public bool IsFake
+    {
+        get => isFake;
+        set
+        {
+            isFake = value;
+            if (value) gameObject.layer = LayerMask.NameToLayer("Fake Projectile");
+            else gameObject.layer = LayerMask.NameToLayer("Projectile");
+        }
+    }
 
     private void Awake()
     {
@@ -42,6 +53,7 @@ public class Projectile : CustomObject
         this.criticalRate = criticalRate;
         SetDirection(direction);
         trail.Clear();
+        IsFake = false;
         activated = true;
     }
 
@@ -91,8 +103,11 @@ public class Projectile : CustomObject
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
         if(collision.collider.gameObject.TryGetComponent(out Enemy enemy))
         {
-            enemy.TakeDamage(damage);
-            GameManager.Instance.StageManager.FeverGauge++;
+            if(!IsFake)
+            {
+                enemy.TakeDamage(damage);
+                GameManager.Instance.StageManager.FeverGauge++;
+            }
         }
         else if (collision.gameObject.TryGetComponent(out Bar bar) && !bar.grabbedBeads.Contains(this))
         {
@@ -105,5 +120,15 @@ public class Projectile : CustomObject
     public void SetDirection(Vector2 wantDirection)
     {
         rigidBody.linearVelocity = wantDirection.normalized * CurrentSpeed;
+    }
+
+    public Projectile DuplicateFakeBead(Vector2 direction)
+    {
+        Projectile duplicated = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, transform.position).GetComponent<Projectile>();
+        duplicated.Initialize(damage, defaultSpeed, penetrationNumber, criticalRate, direction);
+        duplicated.IsFake = true;
+        GameManager.Instance.StageManager.projectiles.Add(duplicated);
+
+        return duplicated;
     }
 }
