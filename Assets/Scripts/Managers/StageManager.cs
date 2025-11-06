@@ -137,6 +137,7 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
+            //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Normal, new(3,2)), 5), (new(BlockType.Normal, new(2,3)), 5)),
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 8), (new(BlockType.Normal, new(1,2)), 8), (new(BlockType.Shield, new(2,1)), 4)),
@@ -476,6 +477,7 @@ public class StageManager : MonoBehaviour
 
     void Fever()
     {
+        if (currentStageEnemies.Count == 0) return;
         int rand = Random.Range(0, currentStageEnemies.Count);
         Enemy target = currentStageEnemies[rand];
         LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverAttack).GetComponent<LineRenderer>();

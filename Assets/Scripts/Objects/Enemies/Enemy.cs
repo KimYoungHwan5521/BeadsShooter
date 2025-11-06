@@ -24,8 +24,8 @@ public class Enemy : CustomObject
             isDead = value;
         }
     }
-    [SerializeField]float maxHP;
-    [SerializeField]float curHP;
+    [SerializeField] protected float maxHP;
+    [SerializeField] protected float curHP;
     public virtual float CurHP
     {
         get => curHP;
