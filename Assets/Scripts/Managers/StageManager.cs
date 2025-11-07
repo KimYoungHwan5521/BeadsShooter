@@ -137,8 +137,8 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Normal, new(3,2)), 5), (new(BlockType.Normal, new(2,3)), 5)),
-            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
+            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Normal, new(3,2)), 5), (new(BlockType.Normal, new(2,3)), 5)),
+            //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 8), (new(BlockType.Normal, new(1,2)), 8), (new(BlockType.Shield, new(2,1)), 4)),
             // ...
@@ -268,6 +268,7 @@ public class StageManager : MonoBehaviour
 
     void SpawnBlocks(StageInfo nextStageInfo, int wantStage, bool clearBothStage, bool frontStage)
     {
+        int index = 0;
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block;
@@ -293,15 +294,16 @@ public class StageManager : MonoBehaviour
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
                 block.GetComponent<SpriteRenderer>().color = Color.white;
             }
+
             if (frontStage)
             {
-                if (currentStage == 0) block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term);
-                else block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term);
+                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term);
             }
             else
             {
                 block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term + row + 1);
             }
+
             if(block.TryGetComponent(out BoxCollider2D bC))
             {
                 foreach(var boxCollider in block.GetComponentsInChildren<BoxCollider2D>())
@@ -323,6 +325,8 @@ public class StageManager : MonoBehaviour
                 block.SetInfo(currentStage + 1, enemyArrangementInfo.maxHP);
                 nextStageEnemies.Add(block);
             }
+
+            block.SetMaskLayer(index++);
         }
     }
 
