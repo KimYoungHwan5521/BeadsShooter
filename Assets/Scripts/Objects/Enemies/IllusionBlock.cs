@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class IllusionBlock : Block
 {
-    [SerializeField] Projectile entered;
+    [SerializeField] Bead entered;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Projectile projectile))
+        if (collision.TryGetComponent(out Bead projectile))
         {
             entered = projectile;
             if (GameManager.Instance.StageManager.currentStageEnemies.Contains(this)) GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
@@ -17,7 +17,7 @@ public class IllusionBlock : Block
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Projectile projectile) && projectile == entered)
+        if (collision.TryGetComponent(out Bead projectile) && projectile == entered)
         {
             entered.DuplicateFakeBead(entered.Direction.Rotate(-30));
             entered.DuplicateFakeBead(entered.Direction.Rotate(30));

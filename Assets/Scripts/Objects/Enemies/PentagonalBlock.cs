@@ -3,7 +3,7 @@ using UnityEngine;
 public class PentagonalBlock : Block
 {
     Animator anim;
-    [SerializeField] Projectile caughted;
+    [SerializeField] Bead caughted;
     Vector2 caughtedsLastVector;
 
     private void Awake()
@@ -13,7 +13,7 @@ public class PentagonalBlock : Block
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Projectile projectile) && caughted == null && !projectile.IsFake)
+        if(collision.TryGetComponent(out Bead projectile) && caughted == null && !projectile.IsFake)
         {
             anim.SetTrigger("Active");
             caughted = projectile;

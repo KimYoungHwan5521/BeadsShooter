@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,12 +57,12 @@ public class StageManager : MonoBehaviour
     public List<GameObject> currentStageWalls;
     public List<GameObject> nextStageWalls;
     public Bar bar;
-    public List<Projectile> projectiles;
+    public List<Bead> projectiles;
 
     readonly float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
 
-    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion }
+    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker }
 
     public class BlockForm
     {
@@ -137,7 +136,7 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            RandomStageGenerate((new(BlockType.Normal, new(2,1)), 5), (new(BlockType.Normal, new(2,2)), 5), (new(BlockType.Normal, new(3,2)), 5), (new(BlockType.Normal, new(2,3)), 5)),
+            RandomStageGenerate((new(BlockType.Attacker, new(2,1)), 8)),
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
             RandomStageGenerate((new(BlockType.Normal, new(2,1)), 8), (new(BlockType.Normal, new(1,2)), 8), (new(BlockType.Shield, new(2,1)), 4)),
@@ -289,6 +288,7 @@ public class StageManager : MonoBehaviour
             else if(enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.SpeedUp) block = PoolManager.Spawn(ResourceEnum.Prefab.SpeedUpBlock).GetComponent<SpeedUpBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Illusion) block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
+            else if (enemyArrangementInfo.blockType == BlockType.Attacker) block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
             else
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();

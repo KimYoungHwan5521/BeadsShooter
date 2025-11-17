@@ -6,7 +6,7 @@ public class BoundaryEdge : CustomObject
     public int edgeType;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Projectile projectile) && projectile.gameObject.activeSelf)
+        if (collision.TryGetComponent(out Bead projectile) && projectile.gameObject.activeSelf)
         {
             if (edgeType == 0)
             {
@@ -15,8 +15,8 @@ public class BoundaryEdge : CustomObject
                 PoolManager.Despawn(projectile.gameObject);
                 if (!projectile.IsFake)
                 {
-                    Projectile newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(1, 0.5f, 0)).GetComponent<Projectile>();
-                    newBead.Initialize(1, 25, 0, 0, new());
+                    Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(1, 0.5f, 0)).GetComponent<Bead>();
+                    newBead.Initialize(1, 20, 0, 0, new());
                     newBead.activated = false;
                     GameManager.Instance.StageManager.projectiles.Add(newBead);
                     GameManager.Instance.StageManager.bar.grabbedBeads.Add(newBead);
@@ -43,7 +43,7 @@ public class BoundaryEdge : CustomObject
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.TryGetComponent(out Projectile projectile) && projectile.gameObject.activeSelf && !projectile.IsFake)
+        if (collision.collider.TryGetComponent(out Bead projectile) && projectile.gameObject.activeSelf && !projectile.IsFake)
         {
             GameManager.Instance.StageManager.FeverHalf = true;
         }

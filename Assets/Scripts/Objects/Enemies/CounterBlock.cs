@@ -5,7 +5,7 @@ public class CounterBlock : Block
     [SerializeField] GameObject activatedSquare;
     BoxCollider2D col;
     //[SerializeField] bool counterActivated;
-    [SerializeField] Projectile caughted;
+    [SerializeField] Bead caughted;
     [SerializeField] float caughtTime = 1f;
     [SerializeField] float curCaughtTime;
 
@@ -39,7 +39,7 @@ public class CounterBlock : Block
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Projectile projectile))
+        if(collision.TryGetComponent(out Bead projectile))
         {
             caughted = projectile;
             caughted.transform.position = transform.position;
@@ -49,7 +49,7 @@ public class CounterBlock : Block
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Projectile projectile) && projectile == caughted)
+        if(collision.TryGetComponent(out Bead projectile) && projectile == caughted)
         {
             //counterActivated = false;
             col.isTrigger = false;

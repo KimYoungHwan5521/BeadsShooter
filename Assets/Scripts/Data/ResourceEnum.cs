@@ -11,6 +11,9 @@ namespace ResourceEnum
         PentagonalBlock,
         SpeedUpBlock,
         IllusionBlock,
+        AttackerBlock,
+
+        NormalProjectile,
 
         GreenGem,
 

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public delegate void CustomStart();
 public delegate void CustomUpdate();
@@ -34,7 +32,7 @@ public class GameManager : MonoBehaviour
     //public LoadingCanvas loadingCanvas;
 
     public GameObject description;
-
+    public float barYPos;
 
     void Awake()
     {
@@ -141,6 +139,14 @@ public class GameManager : MonoBehaviour
 
     public void BattlePhaseStart()
     {
+        if (stageManager.projectiles.Count == 0)
+        {
+            Bead projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0.5f, 0.5f)).GetComponent<Bead>();
+            projectile.Initialize(1, 20, 0, 0, new());
+            projectile.activated = false;
+            stageManager.projectiles.Add(projectile);
+            stageManager.bar.grabbedBeads.Add(projectile);
+        }
         phase = Phase.BattlePhase;
         Time.timeScale = 1f;
 

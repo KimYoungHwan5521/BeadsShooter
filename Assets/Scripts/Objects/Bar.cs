@@ -5,9 +5,15 @@ public class Bar : CustomObject
 {
     public Transform barBody;
     public float barLength = 1;
-    public List<Projectile> grabbedBeads;
+    public List<Bead> grabbedBeads;
     float yPos = -17.5f;
 
+    protected override void Start()
+    {
+        base.Start();
+        yPos = GameManager.Instance.barYPos;
+        transform.position = new Vector3(0, yPos, 0);
+    }
 
     public void MoveBar(float xPos)
     {
