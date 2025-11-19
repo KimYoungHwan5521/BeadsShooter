@@ -9,8 +9,9 @@ public class CounterBlock : Block
     [SerializeField] float caughtTime = 1f;
     [SerializeField] float curCaughtTime;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         col = GetComponent<BoxCollider2D>();
     }
 

@@ -12,6 +12,7 @@ namespace ResourceEnum
         SpeedUpBlock,
         IllusionBlock,
         AttackerBlock,
+        SplitterBlock,
 
         NormalProjectile,
 

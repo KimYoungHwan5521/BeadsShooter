@@ -12,6 +12,7 @@ public class ResourcesPath
         "Prefabs/Enemies/SpeedUpBlock",
         "Prefabs/Enemies/IllusionBlock",
         "Prefabs/Enemies/AttackerBlock",
+        "Prefabs/Enemies/SplitterBlock",
 
         "Prefabs/Projectiles/NormalProjectile",
 

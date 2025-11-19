@@ -62,7 +62,7 @@ public class StageManager : MonoBehaviour
     readonly float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
 
-    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker }
+    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper }
 
     public class BlockForm
     {
@@ -289,6 +289,7 @@ public class StageManager : MonoBehaviour
             else if (enemyArrangementInfo.blockType == BlockType.SpeedUp) block = PoolManager.Spawn(ResourceEnum.Prefab.SpeedUpBlock).GetComponent<SpeedUpBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Illusion) block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Attacker) block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
+            else if (enemyArrangementInfo.blockType == BlockType.Splitter) block = PoolManager.Spawn(ResourceEnum.Prefab.SplitterBlock).GetComponent<SplitterBlock>();
             else
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();

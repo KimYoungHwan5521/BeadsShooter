@@ -1,14 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Block : Enemy
 {
     SpriteRenderer sprite;
-    [SerializeField] Transform crack;
-    SpriteMask spriteMask;
-    SpriteRenderer crackSprite;
+    [SerializeField] protected Transform crack;
+    public SpriteMask spriteMask;
+    public SpriteRenderer crackSprite;
 
-    void Awake()
+    protected virtual void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
         spriteMask = GetComponent<SpriteMask>();
@@ -36,7 +35,7 @@ public class Block : Enemy
         }
     }
 
-    public void SetMaskLayer(int layerNumber)
+    public virtual void SetMaskLayer(int layerNumber)
     {
         if (spriteMask == null) return;
         spriteMask.frontSortingOrder = (layerNumber + 1) * 10;

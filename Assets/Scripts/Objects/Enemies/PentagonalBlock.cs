@@ -6,8 +6,9 @@ public class PentagonalBlock : Block
     [SerializeField] Bead caughted;
     Vector2 caughtedsLastVector;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         anim = GetComponent<Animator>();
     }
 
