@@ -6,7 +6,7 @@ public class Enemy : CustomObject
     //[SerializeField] Image hpBar;
     protected int stage;
     //[SerializeField] Vector2 moveDirection = Vector2.down;
-    bool isDead;
+    protected bool isDead;
     public bool IsDead
     {
         get => isDead;

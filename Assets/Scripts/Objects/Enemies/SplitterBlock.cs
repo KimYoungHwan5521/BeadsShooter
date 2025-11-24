@@ -13,6 +13,7 @@ public class SplitterBlock : Block
     {
         base.OnEnable();
         isSplit = false;
+        fullBody.gameObject.SetActive(true);
         curReunionTime = 0;
     }
 
@@ -28,6 +29,11 @@ public class SplitterBlock : Block
         }
     }
 
+    public void CheckIsDead()
+    {
+        IsDead = halfBody1.IsDead && halfBody2.IsDead;
+    }
+
     public override void SetMaskLayer(int layerNumber)
     {
         fullBody.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
@@ -41,6 +47,12 @@ public class SplitterBlock : Block
         halfBody2.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
         halfBody2.spriteMask.backSortingOrder = layerNumber * 10 + 5;
         halfBody2.crackSprite.sortingOrder = layerNumber * 10 + 6;
+    }
+
+    public override void SetInfo(int stage, float maxHP)
+    {
+        base.SetInfo(stage, maxHP);
+        fullBody.SetInfo(stage, maxHP);
     }
 
     public void Split()

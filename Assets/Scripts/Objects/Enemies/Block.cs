@@ -31,6 +31,7 @@ public class Block : Enemy
             {
                 crack.gameObject.SetActive(curHP != maxHP);
                 crack.localScale = new(Mathf.Max(0.25f * (4 + curHP - maxHP), 0), Mathf.Max(0.25f * (4 + curHP - maxHP), 0));
+                //Debug.Log($"crack local scale : {crack.localScale}");
             }
         }
     }

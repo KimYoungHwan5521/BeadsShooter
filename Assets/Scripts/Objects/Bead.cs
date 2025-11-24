@@ -28,8 +28,8 @@ public class Bead : CustomObject
         set
         {
             isFake = value;
-            if (value) gameObject.layer = LayerMask.NameToLayer("Fake Projectile");
-            else gameObject.layer = LayerMask.NameToLayer("Projectile");
+            if (value) gameObject.layer = LayerMask.NameToLayer("Fake Bead");
+            else gameObject.layer = LayerMask.NameToLayer("Bead");
         }
     }
 

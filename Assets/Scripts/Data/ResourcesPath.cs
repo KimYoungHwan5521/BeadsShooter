@@ -13,8 +13,11 @@ public class ResourcesPath
         "Prefabs/Enemies/IllusionBlock",
         "Prefabs/Enemies/AttackerBlock",
         "Prefabs/Enemies/SplitterBlock",
+        "Prefabs/Enemies/MucusDrippingBlock",
 
         "Prefabs/Projectiles/NormalProjectile",
+
+        "Prefabs/Area/Mucus",
 
         "Prefabs/Gems/GreenGem",
 

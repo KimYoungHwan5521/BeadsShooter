@@ -13,8 +13,11 @@ namespace ResourceEnum
         IllusionBlock,
         AttackerBlock,
         SplitterBlock,
+        MucusDrippingBlock,
 
         NormalProjectile,
+
+        Mucus,
 
         GreenGem,
 

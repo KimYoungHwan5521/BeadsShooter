@@ -21,14 +21,15 @@ public class SplitBlock : Block
                 else
                 {
                     isDead = true;
-                    GameManager.Instance.StageManager.StageClearCheck();
                     gameObject.SetActive(false);
+                    owner.CheckIsDead();
                 }
-                if (crack != null)
-                {
-                    crack.gameObject.SetActive(curHP != maxHP);
-                    crack.localScale = new(Mathf.Max(0.25f * (4 + curHP - maxHP), 0), Mathf.Max(0.25f * (4 + curHP - maxHP), 0));
-                }
+                return;
+            }
+            if (crack != null)
+            {
+                crack.gameObject.SetActive(curHP != maxHP);
+                crack.localScale = new(Mathf.Max(0.25f * (4 + curHP - maxHP), 0), Mathf.Max(0.25f * (4 + curHP - maxHP), 0));
             }
         }
     }

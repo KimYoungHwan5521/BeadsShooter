@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3131418488535079367}
   - component: {fileID: 358803340436322491}
   - component: {fileID: 3556761067971262421}
-  - component: {fileID: 1638116039400294487}
   - component: {fileID: 424907652324945716}
+  - component: {fileID: 2128208739555774350}
   m_Layer: 8
   m_Name: HalfBody
   m_TagString: Enemy
@@ -30,8 +30,8 @@ Transform:
   m_GameObject: {fileID: 503438336931794720}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 241948215774156814}
@@ -168,23 +168,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1638116039400294487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503438336931794720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1039f81a466d0488fd7826e3bfbcea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Block
-  maxHP: 1
-  curHP: 1
-  crack: {fileID: 241948215774156814}
-  spriteMask: {fileID: 0}
-  crackSprite: {fileID: 0}
 --- !u!331 &424907652324945716
 SpriteMask:
   m_ObjectHideFlags: 0
@@ -243,6 +226,25 @@ SpriteMask:
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
   m_MaskSource: 1
+--- !u!114 &2128208739555774350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503438336931794720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c1e0f5fdbb406428b1bfa596290741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SplitBlock
+  maxHP: 1
+  curHP: 1
+  crack: {fileID: 241948215774156814}
+  spriteMask: {fileID: 424907652324945716}
+  crackSprite: {fileID: 2759086627612423415}
+  owner: {fileID: 4073918984051679010}
+  part: 2
 --- !u!1 &598766744115889829
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,9 +297,11 @@ MonoBehaviour:
   crack: {fileID: 0}
   spriteMask: {fileID: 0}
   crackSprite: {fileID: 0}
-  fullBody: {fileID: 2915922417638176708}
-  halfBody1: {fileID: 8865746504212753296}
-  halfBody2: {fileID: 1638116039400294487}
+  fullBody: {fileID: 7424795824168708333}
+  halfBody1: {fileID: 6368781591205321218}
+  halfBody2: {fileID: 2128208739555774350}
+  reunionTime: 10
+  curReunionTime: 0
 --- !u!1 &821158644130534856
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,7 +315,7 @@ GameObject:
   - component: {fileID: 9111792622858180242}
   - component: {fileID: 2311823505372281377}
   - component: {fileID: 8269875707063804328}
-  - component: {fileID: 2915922417638176708}
+  - component: {fileID: 7424795824168708333}
   m_Layer: 8
   m_Name: FullBody
   m_TagString: Enemy
@@ -329,7 +333,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8936801755517037841}
@@ -524,7 +528,7 @@ SpriteMask:
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
   m_MaskSource: 1
---- !u!114 &2915922417638176708
+--- !u!114 &7424795824168708333
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -533,14 +537,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 821158644130534856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1039f81a466d0488fd7826e3bfbcea, type: 3}
+  m_Script: {fileID: 11500000, guid: 32c1e0f5fdbb406428b1bfa596290741, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Block
-  maxHP: 0
-  curHP: 0
-  crack: {fileID: 0}
-  spriteMask: {fileID: 0}
-  crackSprite: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::SplitBlock
+  maxHP: 1
+  curHP: 1
+  crack: {fileID: 8936801755517037841}
+  spriteMask: {fileID: 8269875707063804328}
+  crackSprite: {fileID: 1120508488366953469}
+  owner: {fileID: 4073918984051679010}
+  part: 0
 --- !u!1 &4869533715460682971
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,8 +559,8 @@ GameObject:
   - component: {fileID: 4143084461629369861}
   - component: {fileID: 6843995524016528500}
   - component: {fileID: 5002215351362389301}
-  - component: {fileID: 8865746504212753296}
   - component: {fileID: 1311792052050594613}
+  - component: {fileID: 6368781591205321218}
   m_Layer: 8
   m_Name: HalfBody
   m_TagString: Enemy
@@ -571,8 +577,8 @@ Transform:
   m_GameObject: {fileID: 4869533715460682971}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 1}
+  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5038086002863422125}
@@ -709,23 +715,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &8865746504212753296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4869533715460682971}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd1039f81a466d0488fd7826e3bfbcea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Block
-  maxHP: 1
-  curHP: 1
-  crack: {fileID: 5038086002863422125}
-  spriteMask: {fileID: 0}
-  crackSprite: {fileID: 0}
 --- !u!331 &1311792052050594613
 SpriteMask:
   m_ObjectHideFlags: 0
@@ -784,6 +773,25 @@ SpriteMask:
   m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
   m_MaskSource: 1
+--- !u!114 &6368781591205321218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869533715460682971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c1e0f5fdbb406428b1bfa596290741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SplitBlock
+  maxHP: 1
+  curHP: 1
+  crack: {fileID: 5038086002863422125}
+  spriteMask: {fileID: 1311792052050594613}
+  crackSprite: {fileID: 7347414806451764822}
+  owner: {fileID: 4073918984051679010}
+  part: 1
 --- !u!1 &6711611509297294625
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +819,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2465362818211346182}
