@@ -146,7 +146,7 @@ public class StageManager : MonoBehaviour
         {
             // Stage 0
             //RandomStageGenerate((new(BlockType.Attacker, new(2,1)), 20)),
-            RandomStageGenerate((new(BlockType.MucusDripper, 2), 20)),
+            RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
 
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
@@ -445,7 +445,7 @@ public class StageManager : MonoBehaviour
                 // ¹èÄ¡
                 EnemyArrangementInfo info;
                 if (form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.MucusDripper) info = new(form.Item1.blockType, new(xPos, yPos), shieldPos);
-                else if (form.Item1.blockType == BlockType.Splitter) info = new(form.Item1.blockType, new(xPos,yPos), 6f);
+                else if (form.Item1.blockType == BlockType.Splitter) info = new(form.Item1.blockType, new(xPos,yPos), 4f);
                 else info = new(form.Item1.blockType, new(xPos, yPos), form.Item1.size);
                 
                 if (result == null) result = new(new EnemyArrangementInfo[]{info});

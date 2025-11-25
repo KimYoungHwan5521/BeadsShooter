@@ -3041,7 +3041,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1469739018}
   - component: {fileID: 1469739017}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Movable Block Restrict Area (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3525,7 +3525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1714029233}
   - component: {fileID: 1714029232}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Movable Block Restrict Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}

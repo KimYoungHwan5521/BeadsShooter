@@ -131,7 +131,11 @@ public class Bead : CustomObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Area area))
+        if(collision.TryGetComponent(out SplitBlock split))
+        {
+            split.TakeDamage(damage);
+        }
+        else if(collision.TryGetComponent(out Area area))
         {
             curInAreas.Add(area);
         }
