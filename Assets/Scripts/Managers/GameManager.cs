@@ -141,11 +141,11 @@ public class GameManager : MonoBehaviour
     {
         if (stageManager.projectiles.Count == 0)
         {
-            Bead projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0.5f, 0.5f)).GetComponent<Bead>();
-            projectile.Initialize(1, 20, 0, 0, new());
-            projectile.activated = false;
-            stageManager.projectiles.Add(projectile);
-            stageManager.bar.grabbedBeads.Add(projectile);
+            Bead bead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0.5f, 0.5f)).GetComponent<Bead>();
+            bead.Initialize(1, 20, 0, 0, new());
+            bead.activated = false;
+            stageManager.projectiles.Add(bead);
+            stageManager.bar.grabbedBeads.Add(bead);
         }
         phase = Phase.BattlePhase;
         Time.timeScale = 1f;

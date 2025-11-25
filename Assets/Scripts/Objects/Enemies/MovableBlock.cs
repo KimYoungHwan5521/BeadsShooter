@@ -47,7 +47,7 @@ public class MovableBlock : Block
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.TryGetComponent(out Projectile projectile)) return;
+        if (collision.gameObject.TryGetComponent(out Bead _)) return;
 
         if (movePattern == MovePattern.Random)
         {

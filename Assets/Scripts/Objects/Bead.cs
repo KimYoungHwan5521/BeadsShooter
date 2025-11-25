@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Bead : CustomObject
 {
@@ -8,8 +9,17 @@ public class Bead : CustomObject
     public float timeLimitedSpeedMagnification = 1;
     public float timeLimitedSpeedMagnificationTime;
     public float temporarySpeedMagnification = 1;
+    List<Area> curInAreas = new();
+    public float SpeedMagnificationByArea
+    {
+        get
+        {
+            if (curInAreas.Count > 0) return curInAreas[0].speedMagnification;
+            else return 1;
+        }
+    }
     public float speedCorrection = 0;
-    float CurrentSpeed => (defaultSpeed * speedMagnification * timeLimitedSpeedMagnification * temporarySpeedMagnification) + speedCorrection;
+    float CurrentSpeed => (defaultSpeed * speedMagnification * timeLimitedSpeedMagnification * temporarySpeedMagnification * SpeedMagnificationByArea) + speedCorrection;
     public bool stop = false;
 
     Rigidbody2D rigidBody;
@@ -62,6 +72,7 @@ public class Bead : CustomObject
         speedMagnification = 1f;
         timeLimitedSpeedMagnification = 1f;
         temporarySpeedMagnification = 1f;
+        curInAreas = new();
         speedCorrection = 0f;
     }
 
@@ -115,6 +126,22 @@ public class Bead : CustomObject
             temporarySpeedMagnification = 1;
             SetDirection(transform.position - bar.transform.position);
             GameManager.Instance.StageManager.FeverHalf = true;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.TryGetComponent(out Area area))
+        {
+            curInAreas.Add(area);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Area area))
+        {
+            curInAreas.Remove(area);
         }
     }
 

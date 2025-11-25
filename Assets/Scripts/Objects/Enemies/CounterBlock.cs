@@ -6,6 +6,7 @@ public class CounterBlock : Block
     BoxCollider2D col;
     //[SerializeField] bool counterActivated;
     [SerializeField] Bead caughted;
+    [SerializeField] float counterSpeed = 2f;
     [SerializeField] float caughtTime = 1f;
     [SerializeField] float curCaughtTime;
 
@@ -31,7 +32,7 @@ public class CounterBlock : Block
             if(curCaughtTime > caughtTime)
             {
                 caughted.SetDirection(Vector2.down + Vector2.right * Random.Range(-1f, 1f));
-                caughted.temporarySpeedMagnification *= 1.3f;
+                caughted.temporarySpeedMagnification *= counterSpeed;
                 caughted.stop = false;
                 curCaughtTime = 0;
             }

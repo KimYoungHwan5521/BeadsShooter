@@ -8,6 +8,7 @@ public class DrippingBlock : MovableBlock
 
     protected override void MyUpdate()
     {
+        if(IsDead) return;
         base.MyUpdate();
         curDrippingCool += Time.deltaTime;
         if(curDrippingCool > drippingCool)
