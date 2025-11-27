@@ -375,7 +375,7 @@ public class StageManager : MonoBehaviour
                 bool discrimination = true;
                 int shieldPos = 0;
                 int xPos;
-                if(form.Item1.blockType == BlockType.Shield) xPos = xPos = Random.Range(1, column - form.Item1.size.x);
+                if(form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.Splitter) xPos = xPos = Random.Range(1, column - form.Item1.size.x);
                 else xPos = Random.Range(0, column - form.Item1.size.x + 1);
                 int yPos;
                 if (form.Item1.blockType == BlockType.Shield)

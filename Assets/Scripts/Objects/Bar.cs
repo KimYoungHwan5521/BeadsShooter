@@ -7,6 +7,7 @@ public class Bar : CustomObject
     public float barLength = 1;
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
+    [SerializeField] float moveSpeed = 1;
 
     protected override void Start()
     {
@@ -17,11 +18,12 @@ public class Bar : CustomObject
 
     public void MoveBar(float xPos)
     {
-        float lastXPos = transform.position.x;
-        transform.position = new(xPos, yPos);
+        if (Mathf.Abs(xPos - transform.position.x) < 0.1f) return;
+        Vector2 direction = new Vector2(xPos - transform.position.x, 0).normalized;
+        transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
         foreach(var bead in grabbedBeads)
         {
-            bead.transform.position += new Vector3(transform.position.x - lastXPos, 0, 0);
+            bead.transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
         }
     }
 
@@ -33,5 +35,10 @@ public class Bar : CustomObject
             bead.activated = true;
         }
         grabbedBeads.Clear();
+    }
+
+    public void SetBar(CharacterData characterData)
+    {
+        moveSpeed = characterData.moveSpeed;
     }
 }

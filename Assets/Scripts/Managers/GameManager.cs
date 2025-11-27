@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public PoolManager PoolManager => poolManager;
     StageManager stageManager;
     public StageManager StageManager => stageManager;
+    CharacterManager characterManager;
+    public CharacterManager CharacterManager => characterManager;
     //public LoadingCanvas loadingCanvas;
 
     public GameObject description;
@@ -64,6 +66,8 @@ public class GameManager : MonoBehaviour
         yield return soundManager.Initiate();
         poolManager = new PoolManager();
         yield return poolManager.Initiate();
+        characterManager = new CharacterManager();
+        yield return characterManager.Initiate();
 
         gameReady = true;
         SetCameraAspect();
