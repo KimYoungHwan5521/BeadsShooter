@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour
     public CharacterManager CharacterManager => characterManager;
     //public LoadingCanvas loadingCanvas;
 
-    public GameObject description;
+    public GameObject blueprintDetail;
+    public SelectCharacter selectCharacter;
     public float barYPos;
 
     void Awake()

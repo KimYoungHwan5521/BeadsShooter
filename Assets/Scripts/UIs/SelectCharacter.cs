@@ -5,6 +5,8 @@ public class SelectCharacter : MonoBehaviour
 {
     [SerializeField] List<CharacterCard> characterCards;
     [SerializeField] CharacterCard largeCharacterCard;
+    bool showingBlueprintDetail;
+
     private void Start()
     {
         GameManager.Instance.ManagerStart += CharacterSetting;
@@ -18,7 +20,7 @@ public class SelectCharacter : MonoBehaviour
             if(i < charactersData.Count)
             {
                 characterCards[i].gameObject.SetActive(true);
-                characterCards[i].SetInfo(charactersData[i].characterName);
+                characterCards[i].SetInfo(charactersData[i]);
             }
             else
             {
@@ -27,11 +29,22 @@ public class SelectCharacter : MonoBehaviour
         }
     }
 
+    public void SetShowBlueprint(bool value)
+    {
+        showingBlueprintDetail = value;
+    }
+
     int currentSelectedCharacterIndex;
     public void OpenLargeCharacterCard(int index)
     {
+        if (showingBlueprintDetail)
+        {
+            showingBlueprintDetail = false;
+            return;
+        }
         List<CharacterData> charactersData = GameManager.Instance.CharacterManager.characters;
-        largeCharacterCard.SetInfo(charactersData[index].characterName, charactersData[index].moveSpeed);
+        largeCharacterCard.gameObject.SetActive(true);
+        largeCharacterCard.SetInfoDetail(charactersData[index]);
         currentSelectedCharacterIndex = index;
     }
 

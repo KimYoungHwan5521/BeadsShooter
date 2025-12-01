@@ -5,16 +5,21 @@ public class CharacterCard : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI characterNameText;
     [SerializeField] Sprite characterSprite;
+    [SerializeField] BlueprintDrawer[] blueprintDrawers;
     [SerializeField] TextMeshProUGUI detailText;
 
-    public void SetInfo(string characterName)
+    public void SetInfo(CharacterData character)
     {
-        characterNameText.text = characterName;
+        characterNameText.text = character.characterName;
+        for(int i=0; i< blueprintDrawers.Length; i++)
+        {
+            blueprintDrawers[i].SetBlueprint(character.blueprints[i]);
+        }
     }
 
-    public void SetInfo(string characterName, float moveSpeed)
+    public void SetInfoDetail(CharacterData character)
     {
-        characterNameText.text = characterName;
-        detailText.text = $"{moveSpeed:0}";
+        SetInfo(character);
+        detailText.text = $"Move speed : {character.moveSpeed:0}";
     }
 }
