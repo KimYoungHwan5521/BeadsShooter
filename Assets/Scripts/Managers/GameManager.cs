@@ -97,7 +97,8 @@ public class GameManager : MonoBehaviour
 
     public enum Phase { None, BattlePhase, ReadyPhase };
     public Phase phase = Phase.None;
-    [SerializeField] GameObject upgradeWindow;
+    public ReadyPhaseUI readyPhaseUI;
+    [SerializeField] GameObject readyPhaseWindow;
 
     void SetCameraAspect()
     {
@@ -137,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     public void StartBattlePhase()
     {
-        upgradeWindow.SetActive(false);
+        readyPhaseWindow.SetActive(false);
         //CurRoundTimeLeft = roundTime;
         stageManager.StageSetting();
     }
@@ -163,7 +164,8 @@ public class GameManager : MonoBehaviour
 
     public void ReadyPhase()
     {
-        upgradeWindow.SetActive(true);
+        readyPhaseUI.SetReadyPhase();
+        readyPhaseWindow.SetActive(true);
         phase = Phase.ReadyPhase;
         Time.timeScale = 0f;
     }

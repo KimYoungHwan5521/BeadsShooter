@@ -36,5 +36,5 @@ public class Blueprint
 
 public static class MaterialsColor
 {
-    public static Color[] colors = { new(1, 1, 1), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1), new(0, 0, 0) };
+    public static Color[] colors = { new(1, 1, 1, 0), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1), new(0, 0, 0) };
 }

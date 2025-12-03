@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Bar : CustomObject
@@ -8,6 +9,7 @@ public class Bar : CustomObject
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
     [SerializeField] float moveSpeed = 1;
+    public List<Blueprint> blueprints;
 
     protected override void Start()
     {
@@ -40,5 +42,6 @@ public class Bar : CustomObject
     public void SetBar(CharacterData characterData)
     {
         moveSpeed = characterData.moveSpeed;
+        blueprints = characterData.blueprints.ToList();
     }
 }

@@ -146,7 +146,12 @@ public class StageManager : MonoBehaviour
         {
             // Stage 0
             //RandomStageGenerate((new(BlockType.Attacker, new(2,1)), 20)),
-            RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
+            //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
 
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
