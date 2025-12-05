@@ -18,7 +18,7 @@ public class ReadyPhaseUI : MonoBehaviour
     [SerializeField] GameObject[] placedMaterialsObject;
     const int gridSizeX = 4;
     const int gridSizeY = 4;
-    int[,] placedMaterials = new int[gridSizeX, gridSizeY];
+    [SerializeField] int[,] placedMaterials = new int[gridSizeX, gridSizeY];
     int selectedGrid = -1;
     [SerializeField] GameObject placeButton;
     [SerializeField] BlueprintDrawer[] blueprints;
@@ -132,9 +132,12 @@ public class ReadyPhaseUI : MonoBehaviour
         List<Vector2Int> cordinates;
         foreach(Blueprint blueprint in GameManager.Instance.StageManager.bar.blueprints)
         {
+            bool check = false;
             for(int i=0; i<blueprint.blueprint.GetLength(0); i++)
             {
+                if (check) break;
                 if (blueprint.blueprint[0, i] == 0) continue;
+                check = true;
                 for(int y=0; y< gridSizeY; y++)
                 {
                     for (int x=0; x< gridSizeX; x++)
@@ -150,7 +153,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                 {
                                     // y, x : 판별 시작 그리드
                                     // row, column : 설계도 상대 그리드
-                                    if (row == 0 && column <= i) continue;
+                                    if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
                                     if (x + column - i >= gridSizeX || x + column - i < 0 || y + row >= gridSizeY)
                                     {
                                         descrimination = false;
@@ -160,6 +163,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y + row, x + column - i] == blueprint.blueprint[row, column])
                                         {
+                                            Debug.Log("0");
                                             cordinates.Add(new(y + row, x + column - i));
                                             continue;
                                         }
@@ -178,11 +182,13 @@ public class ReadyPhaseUI : MonoBehaviour
                                 buildables.Add(buildable);
                             }
                             // 90도 회전
+                            descrimination = true;
+                            cordinates = new() { new(y, x) };
                             for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
                             {
                                 for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
                                 {
-                                    if (row == 0 && column <= i) continue;
+                                    if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
                                     if (y + column - i >= gridSizeY || y + column - i < 0 || x - row < 0)
                                     {
                                         descrimination = false;
@@ -192,6 +198,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y + column - i, x - row] == blueprint.blueprint[row, column])
                                         {
+                                            Debug.Log("90");
                                             cordinates.Add(new(y + column - i, x - row));
                                             continue;
                                         }
@@ -210,13 +217,15 @@ public class ReadyPhaseUI : MonoBehaviour
                                 buildables.Add(buildable);
                             }
                             // 180도
+                            descrimination = true;
+                            cordinates = new() { new(y, x) };
                             for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
                             {
                                 for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
                                 {
                                     // y, x : 판별 시작 그리드
                                     // row, column : 설계도 상대 그리드
-                                    if (row == 0 && column <= i) continue;
+                                    if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
                                     if (x - column - i >= gridSizeX || x - column - i < 0 || y - row >= 0)
                                     {
                                         descrimination = false;
@@ -226,6 +235,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y - row, x - column - i] == blueprint.blueprint[row, column])
                                         {
+                                            Debug.Log("180");
                                             cordinates.Add(new(y - row, x - column - i));
                                             continue;
                                         }
@@ -244,11 +254,13 @@ public class ReadyPhaseUI : MonoBehaviour
                                 buildables.Add(buildable);
                             }
                             // 270도
+                            descrimination = true;
+                            cordinates = new() { new(y, x) };
                             for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
                             {
                                 for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
                                 {
-                                    if (row == 0 && column <= i) continue;
+                                    if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
                                     if (y - column - i >= gridSizeY || y - column - i < 0 || x + row >= gridSizeX)
                                     {
                                         descrimination = false;
@@ -258,6 +270,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y - column - i, x + row] == blueprint.blueprint[row, column])
                                         {
+                                            Debug.Log("270");
                                             cordinates.Add(new(y - column - i, x + row));
                                             continue;
                                         }
@@ -295,18 +308,22 @@ public class ReadyPhaseUI : MonoBehaviour
 
         foreach(GameObject grid in placedMaterialsObject)
         {
-            grid.GetComponent<Button>().enabled = false;
+            grid.GetComponent<Button>().interactable = false;
         }
         currentBuildBlueprint.SetBlueprint(buildables[currentBuildableIndex].blueprint);
 
         foreach(Vector2Int cordinate in buildables[currentBuildableIndex].cordinates)
         {
-            placedMaterialsObject[cordinate.y * gridSizeY + cordinate.x].GetComponent<Button>().interactable = true;
+            // 좌표를 (y, x)로 썼는데 Vecter2Int는 호출할 떄 (x, y)로 저장되어있어서 반대로
+            placedMaterialsObject[cordinate.x * gridSizeY + cordinate.y].GetComponent<Button>().interactable = true;
         }
+
+        leftArrow.interactable = currentBuildableIndex != 0;
+        rightArrow.interactable = buildables.Count > 0 && currentBuildableIndex != buildables.Count - 1;
     }
 
     public void Build()
     {
-
+        Debug.Log("Build");
     }
 }
