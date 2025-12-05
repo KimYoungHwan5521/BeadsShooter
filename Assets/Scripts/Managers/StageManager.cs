@@ -57,7 +57,7 @@ public class StageManager : MonoBehaviour
     public List<GameObject> currentStageWalls;
     public List<GameObject> nextStageWalls;
     public Bar bar;
-    public List<Bead> projectiles;
+    public List<Bead> beads;
 
     readonly float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
@@ -152,6 +152,11 @@ public class StageManager : MonoBehaviour
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
 
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
@@ -166,15 +171,15 @@ public class StageManager : MonoBehaviour
         if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
-            foreach(var projectile in projectiles)
+            foreach(var bead in beads)
             {
-                if (projectile.transform.position.y > bar.transform.position.y + 3)
+                if (bead.transform.position.y > bar.transform.position.y + 3)
                 {
-                    projectile.transform.position += Vector3.down * 0.2f;
-                    Vector3[] points = new Vector3[projectile.trail.positionCount];
-                    projectile.trail.GetPositions(points);
+                    bead.transform.position += Vector3.down * 0.2f;
+                    Vector3[] points = new Vector3[bead.trail.positionCount];
+                    bead.trail.GetPositions(points);
                     for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
-                    projectile.trail.SetPositions(points);
+                    bead.trail.SetPositions(points);
                 }
             }
             wantDown -= 0.2f;
@@ -196,7 +201,10 @@ public class StageManager : MonoBehaviour
             if(curStageStartCount <= 0)
             {
                 stageStartCountText.gameObject.SetActive(false);
-                foreach (var projectile in projectiles) projectile.trail.emitting = true;
+                foreach (var bead in beads)
+                {
+                    bead.trail.emitting = true;
+                }
                 GameManager.Instance.BattlePhaseStart();
             }
         }
@@ -356,7 +364,10 @@ public class StageManager : MonoBehaviour
         if(currentStageEnemies.Count == 0 && GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
             GameManager.Instance.ReadyPhase();
-            foreach(var projectile in projectiles) projectile.trail.emitting = false;
+            foreach(var bead in beads)
+            {
+                bead.trail.emitting = false;
+            }
             currentStage++;
         }
     }

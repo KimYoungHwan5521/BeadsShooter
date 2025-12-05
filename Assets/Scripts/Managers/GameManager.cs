@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public PoolManager PoolManager => poolManager;
     StageManager stageManager;
     public StageManager StageManager => stageManager;
+    BlueprintManager blueprintManager;
+    public BlueprintManager BlueprintManager => blueprintManager;
     CharacterManager characterManager;
     public CharacterManager CharacterManager => characterManager;
     //public LoadingCanvas loadingCanvas;
@@ -67,6 +69,8 @@ public class GameManager : MonoBehaviour
         yield return soundManager.Initiate();
         poolManager = new PoolManager();
         yield return poolManager.Initiate();
+        blueprintManager = new BlueprintManager();
+        yield return blueprintManager.Initiate();
         characterManager = new CharacterManager();
         yield return characterManager.Initiate();
 
@@ -145,12 +149,12 @@ public class GameManager : MonoBehaviour
 
     public void BattlePhaseStart()
     {
-        if (stageManager.projectiles.Count == 0)
+        if (stageManager.beads.Count == 0)
         {
             Bead bead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0.5f, 0.5f)).GetComponent<Bead>();
             bead.Initialize(1, 20, 0, 0, new());
             bead.activated = false;
-            stageManager.projectiles.Add(bead);
+            stageManager.beads.Add(bead);
             stageManager.bar.grabbedBeads.Add(bead);
         }
         phase = Phase.BattlePhase;

@@ -159,7 +159,7 @@ public class Bead : CustomObject
         Bead duplicated = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, transform.position).GetComponent<Bead>();
         duplicated.Initialize(damage, defaultSpeed, penetrationNumber, criticalRate, direction);
         duplicated.IsFake = true;
-        GameManager.Instance.StageManager.projectiles.Add(duplicated);
+        GameManager.Instance.StageManager.beads.Add(duplicated);
 
         return duplicated;
     }
