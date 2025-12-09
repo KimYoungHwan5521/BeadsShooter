@@ -45,7 +45,8 @@ public class ReadyPhaseUI : MonoBehaviour
         {
             for(int j=0; j< gridSizeX; j++)
             {
-                placedMaterialsObject[gridSizeY * i+j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[placedMaterials[i, j]];
+                if (placedMaterials[i, j] == -1) placedMaterialsObject[gridSizeY * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                else placedMaterialsObject[gridSizeY * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[placedMaterials[i, j]];
                 placedMaterialsObject[gridSizeY * i+j].GetComponent<Button>().interactable = placedMaterials[i, j] == 0;
             }
         }
@@ -108,7 +109,19 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(false);
         placeButton.SetActive(false);
         startNextStage.SetActive(true);
+        ApplyMaterialStat(rewardOptions[selectedOption].reward);
         CheckBuildable();
+    }
+
+    void ApplyMaterialStat(RewardFormat reward)
+    {
+        switch(reward.rewardType)
+        {
+            case RewardType.AttackDamage:
+                return;
+            default:
+                return;
+        }
     }
 
     class Buildable
@@ -163,7 +176,6 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y + row, x + column - i] == blueprint.blueprint[row, column])
                                         {
-                                            Debug.Log("0");
                                             cordinates.Add(new(y + row, x + column - i));
                                             continue;
                                         }
@@ -198,7 +210,6 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y + column - i, x - row] == blueprint.blueprint[row, column])
                                         {
-                                            Debug.Log("90");
                                             cordinates.Add(new(y + column - i, x - row));
                                             continue;
                                         }
@@ -226,7 +237,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     // y, x : 판별 시작 그리드
                                     // row, column : 설계도 상대 그리드
                                     if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-                                    if (x - column - i >= gridSizeX || x - column - i < 0 || y - row >= 0)
+                                    if (x - column - i >= gridSizeX || x - column - i < 0 || y - row < 0)
                                     {
                                         descrimination = false;
                                         break;
@@ -235,7 +246,6 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y - row, x - column - i] == blueprint.blueprint[row, column])
                                         {
-                                            Debug.Log("180");
                                             cordinates.Add(new(y - row, x - column - i));
                                             continue;
                                         }
@@ -270,7 +280,6 @@ public class ReadyPhaseUI : MonoBehaviour
                                     {
                                         if (placedMaterials[y - column - i, x + row] == blueprint.blueprint[row, column])
                                         {
-                                            Debug.Log("270");
                                             cordinates.Add(new(y - column - i, x + row));
                                             continue;
                                         }
@@ -299,6 +308,13 @@ public class ReadyPhaseUI : MonoBehaviour
         {
             SetCurrentBuildBlueprint(0);
         }
+        else
+        {
+            foreach (GameObject grid in placedMaterialsObject)
+            {
+                grid.GetComponent<Button>().interactable = true;
+            }
+        }
     }
 
     public void SetCurrentBuildBlueprint(int indexChange)
@@ -324,6 +340,23 @@ public class ReadyPhaseUI : MonoBehaviour
 
     public void Build()
     {
-        Debug.Log("Build");
+        Vector2Int check = new(selectedGrid / gridSizeX, selectedGrid % gridSizeX);
+        int index = buildables[currentBuildableIndex].cordinates.FindIndex(x => x == check);
+        if (index < 0) return;
+        for(int i = 0; i < buildables[currentBuildableIndex].cordinates.Count; i++)
+        {
+            if(i == index)
+            {
+                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * gridSizeX + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[7];
+                placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = -1;
+            }
+            else
+            {
+                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * gridSizeX + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = 0;
+            }
+        }
+        ApplyMaterialStat(buildables[currentBuildableIndex].blueprint.reward);
+        CheckBuildable();
     }
 }

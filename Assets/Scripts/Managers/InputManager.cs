@@ -18,9 +18,9 @@ public class InputManager : MonoBehaviour
 
     void OnClick(InputValue value)
     {
+        touch = value.Get<float>() == 1;
         if(GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
-            touch = value.Get<float>() == 1;
             if(value.Get<float>() == 0) bar.ReleaseBeads();
         }
     }

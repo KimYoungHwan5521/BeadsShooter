@@ -22,10 +22,10 @@ public class Bar : CustomObject
     {
         if (Mathf.Abs(xPos - transform.position.x) < 0.1f) return;
         Vector2 direction = new Vector2(xPos - transform.position.x, 0).normalized;
-        transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
+        transform.position += (Vector3)direction * moveSpeed * Time.unscaledDeltaTime;
         foreach(var bead in grabbedBeads)
         {
-            bead.transform.position += (Vector3)direction * moveSpeed * Time.deltaTime;
+            bead.transform.position += (Vector3)direction * moveSpeed * Time.unscaledDeltaTime;
         }
     }
 
