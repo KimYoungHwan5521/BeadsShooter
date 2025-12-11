@@ -13,6 +13,29 @@ public class StageManager : MonoBehaviour
     [Header("Header UI")]
     [SerializeField] Image feverGaugeImage;
     [SerializeField] Sprite[] feverGaugeSprites;
+    bool feverCharged;
+    public bool FeverCharged
+    {
+        get => feverCharged;
+        set
+        {
+            feverCharged = value;
+            if(value)
+            {
+                foreach(var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
+                {
+                    sprite.color = bar.feverColor;
+                }
+            }
+            else
+            {
+                foreach (var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
+                {
+                    sprite.color = Color.white;
+                }
+            }
+        }
+    }
     int feverGauge;
     public int FeverGauge
     {
@@ -21,8 +44,7 @@ public class StageManager : MonoBehaviour
         {
             if(value >= feverGaugeSprites.Length)
             {
-                Fever();
-                FeverGauge = 0;
+                FeverCharged = true;
                 return;
             }
             feverGauge = value;
@@ -517,7 +539,7 @@ public class StageManager : MonoBehaviour
         return result;
     }
 
-    void Fever()
+    public void Fever()
     {
         if (currentStageEnemies.Count == 0) return;
         int rand = Random.Range(0, currentStageEnemies.Count);
@@ -525,6 +547,8 @@ public class StageManager : MonoBehaviour
         LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverAttack).GetComponent<LineRenderer>();
         line.SetPositions(new Vector3[]{ bar.transform.position, target.transform.position });
         target.TakeDamage(1);
+        FeverCharged = false;
+        feverGauge = 0;
     }
 
 }

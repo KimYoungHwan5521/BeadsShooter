@@ -10,12 +10,15 @@ public class Bar : CustomObject
     float yPos = -17.5f;
     [SerializeField] float moveSpeed = 1;
     public List<Blueprint> blueprints;
+    public Color feverColor;
 
     protected override void Start()
     {
         base.Start();
         yPos = GameManager.Instance.barYPos;
         transform.position = new Vector3(0, yPos, 0);
+
+        ColorUtility.TryParseHtmlString("#44CDCD", out feverColor);
     }
 
     public void MoveBar(float xPos)
