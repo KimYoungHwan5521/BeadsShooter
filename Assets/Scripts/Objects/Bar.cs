@@ -32,11 +32,12 @@ public class Bar : CustomObject
         }
     }
 
-    public void ReleaseBeads()
+    public void ReleaseBeads(Vector3 wantPos)
     {
         foreach(var bead in grabbedBeads)
         {
-            bead.SetDirection(bead.transform.position - transform.position);
+            Debug.Log(wantPos - bead.transform.position);
+            bead.SetDirection(wantPos - bead.transform.position);
             bead.activated = true;
         }
         grabbedBeads.Clear();

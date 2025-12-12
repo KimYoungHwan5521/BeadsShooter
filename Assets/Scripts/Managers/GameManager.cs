@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
     {
         if (stageManager.beads.Count == 0)
         {
-            Bead bead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0.5f, 0.5f)).GetComponent<Bead>();
+            Bead bead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, stageManager.bar.transform.position + new Vector3(0, 0.51f)).GetComponent<Bead>();
             bead.Initialize(1, 20, 0, 0, new());
             bead.activated = false;
             stageManager.beads.Add(bead);

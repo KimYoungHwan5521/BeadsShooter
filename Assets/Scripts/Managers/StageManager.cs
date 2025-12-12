@@ -265,7 +265,14 @@ public class StageManager : MonoBehaviour
             PoolManager.Despawn(wall);
         }
         if(!clearBothStage) currentStageWalls = nextStageWalls.ToList();
-        else currentStageWalls.Clear();
+        else
+        {
+            currentStageWalls.Clear();
+            foreach (GameObject wall in nextStageWalls)
+            {
+                PoolManager.Despawn(wall);
+            }
+        }
         nextStageWalls.Clear();
         for(int i=-5; i<=5; i++)
         {
@@ -285,14 +292,10 @@ public class StageManager : MonoBehaviour
         // 2스테이지 동시에 깬 경우 다다음 스테이지
         if(clearBothStage)
         {
+            Debug.Log("Clear both stage");
             if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
             else nextStageInfo = RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
             SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
-            foreach (GameObject wall in nextStageWalls)
-            {
-                PoolManager.Despawn(wall);
-            }
-            nextStageWalls.Clear();
             for (int i = -5; i <= 5; i++)
             {
                 Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
@@ -325,18 +328,18 @@ public class StageManager : MonoBehaviour
                 bool downShield = false;
                 bool upShield = false;
                 if (enemyArrangementInfo.shieldPosition == 0) downShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 1) leftShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 2) rightShield = true;
-                else if(enemyArrangementInfo.shieldPosition == 3) upShield = true;
+                else if (enemyArrangementInfo.shieldPosition == 1) leftShield = true;
+                else if (enemyArrangementInfo.shieldPosition == 2) rightShield = true;
+                else if (enemyArrangementInfo.shieldPosition == 3) upShield = true;
                 ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
             }
-            else if(enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
-            else if(enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
+            else if (enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
+            else if (enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.SpeedUp) block = PoolManager.Spawn(ResourceEnum.Prefab.SpeedUpBlock).GetComponent<SpeedUpBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Illusion) block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Attacker) block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Splitter) block = PoolManager.Spawn(ResourceEnum.Prefab.SplitterBlock).GetComponent<SplitterBlock>();
-            else if(enemyArrangementInfo.blockType == BlockType.MucusDripper)
+            else if (enemyArrangementInfo.blockType == BlockType.MucusDripper)
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.MucusDrippingBlock).GetComponent<DrippingBlock>();
                 ((MovableBlock)block).movePattern = (MovableBlock.MovePattern)enemyArrangementInfo.shieldPosition;
@@ -356,7 +359,7 @@ public class StageManager : MonoBehaviour
                 block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term + row + 1);
             }
 
-            if(block.TryGetComponent(out BoxCollider2D bC))
+            if(block.TryGetComponent(out BoxCollider2D _))
             {
                 foreach(var boxCollider in block.GetComponentsInChildren<BoxCollider2D>())
                 {

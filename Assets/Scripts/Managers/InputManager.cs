@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
-        if(touch)
+        if(bar.grabbedBeads.Count == 0 && touch)
         {
             float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -8.82f, 8.82f);
             bar.MoveBar(xPos);
@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour
         {
             if(value.Get<float>() == 0)
             {
-                bar.ReleaseBeads();
+                bar.ReleaseBeads(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                 if (GameManager.Instance.StageManager.FeverCharged) GameManager.Instance.StageManager.Fever();
                 else
                 {

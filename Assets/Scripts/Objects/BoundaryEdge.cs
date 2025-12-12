@@ -6,16 +6,16 @@ public class BoundaryEdge : CustomObject
     public int edgeType;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Bead projectile) && projectile.gameObject.activeSelf)
+        if (collision.TryGetComponent(out Bead bead) && bead.gameObject.activeSelf)
         {
             if (edgeType == 0)
             {
-                projectile.activated = false;
-                GameManager.Instance.StageManager.beads.Remove(projectile);
-                PoolManager.Despawn(projectile.gameObject);
-                if (!projectile.IsFake)
+                bead.activated = false;
+                GameManager.Instance.StageManager.beads.Remove(bead);
+                PoolManager.Despawn(bead.gameObject);
+                if (!bead.IsFake)
                 {
-                    Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(1, 0.5f, 0)).GetComponent<Bead>();
+                    Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(0, 0.51f, 0)).GetComponent<Bead>();
                     newBead.Initialize(1, 20, 0, 0, new());
                     newBead.activated = false;
                     GameManager.Instance.StageManager.beads.Add(newBead);
@@ -25,18 +25,18 @@ public class BoundaryEdge : CustomObject
             }
             else if (edgeType == 1)
             {
-                projectile.SetDirection(new(projectile.Direction.x, - Mathf.Abs(projectile.Direction.y)));
-                if(!projectile.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
+                bead.SetDirection(new(bead.Direction.x, - Mathf.Abs(bead.Direction.y)));
+                if(!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 2)
             {
-                projectile.SetDirection(new(Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
-                if (!projectile.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
+                bead.SetDirection(new(Mathf.Abs(bead.Direction.x), bead.Direction.y));
+                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 3)
             {
-                projectile.SetDirection(new(- Mathf.Abs(projectile.Direction.x), projectile.Direction.y));
-                if (!projectile.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
+                bead.SetDirection(new(- Mathf.Abs(bead.Direction.x), bead.Direction.y));
+                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
         }
     }
