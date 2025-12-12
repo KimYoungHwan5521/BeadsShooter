@@ -10,6 +10,7 @@ public class Bead : CustomObject
     public float timeLimitedSpeedMagnificationTime;
     public float temporarySpeedMagnification = 1;
     List<Area> curInAreas = new();
+    Vector2 lastDirection;
     public float SpeedMagnificationByArea
     {
         get
@@ -95,6 +96,7 @@ public class Bead : CustomObject
                 else if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) > -3) SetDirection(new(-15, 1));
             }
             rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
+            lastDirection = rigidBody.linearVelocity;
         }
         else
         {
@@ -152,6 +154,11 @@ public class Bead : CustomObject
     public void SetDirection(Vector2 wantDirection)
     {
         rigidBody.linearVelocity = wantDirection.normalized * CurrentSpeed;
+    }
+
+    public void SetDirectionToLastDirection()
+    {
+        SetDirection(lastDirection);
     }
 
     public Bead DuplicateFakeBead(Vector2 direction)

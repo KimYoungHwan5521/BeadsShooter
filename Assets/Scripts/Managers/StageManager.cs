@@ -389,6 +389,7 @@ public class StageManager : MonoBehaviour
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
+                bead.SetDirectionToLastDirection();
             }
             currentStage++;
         }
