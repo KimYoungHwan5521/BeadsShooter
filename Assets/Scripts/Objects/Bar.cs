@@ -62,7 +62,8 @@ public class Bar : CustomObject
         Debug.Log(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point));
         if(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point) > 20)
         {
-            lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, hits[0].point });
+            lineRenderer.positionCount = 2;
+            lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, grabbedBeads[0].transform.position + ((Vector3)hits[0].point - grabbedBeads[0].transform.position).normalized * 20 });
         }
         else
         {
@@ -70,6 +71,7 @@ public class Bar : CustomObject
             Vector2 reflectedVector = hits[0].point - (Vector2)grabbedBeads[0].transform.position;
             reflectedVector.x = -reflectedVector.x;
             reflectedVector.Normalize();
+            lineRenderer.positionCount = 3;
             lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, hits[0].point, hits[0].point + reflectedVector * leftLength });
         }
         lineRenderer.enabled = true;
