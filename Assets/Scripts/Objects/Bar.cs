@@ -1,10 +1,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Bar : CustomObject
 {
     public Transform barBody;
+    LineRenderer lineRenderer;
+    [SerializeField] Sprite dottedLineSprite;
+
     public float barLength = 1;
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
@@ -19,6 +23,8 @@ public class Bar : CustomObject
         transform.position = new Vector3(0, yPos, 0);
 
         ColorUtility.TryParseHtmlString("#44CDCD", out feverColor);
+        lineRenderer = GetComponentInChildren<LineRenderer>();
+        lineRenderer.material.mainTexture = dottedLineSprite.texture;
     }
 
     public void MoveBar(float xPos)
@@ -41,11 +47,31 @@ public class Bar : CustomObject
             bead.activated = true;
         }
         grabbedBeads.Clear();
+        lineRenderer.enabled = false;
     }
 
     public void SetBar(CharacterData characterData)
     {
         moveSpeed = characterData.moveSpeed;
         blueprints = characterData.blueprints.ToList();
+    }
+
+    public void DrawPredictionLine()
+    {
+        RaycastHit2D[] hits = Physics2D.RaycastAll(grabbedBeads[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - grabbedBeads[0].transform.position, 50, LayerMask.GetMask("Border"));
+        Debug.Log(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point));
+        if(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point) > 20)
+        {
+            lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, hits[0].point });
+        }
+        else
+        {
+            float leftLength = 20 - Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point);
+            Vector2 reflectedVector = hits[0].point - (Vector2)grabbedBeads[0].transform.position;
+            reflectedVector.x = -reflectedVector.x;
+            reflectedVector.Normalize();
+            lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, hits[0].point, hits[0].point + reflectedVector * leftLength });
+        }
+        lineRenderer.enabled = true;
     }
 }

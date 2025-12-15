@@ -9,10 +9,14 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
-        if(bar.grabbedBeads.Count == 0 && touch)
+        if(touch)
         {
-            float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -8.82f, 8.82f);
-            bar.MoveBar(xPos);
+            if (bar.grabbedBeads.Count == 0)
+            {
+                float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -8.82f, 8.82f);
+                bar.MoveBar(xPos);
+            }
+            else bar.DrawPredictionLine();
         }
     }
 
