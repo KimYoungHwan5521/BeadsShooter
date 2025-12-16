@@ -19,7 +19,7 @@ public class ResourcesPath
 
         "Prefabs/Area/Mucus",
 
-        "Prefabs/Gems/GreenGem",
+        "Prefabs/Drops/Coin",
 
         "Prefabs/ETC/FeverAttack",
     };

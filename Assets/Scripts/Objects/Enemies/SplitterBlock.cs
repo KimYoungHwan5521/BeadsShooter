@@ -51,7 +51,7 @@ public class SplitterBlock : Block
         halfBody2.crackSprite.sortingOrder = layerNumber * 10 + 6;
     }
 
-    public override void SetInfo(int stage, float maxHP)
+    public override void SetInfo(int stage, float maxHP, bool isWall = false)
     {
         base.SetInfo(stage, maxHP);
         fullBody.SetInfo(stage, maxHP);

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AutoDespawn : MonoBehaviour
 {
+    [SerializeField] bool isUnscaled;
     [SerializeField] float despawnTime;
     [SerializeField] float curDespawnTime;
 
@@ -12,7 +13,8 @@ public class AutoDespawn : MonoBehaviour
 
     private void Update()
     {
-        curDespawnTime += Time.deltaTime;
+        if (isUnscaled) curDespawnTime += Time.unscaledDeltaTime;
+        else curDespawnTime += Time.deltaTime;
         if(curDespawnTime > despawnTime)
         {
             PoolManager.Despawn(gameObject);

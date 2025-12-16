@@ -42,7 +42,6 @@ public class Bar : CustomObject
     {
         foreach(var bead in grabbedBeads)
         {
-            Debug.Log(wantPos - bead.transform.position);
             bead.SetDirection(wantPos - bead.transform.position);
             bead.activated = true;
         }
@@ -59,7 +58,6 @@ public class Bar : CustomObject
     public void DrawPredictionLine()
     {
         RaycastHit2D[] hits = Physics2D.RaycastAll(grabbedBeads[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - grabbedBeads[0].transform.position, 50, LayerMask.GetMask("Border"));
-        Debug.Log(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point));
         if(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point) > 20)
         {
             lineRenderer.positionCount = 2;

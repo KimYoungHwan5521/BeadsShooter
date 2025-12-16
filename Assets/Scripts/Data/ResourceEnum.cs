@@ -19,7 +19,7 @@ namespace ResourceEnum
 
         Mucus,
 
-        GreenGem,
+        Coin,
 
         FeverAttack,
     }

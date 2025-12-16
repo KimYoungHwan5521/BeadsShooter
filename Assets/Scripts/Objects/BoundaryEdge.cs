@@ -25,8 +25,8 @@ public class BoundaryEdge : CustomObject
             }
             else if (edgeType == 1)
             {
-                bead.SetDirection(new(bead.Direction.x, - Mathf.Abs(bead.Direction.y)));
-                if(!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
+                bead.SetDirection(new(bead.Direction.x, -Mathf.Abs(bead.Direction.y)));
+                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 2)
             {
@@ -35,8 +35,17 @@ public class BoundaryEdge : CustomObject
             }
             else if (edgeType == 3)
             {
-                bead.SetDirection(new(- Mathf.Abs(bead.Direction.x), bead.Direction.y));
+                bead.SetDirection(new(-Mathf.Abs(bead.Direction.x), bead.Direction.y));
                 if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
+            }
+        }
+        else
+        {
+            Coin coin = collision.GetComponentInParent<Coin>();
+            if (coin != null)
+            {
+                PoolManager.Despawn(coin.gameObject);
+                GameManager.Instance.StageManager.coins.Remove(coin);
             }
         }
     }

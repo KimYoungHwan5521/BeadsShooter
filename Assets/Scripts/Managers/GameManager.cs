@@ -171,7 +171,6 @@ public class GameManager : MonoBehaviour
         readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
         phase = Phase.ReadyPhase;
-        Time.timeScale = 0f;
     }
 
 

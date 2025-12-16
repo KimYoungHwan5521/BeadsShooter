@@ -20,6 +20,13 @@ public class Enemy : CustomObject
                 GameManager.Instance.StageManager.currentStageWalls.Remove(gameObject);
                 PoolManager.Despawn(gameObject);
                 GameManager.Instance.StageManager.StageClearCheck();
+
+                for(int i=0; i<coins; i++)
+                {
+                    Rigidbody2D coinRigid = PoolManager.Spawn(ResourceEnum.Prefab.Coin, transform.position).GetComponent<Rigidbody2D>();
+                    coinRigid.AddForce((new Vector2(Random.Range(0, 1f), Random.Range(0, 1f))).normalized * 100);
+                    GameManager.Instance.StageManager.coins.Add(coinRigid.GetComponent<Coin>());
+                }
             }
             isDead = value;
         }
@@ -36,6 +43,7 @@ public class Enemy : CustomObject
             if (curHP <= 0) IsDead = true;
         }
     }
+    protected int coins;
 
     protected override void Start()
     {
@@ -50,10 +58,11 @@ public class Enemy : CustomObject
         CurHP = maxHP;
     }
 
-    public virtual void SetInfo(int stage, float maxHP)
+    public virtual void SetInfo(int stage, float maxHP, bool isWall = false)
     { 
         this.stage = stage;
         CurHP = this.maxHP = maxHP;
+        if (!isWall) coins = (int)maxHP;
     }
 
     public virtual void TakeDamage(float damage)

@@ -70,6 +70,18 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    [SerializeField] TextMeshProUGUI coinText;
+    int coin;
+    public int Coin
+    {
+        get => coin;
+        set
+        {
+            coin = value;
+            coinText.text = $"{coin}";
+        }
+    }
+
     [Header("Ingame")]
     [SerializeField] Transform board;
     [SerializeField] TextMeshProUGUI stageStartCountText;
@@ -80,9 +92,13 @@ public class StageManager : MonoBehaviour
     public List<GameObject> nextStageWalls;
     public Bar bar;
     public List<Bead> beads;
+    public List<Coin> coins = new();
 
-    readonly float stageStartCount = 3f;
+    const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
+    bool readyToReadyPhase;
+    const float readyToReadyPhaseTime = 5f;
+    float curReadyToReadyPhaseTime;
 
     public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper }
 
@@ -169,6 +185,7 @@ public class StageManager : MonoBehaviour
             // Stage 0
             //RandomStageGenerate((new(BlockType.Attacker, new(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
+            RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
@@ -230,6 +247,23 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.BattlePhaseStart();
             }
         }
+
+        if(readyToReadyPhase)
+        {
+            foreach(Coin coin in coins)
+            {
+                if(!coin.gameObject.activeSelf) continue;
+                coin.transform.position += (Vector3)((Vector2)(bar.transform.position - coin.transform.position)).normalized * 10 * Time.unscaledDeltaTime;
+            }
+            curReadyToReadyPhaseTime += Time.unscaledDeltaTime;
+            if(curReadyToReadyPhaseTime > readyToReadyPhaseTime)
+            {
+                coins.Clear();
+                GameManager.Instance.ReadyPhase();
+                readyToReadyPhase = false;
+                curReadyToReadyPhaseTime = 0;
+            }
+        }
     }
 
     public void StageSetting()
@@ -285,7 +319,7 @@ public class StageManager : MonoBehaviour
             wall.GetComponent<BoxCollider2D>().size = new(2,1);
             wall.GetComponent<SpriteRenderer>().size = new(2,1);
             wall.GetComponent<SpriteRenderer>().color = Color.gray;
-            wall.SetInfo(currentStage, 3);
+            wall.SetInfo(currentStage, 3, true);
             if (clearBothStage) currentStageWalls.Add(wall.gameObject);
             else nextStageWalls.Add(wall.gameObject);
         }
@@ -306,7 +340,7 @@ public class StageManager : MonoBehaviour
                 wall.GetComponent<BoxCollider2D>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().color = Color.gray;
-                wall.SetInfo(currentStage + 1, 3);
+                wall.SetInfo(currentStage + 1, 3, true);
                 nextStageWalls.Add(wall.gameObject);
             }
         }
@@ -388,7 +422,8 @@ public class StageManager : MonoBehaviour
     {
         if(currentStageEnemies.Count == 0 && GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
-            GameManager.Instance.ReadyPhase();
+            Time.timeScale = 0f;
+            readyToReadyPhase = true;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
