@@ -44,6 +44,7 @@ public class Enemy : CustomObject
         }
     }
     protected int coins;
+    [SerializeField]protected bool isInvincible;
 
     protected override void Start()
     {
@@ -58,15 +59,17 @@ public class Enemy : CustomObject
         CurHP = maxHP;
     }
 
-    public virtual void SetInfo(int stage, float maxHP, bool isWall = false)
+    public virtual void SetInfo(int stage, float maxHP, bool isWall = false, bool isInvincible = false)
     { 
         this.stage = stage;
         CurHP = this.maxHP = maxHP;
         if (!isWall) coins = (int)maxHP;
+        this.isInvincible = isInvincible;
     }
 
     public virtual void TakeDamage(float damage)
     {
+        if (isInvincible) return;
         CurHP -= damage;
     }
 }

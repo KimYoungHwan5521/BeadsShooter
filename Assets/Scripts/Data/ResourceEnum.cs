@@ -22,6 +22,7 @@ namespace ResourceEnum
         Coin,
 
         FeverAttack,
+        ShopStage,
     }
 
     public enum Sprite

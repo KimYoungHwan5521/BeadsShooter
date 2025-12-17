@@ -6,7 +6,6 @@ public class SplitBlock : Block
     [SerializeField] SplitterBlock owner;
     // 0 : fullBody, 1 : halfBody1, 2 : halfBody2
     [SerializeField] int part;
-    bool isInvincible;
     [SerializeField] float invincibleTime;
     [SerializeField] float curInvincibleTime;
 

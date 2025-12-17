@@ -22,6 +22,7 @@ public class ResourcesPath
         "Prefabs/Drops/Coin",
 
         "Prefabs/ETC/FeverAttack",
+        "Prefabs/ETC/ShopStage",
     };
 
 
