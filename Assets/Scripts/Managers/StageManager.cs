@@ -329,7 +329,7 @@ public class StageManager : MonoBehaviour
             wall.GetComponent<BoxCollider2D>().size = new(2,1);
             wall.GetComponent<SpriteRenderer>().size = new(2,1);
             wall.GetComponent<SpriteRenderer>().color = Color.gray;
-            wall.SetInfo(currentStage, 3, true, stageInfos[currentStage].stageType == 1);
+            wall.SetInfo(currentStage, 3, true, stageInfos.Length < currentStage + 2 || stageInfos[currentStage + 2].stageType > 0);
             if (clearBothStage) currentStageWalls.Add(wall.gameObject);
             else nextStageWalls.Add(wall.gameObject);
         }
@@ -353,7 +353,7 @@ public class StageManager : MonoBehaviour
                 wall.GetComponent<BoxCollider2D>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().color = Color.gray;
-                wall.SetInfo(currentStage + 1, 3, true, stageInfos[currentStage].stageType == 1);
+                wall.SetInfo(currentStage + 1, 3, true, stageInfos.Length < currentStage + 3 || stageInfos[currentStage + 3].stageType > 0);
                 nextStageWalls.Add(wall.gameObject);
             }
         }
