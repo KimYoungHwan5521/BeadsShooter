@@ -98,7 +98,7 @@ public class StageManager : MonoBehaviour
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
-    const float readyToReadyPhaseTime = 5f;
+    const float readyToReadyPhaseTime = 2f;
     float curReadyToReadyPhaseTime;
 
     public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper }
@@ -215,15 +215,29 @@ public class StageManager : MonoBehaviour
         if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
-            foreach(var bead in beads)
+            if (stageInfos[currentStage].stageType == 0)
             {
-                if (bead.transform.position.y > bar.transform.position.y + 3)
+                foreach(var bead in beads)
                 {
-                    bead.transform.position += Vector3.down * 0.2f;
-                    Vector3[] points = new Vector3[bead.trail.positionCount];
-                    bead.trail.GetPositions(points);
-                    for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
-                    bead.trail.SetPositions(points);
+                    if (bead.transform.position.y > bar.transform.position.y + 3)
+                    {
+                        bead.transform.position += Vector3.down * 0.2f;
+                        Vector3[] points = new Vector3[bead.trail.positionCount];
+                        bead.trail.GetPositions(points);
+                        for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
+                        bead.trail.SetPositions(points);
+                    }
+                }
+            }
+            else
+            {
+                // °ø È¸¼ö
+                for (int i = 0; i < beads.Count; i++)
+                {
+                    beads[i].trail.Clear();
+                    int reverse = i % 2 == 0 ? 1 : -1;
+                    Vector2 destination = new(bar.transform.position.x + reverse * ((i + 1) / 2), bar.transform.position.y + 0.51f);
+                    beads[i].transform.position += (Vector3)((destination - (Vector2)beads[i].transform.position)).normalized * 20 * Time.unscaledDeltaTime;
                 }
             }
             wantDown -= 0.2f;
@@ -233,9 +247,20 @@ public class StageManager : MonoBehaviour
                 {
                     curStageStartCount = stageStartCount;
                     stageStartCountText.gameObject.SetActive(true);
+                    if (stageInfos[currentStage].stageType > 0)
+                    {
+                        foreach(Bead bead in beads)
+                        {
+                            bar.grabbedBeads.Add(bead);
+                            bead.SetDirection(Vector2.zero);
+                            bead.activated = false;
+                        }
+                    }
                 }
                 else
+                {
                     GameManager.Instance.BattlePhaseStart();
+                }
             }
         }
         if(curStageStartCount > 0)
@@ -259,7 +284,7 @@ public class StageManager : MonoBehaviour
             foreach(Coin coin in coins)
             {
                 if(!coin.gameObject.activeSelf) continue;
-                coin.transform.position += (Vector3)((Vector2)(bar.transform.position - coin.transform.position)).normalized * 10 * Time.unscaledDeltaTime;
+                coin.transform.position += (Vector3)((Vector2)(bar.transform.position - coin.transform.position)).normalized * 20 * Time.unscaledDeltaTime;
                 if(Vector2.Distance(coin.transform.position, bar.transform.position) < 0.2f) collected.Add(coin);
             }
             foreach(Coin coin in collected) coin.BeCollected();
