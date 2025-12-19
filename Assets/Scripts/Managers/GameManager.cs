@@ -33,9 +33,13 @@ public class GameManager : MonoBehaviour
     public BlueprintManager BlueprintManager => blueprintManager;
     CharacterManager characterManager;
     public CharacterManager CharacterManager => characterManager;
+    ShopManager shopManager;
+    public ShopManager ShopManager => shopManager;
     //public LoadingCanvas loadingCanvas;
 
     public GameObject blueprintDetail;
+    public GameObject shopCanvas;
+    Shop shop;
     public SelectCharacter selectCharacter;
     public float barYPos;
 
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
         stageManager = GetComponent<StageManager>();
+        shop = shopCanvas.GetComponent<Shop>();
         //if (!SteamAPI.Init())
         //{
         //    Debug.LogError("SteamAPI 초기화 실패");
@@ -73,6 +78,8 @@ public class GameManager : MonoBehaviour
         yield return blueprintManager.Initiate();
         characterManager = new CharacterManager();
         yield return characterManager.Initiate();
+        shopManager = new ShopManager();
+        yield return shopManager.Initiate();
 
         gameReady = true;
         SetCameraAspect();
@@ -171,6 +178,12 @@ public class GameManager : MonoBehaviour
         readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
         phase = Phase.ReadyPhase;
+    }
+
+    public void OpenShop()
+    {
+        shopCanvas.SetActive(true);
+        shop.SetShop();
     }
 
 

@@ -10,7 +10,7 @@ public class BlueprintManager
     {
         blueprints.Add(new Blueprint(new int[,] { { 1, 2 }, { 0, 3 } }, new(RewardType.AttackDamage, 1f)));
         blueprints.Add(new Blueprint(new int[,] { { 2, 2, 2 } }, new(RewardType.PoisonDamage, 0.5f)));
-        blueprints.Add(new Blueprint(new int[,] { { 1, 1, 5 }, { 2, 2, 0 } }, new(RewardType.AreaDamage, 1f, new Vector2(4, 4))));
+        blueprints.Add(new Blueprint(new int[,] { { 1, 1, 4 }, { 2, 2, 0 } }, new(RewardType.AreaDamage, 1f, new Vector2(4, 4))));
         
         yield return null;
     }

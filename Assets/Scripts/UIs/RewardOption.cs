@@ -16,10 +16,6 @@ public class RewardOption : MonoBehaviour
         this.materialType = materialType;
         optionImage.color = MaterialsColor.colors[materialType];
         this.reward = reward;
-        detailText.text = reward.rewardType switch
-        {
-            RewardType.AttackDamage => $"Ball's attack damage + {reward.value}",
-            _ => ""
-        };
+        detailText.text = reward.Explain;
     }
 }

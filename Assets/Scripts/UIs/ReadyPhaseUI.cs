@@ -16,9 +16,7 @@ public class ReadyPhaseUI : MonoBehaviour
     [Header("Place Material")]
     [SerializeField] GameObject currentMaterial;
     [SerializeField] GameObject[] placedMaterialsObject;
-    const int gridSizeX = 4;
-    const int gridSizeY = 4;
-    [SerializeField] int[,] placedMaterials = new int[gridSizeX, gridSizeY];
+    [SerializeField] int[,] placedMaterials = new int[Blueprint.ColumnCount, Blueprint.RowCount];
     int selectedGrid = -1;
     [SerializeField] GameObject placeButton;
     [SerializeField] BlueprintDrawer[] blueprints;
@@ -41,13 +39,13 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(false);
         currentBuild.SetActive(false);
 
-        for(int i=0; i< gridSizeY; i++)
+        for(int i=0; i< Blueprint.RowCount; i++)
         {
-            for(int j=0; j< gridSizeX; j++)
+            for(int j=0; j< Blueprint.ColumnCount; j++)
             {
-                if (placedMaterials[i, j] == -1) placedMaterialsObject[gridSizeY * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
-                else placedMaterialsObject[gridSizeY * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[placedMaterials[i, j]];
-                placedMaterialsObject[gridSizeY * i+j].GetComponent<Button>().interactable = placedMaterials[i, j] == 0;
+                if (placedMaterials[i, j] == -1) placedMaterialsObject[Blueprint.RowCount * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                else placedMaterialsObject[Blueprint.RowCount * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[placedMaterials[i, j]];
+                placedMaterialsObject[Blueprint.RowCount * i+j].GetComponent<Button>().interactable = placedMaterials[i, j] == 0;
             }
         }
         placeButton.SetActive(false);
@@ -77,7 +75,7 @@ public class ReadyPhaseUI : MonoBehaviour
     {
         foreach(RewardOption rewardOption in rewardOptions)
         {
-            rewardOption.SetOption("", Random.Range(1, 6), randomReward[Random.Range(0, randomReward.Length)]);
+            rewardOption.SetOption("", Random.Range(1, 5), randomReward[Random.Range(0, randomReward.Length)]);
         }
     }
 
@@ -103,8 +101,8 @@ public class ReadyPhaseUI : MonoBehaviour
 
     public void Place()
     {
-        if(selectedGrid == -1 || placedMaterials[selectedGrid / gridSizeY, selectedGrid % gridSizeY] != 0) return;
-        placedMaterials[selectedGrid / gridSizeY, selectedGrid % gridSizeY] = rewardOptions[selectedOption].materialType;
+        if(selectedGrid == -1 || placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] != 0) return;
+        placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = rewardOptions[selectedOption].materialType;
         placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
         currentMaterial.SetActive(false);
         placeButton.SetActive(false);
@@ -151,9 +149,9 @@ public class ReadyPhaseUI : MonoBehaviour
                 if (check) break;
                 if (blueprint.blueprint[0, i] == 0) continue;
                 check = true;
-                for(int y=0; y< gridSizeY; y++)
+                for(int y=0; y< Blueprint.RowCount; y++)
                 {
-                    for (int x=0; x< gridSizeX; x++)
+                    for (int x=0; x< Blueprint.ColumnCount; x++)
                     {
                         if (placedMaterials[y, x] == blueprint.blueprint[0, i])
                         {
@@ -167,7 +165,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     // y, x : 판별 시작 그리드
                                     // row, column : 설계도 상대 그리드
                                     if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-                                    if (x + column - i >= gridSizeX || x + column - i < 0 || y + row >= gridSizeY)
+                                    if (x + column - i >= Blueprint.ColumnCount || x + column - i < 0 || y + row >= Blueprint.RowCount)
                                     {
                                         descrimination = false;
                                         break;
@@ -201,7 +199,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                 for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
                                 {
                                     if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-                                    if (y + column - i >= gridSizeY || y + column - i < 0 || x - row < 0)
+                                    if (y + column - i >= Blueprint.RowCount || y + column - i < 0 || x - row < 0)
                                     {
                                         descrimination = false;
                                         break;
@@ -237,7 +235,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                     // y, x : 판별 시작 그리드
                                     // row, column : 설계도 상대 그리드
                                     if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-                                    if (x - column - i >= gridSizeX || x - column - i < 0 || y - row < 0)
+                                    if (x - column - i >= Blueprint.ColumnCount || x - column - i < 0 || y - row < 0)
                                     {
                                         descrimination = false;
                                         break;
@@ -271,7 +269,7 @@ public class ReadyPhaseUI : MonoBehaviour
                                 for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
                                 {
                                     if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-                                    if (y - column - i >= gridSizeY || y - column - i < 0 || x + row >= gridSizeX)
+                                    if (y - column - i >= Blueprint.RowCount || y - column - i < 0 || x + row >= Blueprint.ColumnCount)
                                     {
                                         descrimination = false;
                                         break;
@@ -331,7 +329,7 @@ public class ReadyPhaseUI : MonoBehaviour
         foreach(Vector2Int cordinate in buildables[currentBuildableIndex].cordinates)
         {
             // 좌표를 (y, x)로 썼는데 Vecter2Int는 호출할 떄 (x, y)로 저장되어있어서 반대로
-            placedMaterialsObject[cordinate.x * gridSizeY + cordinate.y].GetComponent<Button>().interactable = true;
+            placedMaterialsObject[cordinate.x * Blueprint.RowCount + cordinate.y].GetComponent<Button>().interactable = true;
         }
 
         leftArrow.interactable = currentBuildableIndex != 0;
@@ -340,19 +338,19 @@ public class ReadyPhaseUI : MonoBehaviour
 
     public void Build()
     {
-        Vector2Int check = new(selectedGrid / gridSizeX, selectedGrid % gridSizeX);
+        Vector2Int check = new(selectedGrid / Blueprint.ColumnCount, selectedGrid % Blueprint.ColumnCount);
         int index = buildables[currentBuildableIndex].cordinates.FindIndex(x => x == check);
         if (index < 0) return;
         for(int i = 0; i < buildables[currentBuildableIndex].cordinates.Count; i++)
         {
             if(i == index)
             {
-                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * gridSizeX + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[7];
+                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * Blueprint.ColumnCount + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[7];
                 placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = -1;
             }
             else
             {
-                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * gridSizeX + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * Blueprint.ColumnCount + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
                 placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = 0;
             }
         }

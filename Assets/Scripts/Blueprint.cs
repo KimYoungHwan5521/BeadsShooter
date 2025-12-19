@@ -1,29 +1,9 @@
 using UnityEngine;
 
-public enum RewardType { NotValid, AttackDamage, PoisonDamage, AreaDamage }
-
-public class RewardFormat
-{
-    public RewardType rewardType;
-    public float value;
-    public Vector2 area;
-
-    public RewardFormat(RewardType rewardType, float value)
-    {
-        this.rewardType = rewardType;
-        this.value = value;
-    }
-
-    public RewardFormat(RewardType rewardType, float value, Vector2 area)
-    {
-        this.rewardType = rewardType;
-        this.value = value;
-        this.area = area;
-    }
-}
-
 public class Blueprint
 {
+    public static int ColumnCount = 3;
+    public static int RowCount = 3;
     public int[,] blueprint;
     public RewardFormat reward;
 

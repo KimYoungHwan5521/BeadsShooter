@@ -1,13 +1,35 @@
 using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(GridLayoutGroup))]
 public class BlueprintDrawer : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] Image[] materials;
+    List<Image> materials = new();
     Blueprint blueprint;
     [SerializeField] TextMeshProUGUI detailText;
+    GridLayoutGroup grid;
+
+    [SerializeField] float rectWidth;
+
+    private void Awake()
+    {
+        grid = GetComponent<GridLayoutGroup>();
+        float cellSize = rectWidth * 0.8f / Blueprint.ColumnCount;
+        grid.cellSize = new(cellSize, cellSize);
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+        grid.constraintCount = Blueprint.ColumnCount;
+
+        int iter = Blueprint.RowCount * Blueprint.ColumnCount;
+        for (int i=0; i<iter; i++)
+        {
+            GameObject material = new GameObject($"Material{i}", typeof(Image));
+            material.transform.SetParent(transform, false);
+            materials.Add(material.GetComponent<Image>());
+        }
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -25,17 +47,17 @@ public class BlueprintDrawer : MonoBehaviour, IPointerEnterHandler, IPointerExit
     public void SetBlueprint(Blueprint blueprint, bool detail = false)
     {
         this.blueprint = blueprint;
-        for(int i=0; i<4; i++)
+        for(int i=0; i<Blueprint.RowCount; i++)
         {
-            for(int j=0; j<4; j++)
+            for(int j=0; j<Blueprint.ColumnCount; j++)
             {
                 if (i >= blueprint.blueprint.GetLength(0) || j >= blueprint.blueprint.GetLength(1))
                 {
-                    materials[4 * i + j].color = MaterialsColor.colors[0];
+                    materials[Blueprint.RowCount * i + j].color = MaterialsColor.colors[0];
                 }
                 else
                 {
-                    materials[4 * i + j].color = MaterialsColor.colors[blueprint.blueprint[i, j]];
+                    materials[Blueprint.RowCount * i + j].color = MaterialsColor.colors[blueprint.blueprint[i, j]];
                 }
             }
         }
