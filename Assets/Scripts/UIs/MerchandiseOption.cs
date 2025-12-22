@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class MerchandiseOption : MonoBehaviour
 {
+    [SerializeField] Shop shop;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI typeText;
     [SerializeField] Image image;
@@ -45,6 +46,20 @@ public class MerchandiseOption : MonoBehaviour
     {
         if (GameManager.Instance.StageManager.Coin < merchandiseInfo.price) return;
         GameManager.Instance.StageManager.Coin -= merchandiseInfo.price;
+        foreach(MerchandiseOption merchandise in shop.merchandiseOptions)
+        {
+            merchandise.priceText.color = GameManager.Instance.StageManager.Coin < merchandiseInfo.price ? Color.red : Color.black;
+        }
+        switch(merchandiseInfo.type)
+        {
+            case ShopManager.MerchandiseType.Material:
+                GameManager.Instance.readyPhaseUI.SetPurchasedMaterial(merchandiseInfo);
+                GameManager.Instance.readyPhaseWindow.SetActive(true);
+                break;
+            case ShopManager.MerchandiseType.Blueprint:
+                GameManager.Instance.StageManager.bar.blueprints.Add(merchandiseInfo.blueprint);
+                break;
+        }
         Soldout = true;
     }
 }

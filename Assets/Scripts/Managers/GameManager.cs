@@ -106,10 +106,15 @@ public class GameManager : MonoBehaviour
         ObjectDestroy = null;
     }
 
+    public void Test()
+    {
+        stageManager.Coin += 1000;
+    }
+
     public enum Phase { None, BattlePhase, ReadyPhase };
     public Phase phase = Phase.None;
     public ReadyPhaseUI readyPhaseUI;
-    [SerializeField] GameObject readyPhaseWindow;
+    public GameObject readyPhaseWindow;
 
     void SetCameraAspect()
     {
@@ -150,8 +155,9 @@ public class GameManager : MonoBehaviour
     public void StartBattlePhase()
     {
         readyPhaseWindow.SetActive(false);
+        shopCanvas.SetActive(false);
         //CurRoundTimeLeft = roundTime;
-        stageManager.StageSetting();
+        if(!readyPhaseUI.IsShop) stageManager.StageSetting();
     }
 
     public void BattlePhaseStart()
@@ -183,6 +189,7 @@ public class GameManager : MonoBehaviour
     public void OpenShop()
     {
         shopCanvas.SetActive(true);
+        phase = Phase.ReadyPhase;
         shop.SetShop();
     }
 

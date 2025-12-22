@@ -4,7 +4,7 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     const int merchandiseCount = 4;
-    [SerializeField] MerchandiseOption[] merchandiseOptions;
+    public MerchandiseOption[] merchandiseOptions;
 
     public void SetShop()
     {

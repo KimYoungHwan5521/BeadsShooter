@@ -186,7 +186,7 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            //RandomStageGenerate((new(BlockType.Attacker, new(2,1)), 20)),
+            GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),

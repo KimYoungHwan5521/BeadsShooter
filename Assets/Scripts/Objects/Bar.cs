@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class Bar : CustomObject
 {
@@ -9,7 +8,17 @@ public class Bar : CustomObject
     LineRenderer lineRenderer;
     [SerializeField] Sprite dottedLineSprite;
 
-    public float barLength = 1;
+    const float originalLength = 4;
+    float barLength = 1;
+    public float BarLength
+    {
+        get => barLength;
+        set
+        {
+            barLength = value;
+            barBody.transform.localScale = new(originalLength * barLength, 0.5f);
+        }
+    }
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
     [SerializeField] float moveSpeed = 1;
@@ -53,6 +62,11 @@ public class Bar : CustomObject
     {
         moveSpeed = characterData.moveSpeed;
         blueprints = characterData.blueprints.ToList();
+    }
+
+    public void Shrink()
+    {
+        BarLength = Mathf.Max(0.1f, barLength - 0.1f);
     }
 
     public void DrawPredictionLine()

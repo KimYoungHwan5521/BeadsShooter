@@ -12,9 +12,18 @@ public class Projectile : CustomObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out BoundaryEdge boundary) || collision.TryGetComponent(out Bar bar))
+        if(collision.TryGetComponent(out BoundaryEdge _))
         {
             PoolManager.Despawn(gameObject);
+        }
+        else
+        {
+            Bar bar = collision.GetComponentInParent<Bar>();
+            if (bar != null)
+            {
+                PoolManager.Despawn(gameObject);
+                bar.Shrink();
+            }
         }
     }
 }

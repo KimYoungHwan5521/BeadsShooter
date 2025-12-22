@@ -7,7 +7,7 @@ public class ShopSelect : MonoBehaviour
 
     void Rest()
     {
-
+        GameManager.Instance.StageManager.bar.BarLength = 1;
     }
 
     void RandomEvent()

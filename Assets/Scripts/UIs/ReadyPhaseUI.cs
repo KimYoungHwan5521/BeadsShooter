@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,8 @@ public class ReadyPhaseUI : MonoBehaviour
     [SerializeField] BlueprintDrawer currentBuildBlueprint;
 
     readonly RewardFormat[] randomReward = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
+    bool isShop;
+    public bool IsShop => isShop;
 
     public void SetReadyPhase()
     {
@@ -92,6 +95,16 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(true);
         currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
         placeButton.SetActive(true);
+        isShop = false;
+    }
+
+    public void SetPurchasedMaterial(ShopManager.MerchandiseInfo merchandise)
+    {
+        rewardOptionsBoxOuter.SetActive(false);
+        currentMaterial.SetActive(true);
+        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[merchandise.materialType];
+        placeButton.SetActive(true);
+        isShop = true;
     }
 
     public void FocusGrid(int index)
@@ -107,6 +120,7 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(false);
         placeButton.SetActive(false);
         startNextStage.SetActive(true);
+        startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
         ApplyMaterialStat(rewardOptions[selectedOption].reward);
         CheckBuildable();
     }
