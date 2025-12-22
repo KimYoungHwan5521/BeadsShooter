@@ -8,6 +8,8 @@ public class ShopSelect : MonoBehaviour
     void Rest()
     {
         GameManager.Instance.StageManager.bar.BarLength = 1;
+        GameManager.Instance.readyPhaseWindow.SetActive(true);
+        GameManager.Instance.readyPhaseUI.SetDisplace();
     }
 
     void RandomEvent()

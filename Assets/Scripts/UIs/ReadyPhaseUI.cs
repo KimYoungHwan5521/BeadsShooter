@@ -30,6 +30,7 @@ public class ReadyPhaseUI : MonoBehaviour
 
     readonly RewardFormat[] randomReward = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
     bool isShop;
+    bool isDisplace;
     public bool IsShop => isShop;
 
     public void SetReadyPhase()
@@ -95,7 +96,9 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(true);
         currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
         placeButton.SetActive(true);
+        placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
         isShop = false;
+        isDisplace = false;
     }
 
     public void SetPurchasedMaterial(ShopManager.MerchandiseInfo merchandise)
@@ -104,7 +107,19 @@ public class ReadyPhaseUI : MonoBehaviour
         currentMaterial.SetActive(true);
         currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[merchandise.materialType];
         placeButton.SetActive(true);
+        placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
         isShop = true;
+        isDisplace = false;
+    }
+
+    public void SetDisplace()
+    {
+        rewardOptionsBoxOuter.SetActive(false);
+        currentMaterial.SetActive(false);
+        placeButton.SetActive(true);
+        placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Displace";
+        isShop = false;
+        isDisplace = true;
     }
 
     public void FocusGrid(int index)
@@ -114,15 +129,32 @@ public class ReadyPhaseUI : MonoBehaviour
 
     public void Place()
     {
-        if(selectedGrid == -1 || placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] != 0) return;
-        placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = rewardOptions[selectedOption].materialType;
-        placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
-        currentMaterial.SetActive(false);
-        placeButton.SetActive(false);
-        startNextStage.SetActive(true);
-        startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
-        ApplyMaterialStat(rewardOptions[selectedOption].reward);
-        CheckBuildable();
+        if(selectedGrid == -1) return;
+        if (isDisplace)
+        {
+            if(placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] != 0)
+            {
+                placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = 0;
+                placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                placeButton.SetActive(false);
+                startNextStage.SetActive(true);
+                startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
+            }
+        }
+        else
+        {
+            if (placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] == 0)
+            {
+                placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = rewardOptions[selectedOption].materialType;
+                placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
+                currentMaterial.SetActive(false);
+                placeButton.SetActive(false);
+                startNextStage.SetActive(true);
+                startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
+                ApplyMaterialStat(rewardOptions[selectedOption].reward);
+                CheckBuildable();
+            }
+        }
     }
 
     void ApplyMaterialStat(RewardFormat reward)
