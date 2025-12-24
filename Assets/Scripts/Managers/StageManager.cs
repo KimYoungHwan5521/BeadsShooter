@@ -100,7 +100,7 @@ public class StageManager : MonoBehaviour
     const float readyToReadyPhaseTime = 2f;
     float curReadyToReadyPhaseTime;
 
-    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper }
+    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper, Boss1 }
 
     public class BlockForm
     {
@@ -186,13 +186,14 @@ public class StageManager : MonoBehaviour
         stageInfos = new[]
         {
             // Stage 0
-            GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
+            //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateShopStage(),
+            GenerateBossStage(BlockType.Boss1),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
@@ -324,15 +325,26 @@ public class StageManager : MonoBehaviour
         }
         if (wantStage >= stageInfos.Length) nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
         else nextStageInfo = stageInfos[wantStage];
-        
+
         if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
         else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
-        
+        else SpawnBoss(nextStageInfo);
+
         foreach (GameObject wall in currentStageWalls)
         {
             PoolManager.Despawn(wall);
         }
-        if(!clearBothStage) currentStageWalls = nextStageWalls.ToList();
+        if(!clearBothStage)
+        {
+            currentStageWalls = nextStageWalls.ToList();
+            if(stageInfos.Length > currentStage && stageInfos[currentStage + 1].stageType == 0)
+            {
+                foreach(GameObject wall in currentStageWalls)
+                {
+                    wall.GetComponent<Block>().isInvincible = false;
+                }
+            }
+        }
         else
         {
             currentStageWalls.Clear();
@@ -342,20 +354,23 @@ public class StageManager : MonoBehaviour
             }
         }
         nextStageWalls.Clear();
-        for(int i=-5; i<=5; i++)
+        if (stageInfos.Length > currentStage && stageInfos[currentStage + 1].stageType < 2)
         {
-            Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-            if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
-            if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
-            if (currentStage == 0) wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
-            else wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
-            wall.transform.SetParent(board, true);
-            wall.GetComponent<BoxCollider2D>().size = new(2,1);
-            wall.GetComponent<SpriteRenderer>().size = new(2,1);
-            wall.GetComponent<SpriteRenderer>().color = Color.gray;
-            wall.SetInfo(currentStage, 3, true, stageInfos.Length < currentStage + 2 || stageInfos[currentStage + 2].stageType > 0);
-            if (clearBothStage) currentStageWalls.Add(wall.gameObject);
-            else nextStageWalls.Add(wall.gameObject);
+            for(int i=-5; i<=5; i++)
+            {
+                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
+                if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
+                if (currentStage == 0) wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
+                else wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
+                wall.transform.SetParent(board, true);
+                wall.GetComponent<BoxCollider2D>().size = new(2,1);
+                wall.GetComponent<SpriteRenderer>().size = new(2,1);
+                wall.GetComponent<SpriteRenderer>().color = Color.gray;
+                wall.SetInfo(currentStage, 3, true, currentStage > 0);
+                if (clearBothStage) currentStageWalls.Add(wall.gameObject);
+                else nextStageWalls.Add(wall.gameObject);
+            }
         }
         // 2스테이지 동시에 깬 경우 다다음 스테이지
         if(clearBothStage)
@@ -377,7 +392,7 @@ public class StageManager : MonoBehaviour
                 wall.GetComponent<BoxCollider2D>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().size = new(2, 1);
                 wall.GetComponent<SpriteRenderer>().color = Color.gray;
-                wall.SetInfo(currentStage + 1, 3, true, stageInfos.Length < currentStage + 3 || stageInfos[currentStage + 3].stageType > 0);
+                wall.SetInfo(currentStage + 1, 3, true, true);
                 nextStageWalls.Add(wall.gameObject);
             }
         }
@@ -472,6 +487,26 @@ public class StageManager : MonoBehaviour
             shopStage.transform.position = new(0, - 0.75f + 10 + row + 1 + term + row + 1);
             shopStage.SetInfo(currentStage + 1, 1, false, true);
             nextStageEnemies.Add(shopStage);
+        }
+    }
+
+    void SpawnBoss(StageInfo stageInfo)
+    {
+        Enemy boss = null;
+        switch (stageInfo.enemyArrangementInfo[0].blockType)
+        {
+            case BlockType.Boss1:
+                boss = PoolManager.Spawn(ResourceEnum.Prefab.Boss1).GetComponent<Enemy>();
+                boss.transform.position = new(0, -0.75f + 5 + row + 1 + term + row + 1);
+                break;
+            default:
+                Debug.LogWarning("Wrong Boss!");
+                break;
+        }
+        if(boss != null)
+        {
+            nextStageEnemies.Add(boss);
+            boss.transform.SetParent(board, true);
         }
     }
 
@@ -638,6 +673,19 @@ public class StageManager : MonoBehaviour
     StageInfo GenerateShopStage()
     {
         return new(new EnemyArrangementInfo[] { }, 1);
+    }
+
+    StageInfo GenerateBossStage(BlockType wantBoss)
+    {
+        EnemyArrangementInfo enemyArrangementInfo = null;
+        switch(wantBoss)
+        {
+            case BlockType.Boss1:
+                enemyArrangementInfo = new(BlockType.Boss1, new(0, 0), 100);
+                break;
+        }
+        if (enemyArrangementInfo == null) Debug.LogWarning("Null boss!");
+        return new(new EnemyArrangementInfo[] { enemyArrangementInfo }, 2);
     }
 
     public void Fever()

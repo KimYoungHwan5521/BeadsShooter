@@ -44,7 +44,7 @@ public class Enemy : CustomObject
         }
     }
     protected int coins;
-    [SerializeField]protected bool isInvincible;
+    public bool isInvincible;
 
     protected override void Start()
     {

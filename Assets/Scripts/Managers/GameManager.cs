@@ -189,7 +189,6 @@ public class GameManager : MonoBehaviour
     public void OpenShop()
     {
         shopCanvas.SetActive(true);
-        phase = Phase.ReadyPhase;
         shop.SetShop();
     }
 

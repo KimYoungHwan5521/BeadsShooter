@@ -14,6 +14,7 @@ namespace ResourceEnum
         AttackerBlock,
         SplitterBlock,
         MucusDrippingBlock,
+        Boss1,
 
         NormalProjectile,
 

@@ -115,7 +115,8 @@ public class Bead : CustomObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
-        if(collision.collider.gameObject.TryGetComponent(out Enemy enemy))
+        Enemy enemy = collision.collider.GetComponentInParent<Enemy>();
+        if(enemy != null || collision.collider.gameObject.TryGetComponent(out enemy))
         {
             if(!IsFake)
             {

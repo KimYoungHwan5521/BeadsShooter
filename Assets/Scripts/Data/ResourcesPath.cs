@@ -14,6 +14,7 @@ public class ResourcesPath
         "Prefabs/Enemies/AttackerBlock",
         "Prefabs/Enemies/SplitterBlock",
         "Prefabs/Enemies/MucusDrippingBlock",
+        "Prefabs/Enemies/Boss1",
 
         "Prefabs/Projectiles/NormalProjectile",
 

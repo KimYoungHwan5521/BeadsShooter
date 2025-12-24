@@ -41,9 +41,9 @@ public class CounterBlock : Block
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Bead projectile))
+        if(collision.TryGetComponent(out Bead bead))
         {
-            caughted = projectile;
+            caughted = bead;
             caughted.transform.position = transform.position;
             caughted.stop = true;
         }
@@ -51,7 +51,7 @@ public class CounterBlock : Block
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Bead projectile) && projectile == caughted)
+        if(collision.TryGetComponent(out Bead bead) && bead == caughted)
         {
             //counterActivated = false;
             col.isTrigger = false;
