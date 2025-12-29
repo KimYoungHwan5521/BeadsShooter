@@ -177,13 +177,15 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public StageInfo[] stageInfos;
+    public StageInfo[] selectedStageInfos;
+    public enum Stage { Practice, Slime, Portal }
+    public List<StageInfo[]> stages = new();
 
     float wantDown;
 
     private void Start()
     {
-        stageInfos = new[]
+        StageInfo[] stageInfos = new[]
         {
             // Stage 0
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
@@ -208,6 +210,8 @@ public class StageManager : MonoBehaviour
             // ...
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4),  (new(BlockType.Counter), 4)),
         };
+
+        stages.Add(stageInfos);
     }
 
     private void Update()
@@ -215,7 +219,7 @@ public class StageManager : MonoBehaviour
         if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
-            if (stageInfos[currentStage].stageType == 0)
+            if (selectedStageInfos[currentStage].stageType == 0)
             {
                 foreach(var bead in beads)
                 {
@@ -247,7 +251,7 @@ public class StageManager : MonoBehaviour
                 {
                     curStageStartCount = stageStartCount;
                     stageStartCountText.gameObject.SetActive(true);
-                    if (stageInfos[currentStage].stageType > 0)
+                    if (selectedStageInfos[currentStage].stageType > 0)
                     {
                         foreach(Bead bead in beads)
                         {
@@ -323,8 +327,8 @@ public class StageManager : MonoBehaviour
         {
             wantStage = currentStage + 1;
         }
-        if (wantStage >= stageInfos.Length) nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
-        else nextStageInfo = stageInfos[wantStage];
+        if (wantStage >= selectedStageInfos.Length) nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
+        else nextStageInfo = selectedStageInfos[wantStage];
 
         if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
         else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
@@ -337,7 +341,7 @@ public class StageManager : MonoBehaviour
         if(!clearBothStage)
         {
             currentStageWalls = nextStageWalls.ToList();
-            if(stageInfos.Length > currentStage && stageInfos[currentStage + 1].stageType == 0)
+            if(selectedStageInfos.Length > currentStage && selectedStageInfos[currentStage + 1].stageType == 0)
             {
                 foreach(GameObject wall in currentStageWalls)
                 {
@@ -354,7 +358,7 @@ public class StageManager : MonoBehaviour
             }
         }
         nextStageWalls.Clear();
-        if (stageInfos.Length > currentStage && stageInfos[currentStage + 1].stageType < 2)
+        if (selectedStageInfos.Length > currentStage && selectedStageInfos[currentStage + 1].stageType < 2)
         {
             for(int i=-5; i<=5; i++)
             {
@@ -376,7 +380,7 @@ public class StageManager : MonoBehaviour
         if(clearBothStage)
         {
             Debug.Log("Clear both stage");
-            if (currentStage < stageInfos.Length) nextStageInfo = stageInfos[currentStage + 1];
+            if (currentStage < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[currentStage + 1];
             else nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
             
             if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);

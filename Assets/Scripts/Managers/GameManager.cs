@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject blueprintDetail;
     public GameObject shopCanvas;
+    public GameObject mainUI;
     Shop shop;
     public SelectCharacter selectCharacter;
     public float barYPos;
