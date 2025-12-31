@@ -75,6 +75,7 @@ public class Bar : CustomObject
     public void Shrink()
     {
         BarLength = Mathf.Max(0.1f, barLength - 0.1f);
+        anim.SetTrigger("TakeDamage");
     }
 
     public void DrawPredictionLine()
@@ -95,5 +96,10 @@ public class Bar : CustomObject
             lineRenderer.SetPositions(new Vector3[] { grabbedBeads[0].transform.position, hits[0].point, hits[0].point + reflectedVector * leftLength });
         }
         lineRenderer.enabled = true;
+    }
+
+    public void Fever()
+    {
+        anim.SetTrigger("Fever");
     }
 }
