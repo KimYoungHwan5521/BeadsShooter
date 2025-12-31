@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
-        if(touch)
+        if (touch)
         {
             if (bar.grabbedBeads.Count == 0)
             {
@@ -18,6 +18,7 @@ public class InputManager : MonoBehaviour
             }
             else bar.DrawPredictionLine();
         }
+        else bar.MoveBar(bar.transform.position.x);
     }
 
     void OnClick(InputValue value)
