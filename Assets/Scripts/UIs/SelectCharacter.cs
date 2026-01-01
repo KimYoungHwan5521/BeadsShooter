@@ -51,6 +51,7 @@ public class SelectCharacter : MonoBehaviour
     public void Select()
     {
         GameManager.Instance.StageManager.bar.SetBar(GameManager.Instance.CharacterManager.characters[currentSelectedCharacterIndex]);
+        GameManager.Instance.StageManager.currentStage = 0;
         GameManager.Instance.StartBattlePhase();
     }
 }

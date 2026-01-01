@@ -57,6 +57,7 @@ public class Bar : CustomObject
 
     public void ReleaseBeads(Vector3 wantPos)
     {
+        if (wantPos.y < transform.position.y + 1) wantPos = new(wantPos.x, transform.position.y + 1);
         foreach(var bead in grabbedBeads)
         {
             bead.SetDirection(wantPos - bead.transform.position);
@@ -78,9 +79,10 @@ public class Bar : CustomObject
         anim.SetTrigger("TakeDamage");
     }
 
-    public void DrawPredictionLine()
+    public void DrawPredictionLine(Vector3 shotPosition)
     {
-        RaycastHit2D[] hits = Physics2D.RaycastAll(grabbedBeads[0].transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - grabbedBeads[0].transform.position, 50, LayerMask.GetMask("Border"));
+        if (shotPosition.y < transform.position.y + 1) shotPosition = new(shotPosition.x, transform.position.y + 1);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(grabbedBeads[0].transform.position, shotPosition - grabbedBeads[0].transform.position, 50, LayerMask.GetMask("Border"));
         if(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point) > 20)
         {
             lineRenderer.positionCount = 2;

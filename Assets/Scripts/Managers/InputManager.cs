@@ -16,7 +16,7 @@ public class InputManager : MonoBehaviour
                 float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -8.82f, 8.82f);
                 bar.MoveBar(xPos);
             }
-            else bar.DrawPredictionLine();
+            else bar.DrawPredictionLine(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }
         else bar.MoveBar(bar.transform.position.x);
     }

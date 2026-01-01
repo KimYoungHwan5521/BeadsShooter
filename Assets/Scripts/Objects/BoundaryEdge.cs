@@ -15,11 +15,8 @@ public class BoundaryEdge : CustomObject
                 PoolManager.Despawn(bead.gameObject);
                 if (!bead.IsFake)
                 {
-                    Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(0, 0.51f, 0)).GetComponent<Bead>();
-                    newBead.Initialize(1, 20, 0, 0, new());
-                    newBead.activated = false;
-                    GameManager.Instance.StageManager.beads.Add(newBead);
-                    GameManager.Instance.StageManager.bar.grabbedBeads.Add(newBead);
+                    GameManager.Instance.StageManager.Life--;
+                    GameManager.Instance.StageManager.beadRefill = true;
                 }
                 return;
             }

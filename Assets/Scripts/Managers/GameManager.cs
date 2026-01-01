@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public GameObject blueprintDetail;
     public GameObject shopCanvas;
     public GameObject mainUI;
+    public GameObject characterSelectUI;
     Shop shop;
     public SelectCharacter selectCharacter;
     public float barYPos;
@@ -157,6 +158,7 @@ public class GameManager : MonoBehaviour
     {
         readyPhaseWindow.SetActive(false);
         shopCanvas.SetActive(false);
+        characterSelectUI.SetActive(false);
         //CurRoundTimeLeft = roundTime;
         if(!readyPhaseUI.IsShop) stageManager.StageSetting();
     }
@@ -184,6 +186,13 @@ public class GameManager : MonoBehaviour
     {
         readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
+        phase = Phase.ReadyPhase;
+    }
+
+    public void StageClear()
+    {
+        mainUI.SetActive(true);
+        stageManager.Clear();
         phase = Phase.ReadyPhase;
     }
 

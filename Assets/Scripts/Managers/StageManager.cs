@@ -36,19 +36,15 @@ public class StageManager : MonoBehaviour
             }
         }
     }
-    int feverGauge;
+    [SerializeField]int feverGauge;
     public int FeverGauge
     {
         get => feverGauge;
         set
         {
-            if(value >= feverGaugeSprites.Length)
-            {
-                FeverCharged = true;
-                return;
-            }
-            feverGauge = value;
-            feverGaugeImage.sprite = feverGaugeSprites[value];
+            feverGauge = Mathf.Min(value, feverGaugeSprites.Length - 1);
+            FeverCharged = feverGauge >= feverGaugeSprites.Length - 1;
+            feverGaugeImage.sprite = feverGaugeSprites[feverGauge];
         }
     }
     bool feverHalf;
@@ -82,6 +78,28 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    [SerializeField] Image lifeImage;
+    [SerializeField] Sprite[] lifeSprites;
+    int life;
+    public int Life
+    {
+        get => life;
+        set
+        {
+            if (value >= lifeSprites.Length)
+            {
+                return;
+            }
+            else if(value < 0)
+            {
+                // GameOver();
+                return;
+            }
+            life = value;
+            lifeImage.sprite = lifeSprites[value];
+        }
+    }
+
     [Header("Ingame")]
     [SerializeField] Transform board;
     [SerializeField] TextMeshProUGUI stageStartCountText;
@@ -93,12 +111,18 @@ public class StageManager : MonoBehaviour
     public Bar bar;
     public List<Bead> beads;
     public List<Coin> coins = new();
+    public List<Projectile> projectiles = new();
 
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
     const float readyToReadyPhaseTime = 2f;
     float curReadyToReadyPhaseTime;
+    public bool beadRefill;
+    const float beadRefillTime = 1f;
+    float curBeadRefillTime;
+
+    bool stageClear;
 
     public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper, Boss1 }
 
@@ -188,7 +212,7 @@ public class StageManager : MonoBehaviour
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
+            //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
@@ -196,19 +220,12 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
 
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
             // Stage 1
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2,1)), 8), (new(BlockType.Normal, new Vector2Int(1,2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 4)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2,1)), 8), (new(BlockType.Normal, new Vector2Int(1,2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 4)),
             // ...
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4),  (new(BlockType.Counter), 4)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4),  (new(BlockType.Counter), 4)),
         };
 
         stages.Add(stageInfos);
@@ -296,9 +313,25 @@ public class StageManager : MonoBehaviour
             if(curReadyToReadyPhaseTime > readyToReadyPhaseTime)
             {
                 coins.Clear();
-                GameManager.Instance.ReadyPhase();
+                if (stageClear)
+                {
+                    GameManager.Instance.StageClear();
+                    stageClear = false;
+                }
+                else GameManager.Instance.ReadyPhase();
                 readyToReadyPhase = false;
                 curReadyToReadyPhaseTime = 0;
+            }
+        }
+
+        if(beadRefill)
+        {
+            curBeadRefillTime += Time.deltaTime;
+            if(curBeadRefillTime > beadRefillTime)
+            {
+                BeadRefill();
+                curBeadRefillTime = 0;
+                beadRefill = false;
             }
         }
     }
@@ -327,12 +360,15 @@ public class StageManager : MonoBehaviour
         {
             wantStage = currentStage + 1;
         }
-        if (wantStage >= selectedStageInfos.Length) nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
-        else nextStageInfo = selectedStageInfos[wantStage];
+        nextStageInfo = null;
+        if (wantStage < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[wantStage];
 
-        if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
-        else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
-        else SpawnBoss(nextStageInfo);
+        if(nextStageInfo != null)
+        {
+            if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
+            else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
+            else SpawnBoss(nextStageInfo);
+        }
 
         foreach (GameObject wall in currentStageWalls)
         {
@@ -341,7 +377,7 @@ public class StageManager : MonoBehaviour
         if(!clearBothStage)
         {
             currentStageWalls = nextStageWalls.ToList();
-            if(selectedStageInfos.Length > currentStage && selectedStageInfos[currentStage + 1].stageType == 0)
+            if(selectedStageInfos.Length > currentStage + 1 && selectedStageInfos[currentStage + 1].stageType == 0)
             {
                 foreach(GameObject wall in currentStageWalls)
                 {
@@ -358,7 +394,7 @@ public class StageManager : MonoBehaviour
             }
         }
         nextStageWalls.Clear();
-        if (selectedStageInfos.Length > currentStage && selectedStageInfos[currentStage + 1].stageType < 2)
+        if (selectedStageInfos.Length > currentStage + 1 && selectedStageInfos[currentStage + 1].stageType < 2)
         {
             for(int i=-5; i<=5; i++)
             {
@@ -380,24 +416,28 @@ public class StageManager : MonoBehaviour
         if(clearBothStage)
         {
             Debug.Log("Clear both stage");
+            nextStageInfo = null;
             if (currentStage < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[currentStage + 1];
-            else nextStageInfo = GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4), (new(BlockType.Counter), 4));
-            
-            if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
-            else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, false);
 
-            for (int i = -5; i <= 5; i++)
+            if (nextStageInfo != null)
             {
-                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row + 1 + row);
-                if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
-                if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
-                wall.transform.SetParent(board, true);
-                wall.GetComponent<BoxCollider2D>().size = new(2, 1);
-                wall.GetComponent<SpriteRenderer>().size = new(2, 1);
-                wall.GetComponent<SpriteRenderer>().color = Color.gray;
-                wall.SetInfo(currentStage + 1, 3, true, true);
-                nextStageWalls.Add(wall.gameObject);
+                if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
+                else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, false);
+                else SpawnBoss(nextStageInfo);
+
+                for (int i = -5; i <= 5; i++)
+                {
+                    Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                    wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row + 1 + row);
+                    if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
+                    if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
+                    wall.transform.SetParent(board, true);
+                    wall.GetComponent<BoxCollider2D>().size = new(2, 1);
+                    wall.GetComponent<SpriteRenderer>().size = new(2, 1);
+                    wall.GetComponent<SpriteRenderer>().color = Color.gray;
+                    wall.SetInfo(currentStage + 1, 3, true, true);
+                    nextStageWalls.Add(wall.gameObject);
+                }
             }
         }
 
@@ -518,15 +558,31 @@ public class StageManager : MonoBehaviour
     {
         if(currentStageEnemies.Count == 0 && GameManager.Instance.phase == GameManager.Phase.BattlePhase)
         {
-            Time.timeScale = 0f;
             readyToReadyPhase = true;
+            Time.timeScale = 0f;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
                 bead.SetDirectionToLastDirection();
             }
-            currentStage++;
+            if (++currentStage >= selectedStageInfos.Length) stageClear = true;
         }
+    }
+
+    public void Clear()
+    {
+        foreach (var bead in beads) PoolManager.Despawn(bead.gameObject);
+        beads.Clear();
+        foreach (var enemy in currentStageEnemies) PoolManager.Despawn(enemy.gameObject);
+        foreach (var enemy in nextStageEnemies) PoolManager.Despawn(enemy.gameObject);
+        currentStageEnemies.Clear();
+        nextStageEnemies.Clear();
+        foreach(var wall in currentStageWalls) PoolManager.Despawn(wall);
+        foreach(var wall in nextStageWalls) PoolManager.Despawn(wall);
+        currentStageWalls.Clear();
+        nextStageWalls.Clear();
+        foreach (var projectile in projectiles) PoolManager.Despawn(projectile.gameObject);
+        projectiles.Clear();
     }
 
     // Input : (Size Vector(x, y), count)
@@ -705,4 +761,12 @@ public class StageManager : MonoBehaviour
         bar.Fever();
     }
 
+    void BeadRefill()
+    {
+        Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(0, 0.51f, 0)).GetComponent<Bead>();
+        newBead.Initialize(1, 20, 0, 0, new());
+        newBead.activated = false;
+        beads.Add(newBead);
+        bar.grabbedBeads.Add(newBead);
+    }
 }
