@@ -52,10 +52,7 @@ public class MainUI : MonoBehaviour
 
     public void SelectStage()
     {
-        GameManager.Instance.StageManager.selectedStageInfos = GameManager.Instance.StageManager.stages[currentStageIndex];
-        GameManager.Instance.StageManager.currentStage = 0;
-        GameManager.Instance.StageManager.Life = 3;
-        GameManager.Instance.StageManager.Coin = 0;
+        GameManager.Instance.StageManager.Initiate(currentStageIndex);
         GameManager.Instance.mainUI.SetActive(false);
         GameManager.Instance.characterSelectUI.SetActive(true);
     }

@@ -30,4 +30,11 @@ public class Shop : MonoBehaviour
             merchandiseOptions[i].Soldout = false;
         }
     }
+
+    public void Reroll()
+    {
+        if (GameManager.Instance.StageManager.Coin < GameManager.Instance.StageManager.RerollCost) return;
+        GameManager.Instance.StageManager.Coin -= GameManager.Instance.StageManager.RerollCost;
+        SetShop();
+    }
 }

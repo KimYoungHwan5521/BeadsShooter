@@ -113,6 +113,26 @@ public class StageManager : MonoBehaviour
     public List<Coin> coins = new();
     public List<Projectile> projectiles = new();
 
+    [Header("Shop")]
+    [SerializeField] TextMeshProUGUI shopFreeRerollText;
+    [SerializeField] TextMeshProUGUI shopRerollCostText;
+    int shopRerollStack;
+    public int RerollCost => shopFreeReroll > 0 ? 0 : (shopRerollStack + 1) * (shopRerollStack + 2);
+
+    int shopFreeReroll;
+    public int ShopFreeReroll
+    {
+        get => shopFreeReroll;
+        set
+        {
+            shopFreeReroll = Mathf.Max(value, 0);
+            shopFreeRerollText.text = $"Free Reroll x {shopFreeRerollText}";
+            if (Coin < RerollCost) shopRerollCostText.color = Color.red;
+            else shopRerollCostText.color = RerollCost > 0 ? Color.black : Color.green;
+            shopRerollCostText.text = $"{RerollCost}";
+        }
+    }
+
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
@@ -334,6 +354,16 @@ public class StageManager : MonoBehaviour
                 beadRefill = false;
             }
         }
+    }
+
+    public void Initiate(int currentStageIndex)
+    {
+        selectedStageInfos = stages[currentStageIndex];
+        currentStage = 0;
+        Life = 3;
+        Coin = 0;
+        shopRerollStack = 0;
+        ShopFreeReroll = 0;
     }
 
     public void StageSetting()
