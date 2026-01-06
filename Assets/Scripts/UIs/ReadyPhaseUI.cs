@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -15,11 +16,27 @@ public class ReadyPhaseUI : MonoBehaviour
     int selectedOption = -1;
 
     [Header("Place Material")]
+    int currentMaterialInt;
+    RewardFormat currentMaterialReward;
     [SerializeField] GameObject currentMaterial;
+    const int maxStoreCapacity = 3;
+    int storeCapacity;
+    public int StoreCapacity
+    {
+        get => storeCapacity;
+        set
+        {
+            storeCapacity = Math.Clamp(value, 0, maxStoreCapacity);
+        }
+    }
+    [SerializeField] GameObject storeButton;
+    [SerializeField] GameObject[] storedMaterials;
+    int[] storedMaterialsInfo = new int[maxStoreCapacity];
     [SerializeField] GameObject[] placedMaterialsObject;
     [SerializeField] int[,] placedMaterials = new int[Blueprint.ColumnCount, Blueprint.RowCount];
     int selectedGrid = -1;
     [SerializeField] GameObject placeButton;
+    [SerializeField] GameObject discardButton;
     [SerializeField] BlueprintDrawer[] blueprints;
 
     [Header("Build")]
@@ -41,6 +58,12 @@ public class ReadyPhaseUI : MonoBehaviour
         rewardOptionsBoxOuter.SetActive(true);
         hideOrShow.SetActive(true);
         currentMaterial.SetActive(false);
+        storeButton.SetActive(false);
+        for (int i = 0; i < storedMaterials.Length; i++)
+        {
+            storedMaterials[i].SetActive(i < StoreCapacity);
+            storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[storedMaterialsInfo[i]];
+        }
         currentBuild.SetActive(false);
 
         for(int i=0; i< Blueprint.RowCount; i++)
@@ -53,6 +76,7 @@ public class ReadyPhaseUI : MonoBehaviour
             }
         }
         placeButton.SetActive(false);
+        discardButton.SetActive(false);
 
         List<Blueprint> blueprintsData = GameManager.Instance.StageManager.bar.blueprints;
         for (int i = 0; i<blueprints.Length; i++)
@@ -69,6 +93,18 @@ public class ReadyPhaseUI : MonoBehaviour
         }
         SetOptions();
     }
+
+    public void StartNextStage()
+    {
+        if(isShop)
+        {
+            GameManager.Instance.readyPhaseWindow.SetActive(false);
+        }
+        else
+        {
+            GameManager.Instance.StartBattlePhase();
+        }
+    }
     
     public void HideOrShowRewardOptions()
     {
@@ -79,7 +115,7 @@ public class ReadyPhaseUI : MonoBehaviour
     {
         foreach(RewardOption rewardOption in rewardOptions)
         {
-            rewardOption.SetOption("", Random.Range(1, 5), randomReward[Random.Range(0, randomReward.Length)]);
+            rewardOption.SetOption("", UnityEngine.Random.Range(1, 5), randomReward[UnityEngine.Random.Range(0, randomReward.Length)]);
         }
     }
 
@@ -93,31 +129,50 @@ public class ReadyPhaseUI : MonoBehaviour
         if (selectedOption == -1) return;
         rewardOptionsBoxOuter.SetActive(false);
         hideOrShow.SetActive(true);
+        store = true;
+        storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
+        storeButton.SetActive(true);
+        currentMaterialInt = rewardOptions[selectedOption].materialType;
         currentMaterial.SetActive(true);
-        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
+        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
         placeButton.SetActive(true);
         placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
+        discardButton.SetActive(true);
         isShop = false;
         isDisplace = false;
     }
 
     public void SetPurchasedMaterial(ShopManager.MerchandiseInfo merchandise)
     {
+        startNextStage.SetActive(false);
         rewardOptionsBoxOuter.SetActive(false);
+        store = true;
+        storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
+        storeButton.SetActive(true);
+        for (int i = 0; i < storedMaterials.Length; i++)
+        {
+            storedMaterials[i].SetActive(i < StoreCapacity);
+            storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[storedMaterialsInfo[i]];
+        }
+        currentMaterialInt = merchandise.materialType;
+        currentMaterialReward = merchandise.reward;
         currentMaterial.SetActive(true);
-        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[merchandise.materialType];
+        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
         placeButton.SetActive(true);
         placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
+        discardButton.SetActive(true);
         isShop = true;
         isDisplace = false;
     }
 
     public void SetDisplace()
     {
+        startNextStage.SetActive(true);
         rewardOptionsBoxOuter.SetActive(false);
         currentMaterial.SetActive(false);
         placeButton.SetActive(true);
         placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Displace";
+        discardButton.SetActive(false);
         isShop = false;
         isDisplace = true;
     }
@@ -136,6 +191,8 @@ public class ReadyPhaseUI : MonoBehaviour
             {
                 placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = 0;
                 placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
+                storeButton.SetActive(storedMaterialsInfo[0] != 0);
+                storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Take Out";
                 placeButton.SetActive(false);
                 startNextStage.SetActive(true);
                 startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
@@ -145,15 +202,77 @@ public class ReadyPhaseUI : MonoBehaviour
         {
             if (placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] == 0)
             {
-                placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = rewardOptions[selectedOption].materialType;
-                placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[rewardOptions[selectedOption].materialType];
+                placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = currentMaterialInt;
+                placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
+                currentMaterialInt = 0;
                 currentMaterial.SetActive(false);
+                storeButton.SetActive(storedMaterialsInfo[0] != 0);
+                storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Take Out";
                 placeButton.SetActive(false);
+                discardButton.SetActive(false);
                 startNextStage.SetActive(true);
                 startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
-                ApplyMaterialStat(rewardOptions[selectedOption].reward);
+                if(currentMaterialReward != null) ApplyMaterialStat(currentMaterialReward);
                 CheckBuildable();
             }
+        }
+    }
+
+    public void Discard()
+    {
+        currentMaterial.SetActive(false);
+        storeButton.SetActive(false);
+        placeButton.SetActive(false);
+        discardButton.SetActive(false);
+        startNextStage.SetActive(true);
+    }
+
+    bool store;
+    public void Store()
+    {
+        if(store)
+        {
+            bool noStorageSpace = true;
+            for(int i = 0; i < storeCapacity; i++)
+            {
+                if (storedMaterialsInfo[i] == 0)
+                {
+                    storedMaterialsInfo[i] = currentMaterialInt;
+                    storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
+                    noStorageSpace = false;
+                    break;
+                }
+            }
+            if(noStorageSpace)
+            {
+                int temp = storedMaterialsInfo[storeCapacity - 1];
+                storedMaterialsInfo[storeCapacity - 1] = currentMaterialInt;
+                storedMaterials[storeCapacity - 1].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
+                currentMaterialInt = temp;
+                currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[temp];
+            }
+            currentMaterial.SetActive(noStorageSpace);
+            store = noStorageSpace;
+            storeButton.GetComponentInChildren<TextMeshProUGUI>().text = noStorageSpace ? "Store" : "Take Out";
+            placeButton.SetActive(noStorageSpace);
+            discardButton.SetActive(noStorageSpace);
+            startNextStage.SetActive(!noStorageSpace);
+        }
+        else
+        {
+            currentMaterialInt = storedMaterialsInfo[0];
+            currentMaterial.SetActive(true);
+            currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
+            store = true;
+            storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
+            placeButton.SetActive(true);
+            discardButton.SetActive(true);
+            for(int i=0; i<StoreCapacity; i++)
+            {
+                storedMaterials[i].GetComponentsInChildren<Image>()[1].color = i == StoreCapacity - 1 ? MaterialsColor.colors[0] : MaterialsColor.colors[storedMaterialsInfo[i + 1]];
+                storedMaterialsInfo[i] = i == StoreCapacity - 1 ? 0 : storedMaterialsInfo[i + 1];
+            }
+            startNextStage.SetActive(false);
         }
     }
 

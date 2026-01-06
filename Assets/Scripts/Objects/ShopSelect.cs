@@ -30,6 +30,7 @@ public class ShopSelect : MonoBehaviour
         else
         {
             RandomEvent();
+            return;
         }
         Time.timeScale = 0;
         GameManager.Instance.StageManager.currentStage++;

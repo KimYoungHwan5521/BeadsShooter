@@ -126,7 +126,7 @@ public class StageManager : MonoBehaviour
         set
         {
             shopFreeReroll = Mathf.Max(value, 0);
-            shopFreeRerollText.text = $"Free Reroll x {shopFreeRerollText}";
+            shopFreeRerollText.text = $"Free Reroll x {shopFreeReroll}";
             if (Coin < RerollCost) shopRerollCostText.color = Color.red;
             else shopRerollCostText.color = RerollCost > 0 ? Color.black : Color.green;
             shopRerollCostText.text = $"{RerollCost}";
@@ -235,9 +235,13 @@ public class StageManager : MonoBehaviour
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5), (new(BlockType.Attacker), 5)),
             GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -364,6 +368,7 @@ public class StageManager : MonoBehaviour
         Coin = 0;
         shopRerollStack = 0;
         ShopFreeReroll = 0;
+        GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
     }
 
     public void StageSetting()

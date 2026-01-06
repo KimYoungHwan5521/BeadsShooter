@@ -159,8 +159,7 @@ public class GameManager : MonoBehaviour
         readyPhaseWindow.SetActive(false);
         shopCanvas.SetActive(false);
         characterSelectUI.SetActive(false);
-        //CurRoundTimeLeft = roundTime;
-        if(!readyPhaseUI.IsShop) stageManager.StageSetting();
+        stageManager.StageSetting();
     }
 
     public void BattlePhaseStart()

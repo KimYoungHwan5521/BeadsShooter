@@ -75,7 +75,7 @@ public class Bar : CustomObject
 
     public void Shrink()
     {
-        BarLength = Mathf.Max(0.1f, barLength - 0.1f);
+        BarLength = Mathf.Max(0.3f, barLength - 0.1f);
         anim.SetTrigger("TakeDamage");
     }
 
