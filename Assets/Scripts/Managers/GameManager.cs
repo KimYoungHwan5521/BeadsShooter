@@ -42,7 +42,10 @@ public class GameManager : MonoBehaviour
     public GameObject mainUI;
     public GameObject characterSelectUI;
     Shop shop;
+    public Shop Shop => shop;
     public SelectCharacter selectCharacter;
+    public GameObject restOptions;
+
     public float barYPos;
 
     void Awake()
