@@ -112,6 +112,10 @@ public class StageManager : MonoBehaviour
     public List<Bead> beads;
     public List<Coin> coins = new();
     public List<Projectile> projectiles = new();
+    [SerializeField] GameObject ongoingQuestsBox;
+    [SerializeField] GameObject[] ongoingQuestsObject;
+    [SerializeField] Image questHideButtonArrow;
+    public List<QuestManager.Quest> ongoingQuests = new();
 
     [Header("Shop")]
     [SerializeField] TextMeshProUGUI shopFreeRerollText;
@@ -283,6 +287,7 @@ public class StageManager : MonoBehaviour
                     int reverse = i % 2 == 0 ? 1 : -1;
                     Vector2 destination = new(bar.transform.position.x + reverse * ((i + 1) / 2), bar.transform.position.y + 0.51f);
                     beads[i].transform.position += (Vector3)((destination - (Vector2)beads[i].transform.position)).normalized * 20 * Time.unscaledDeltaTime;
+                    beads[i].Strike = 0;
                 }
             }
             wantDown -= 0.2f;
@@ -803,5 +808,68 @@ public class StageManager : MonoBehaviour
         newBead.activated = false;
         beads.Add(newBead);
         bar.grabbedBeads.Add(newBead);
+    }
+
+    public void ApplyReward(RewardFormat reward)
+    {
+        switch (reward.rewardType)
+        {
+            case RewardType.AttackDamage:
+                return;
+            default:
+                return;
+        }
+    }
+
+    public void ApplyRewards(List<RewardFormat> rewards)
+    {
+        foreach(RewardFormat reward in rewards) ApplyReward(reward);
+    }
+
+    public void AddQuest(QuestManager.Quest quest)
+    {
+        ongoingQuests.Add(quest);
+        ongoingQuestsBox.SetActive(true);
+        ongoingQuestsObject[ongoingQuests.Count].GetComponentInChildren<TextMeshProUGUI>().text = quest.Explain;
+    }
+
+    bool questHided;
+    public void HideOrShowQuest()
+    {
+        if(questHided)
+        {
+            for (int i = 0; i < ongoingQuestsObject.Length; i++)
+            {
+                ongoingQuestsObject[i].SetActive(i < ongoingQuests.Count);
+            }
+            questHideButtonArrow.transform.localScale = new(-1, 1, 1);
+        }
+        else
+        {
+            for(int i = 0; i < ongoingQuestsObject.Length; i++)
+            {
+                ongoingQuestsObject[i].SetActive(false);
+            }
+            questHideButtonArrow.transform.localScale = Vector3.one;
+        }
+        questHided = !questHided;
+    }
+
+    public void ClearQuest(QuestManager.Quest quest)
+    {
+        ApplyRewards(quest.rewards);
+        ongoingQuests.Remove(quest);
+        if(ongoingQuests.Count == 0)
+        {
+            ongoingQuestsBox.SetActive(false);
+        }
+        else
+        {
+            for (int i = 0; i < ongoingQuestsObject.Length; i++)
+            {
+                ongoingQuestsObject[i].SetActive(i < ongoingQuests.Count);
+                if (i < ongoingQuests.Count) ongoingQuestsObject[i].GetComponentInChildren<TextMeshProUGUI>().text = ongoingQuests[i].Explain;
+            }
+        }
     }
 }

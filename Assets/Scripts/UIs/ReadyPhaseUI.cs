@@ -212,7 +212,7 @@ public class ReadyPhaseUI : MonoBehaviour
                 discardButton.SetActive(false);
                 startNextStage.SetActive(true);
                 startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
-                if(currentMaterialReward != null) ApplyMaterialStat(currentMaterialReward);
+                if(currentMaterialReward != null) GameManager.Instance.StageManager.ApplyReward(currentMaterialReward);
                 CheckBuildable();
             }
         }
@@ -276,16 +276,6 @@ public class ReadyPhaseUI : MonoBehaviour
         }
     }
 
-    void ApplyMaterialStat(RewardFormat reward)
-    {
-        switch(reward.rewardType)
-        {
-            case RewardType.AttackDamage:
-                return;
-            default:
-                return;
-        }
-    }
 
     class Buildable
     {
@@ -519,7 +509,7 @@ public class ReadyPhaseUI : MonoBehaviour
                 placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = 0;
             }
         }
-        ApplyMaterialStat(buildables[currentBuildableIndex].blueprint.reward);
+        GameManager.Instance.StageManager.ApplyReward(buildables[currentBuildableIndex].blueprint.reward);
         CheckBuildable();
     }
 }

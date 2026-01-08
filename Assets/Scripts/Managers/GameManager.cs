@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     public CharacterManager CharacterManager => characterManager;
     ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
+    QuestManager questManager;
+    public QuestManager QuestManager => questManager;
     //public LoadingCanvas loadingCanvas;
 
     public GameObject blueprintDetail;
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
     public Shop Shop => shop;
     public SelectCharacter selectCharacter;
     public GameObject restOptions;
+    public GameObject[] randomEvents;
 
     public float barYPos;
 
@@ -85,6 +88,8 @@ public class GameManager : MonoBehaviour
         yield return characterManager.Initiate();
         shopManager = new ShopManager();
         yield return shopManager.Initiate();
+        questManager = new QuestManager();
+        yield return questManager.Initiate();
 
         gameReady = true;
         SetCameraAspect();
@@ -204,6 +209,14 @@ public class GameManager : MonoBehaviour
         shop.SetShop();
     }
 
+    public void RandomEvent()
+    {
+        int rand = UnityEngine.Random.Range(0, randomEvents.Length);
+        for (int i = 0; i < randomEvents.Length; i++)
+        {
+            randomEvents[i].SetActive(i == rand);
+        }
+    }
 
     public static void ClaimLoadInfo(string info, int numerator = 0, int denominator = 1)
     {

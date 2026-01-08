@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShopManager
 {
-    public enum MerchandiseType { ETC, Material, Blueprint, Consumable }
+    public enum MerchandiseType { ETC, Material, Blueprint, Consumable, Accessory }
 
     public class MerchandiseInfo
     {
@@ -50,6 +50,7 @@ public class ShopManager
     }
 
     public List<MerchandiseInfo> merchandises;
+    public List<MerchandiseInfo> rareMerchandises;
 
     public IEnumerator Initiate()
     {
@@ -62,6 +63,10 @@ public class ShopManager
             new("Blueprint1", MerchandiseType.Blueprint, new Blueprint(new int[,] { { 3, 4, 3 } }, new(RewardType.AttackDamage, 0.5f)), 20),
             new("Reroll", MerchandiseType.Consumable, new RewardFormat(RewardType.Reroll, 1), 10),
             new("Life", MerchandiseType.Consumable, new RewardFormat(RewardType.Life, 1), 10),
+        };
+        rareMerchandises = new()
+        {
+            new("Rare Item", MerchandiseType.Accessory,  new RewardFormat(RewardType.AttackDamage, 1), 100),
         };
         yield return null;
     }

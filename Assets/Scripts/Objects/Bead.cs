@@ -43,6 +43,20 @@ public class Bead : CustomObject
             else gameObject.layer = LayerMask.NameToLayer("Bead");
         }
     }
+    int strike;
+    public int Strike
+    {
+        get => strike;
+        set
+        {
+            strike = value;
+            QuestManager.Quest strikeQ = GameManager.Instance.StageManager.ongoingQuests.Find(x => x.conditionType == QuestManager.Condition.Strike);
+            if (strikeQ != null && strikeQ.conditionQuantaty <= value)
+            {
+                GameManager.Instance.StageManager.ClearQuest(strikeQ);
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -120,7 +134,7 @@ public class Bead : CustomObject
         {
             if(!IsFake)
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeDamage(damage, this);
                 GameManager.Instance.StageManager.FeverGauge++;
             }
         }
@@ -132,6 +146,7 @@ public class Bead : CustomObject
                 temporarySpeedMagnification = 1;
                 SetDirection(transform.position - bar.transform.position);
                 GameManager.Instance.StageManager.FeverHalf = true;
+                Strike = 0;
             }
         }
     }
@@ -140,7 +155,7 @@ public class Bead : CustomObject
     {
         if(collision.TryGetComponent(out SplitBlock split))
         {
-            split.TakeDamage(damage);
+            split.TakeDamage(damage, this);
         }
         else if(collision.TryGetComponent(out Area area))
         {

@@ -5,7 +5,6 @@ public class Enemy : CustomObject
     //Animator animator;
     //[SerializeField] Image hpBar;
     protected int stage;
-    //[SerializeField] Vector2 moveDirection = Vector2.down;
     protected bool isDead;
     public bool IsDead
     {
@@ -18,6 +17,7 @@ public class Enemy : CustomObject
                 GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
                 GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
                 GameManager.Instance.StageManager.currentStageWalls.Remove(gameObject);
+                if (attaker != null) attaker.Strike++;
                 PoolManager.Despawn(gameObject);
                 GameManager.Instance.StageManager.StageClearCheck();
 
@@ -45,6 +45,7 @@ public class Enemy : CustomObject
     }
     protected int coins;
     public bool isInvincible;
+    protected Bead attaker;
 
     protected override void Start()
     {
@@ -69,7 +70,13 @@ public class Enemy : CustomObject
 
     public virtual void TakeDamage(float damage)
     {
+        TakeDamage(damage, null);
+    }
+
+    public virtual void TakeDamage(float damage, Bead attaker)
+    {
         if (isInvincible) return;
+        this.attaker = attaker;
         CurHP -= damage;
     }
 }

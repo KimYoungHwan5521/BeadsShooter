@@ -82,17 +82,23 @@ public class SplitterBlock : Block
 
     public override void TakeDamage(float damage)
     {
+        TakeDamage(damage, null);
+    }
+
+    public override void TakeDamage(float damage, Bead attaker)
+    {
+        this.attaker = attaker;
         if(!fullBody.IsDead)
         {
-            fullBody.TakeDamage(damage);
+            fullBody.TakeDamage(damage, attaker);
         }
         else if(!halfBody1.IsDead)
         {
-            halfBody1.TakeDamage(damage);
+            halfBody1.TakeDamage(damage, attaker);
         }
         else if(!halfBody2.IsDead)
         {
-            halfBody2.TakeDamage(damage);
+            halfBody2.TakeDamage(damage, attaker);
         }
     }
 }
