@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RandomEvents : MonoBehaviour
 {
@@ -10,13 +11,15 @@ public class RandomEvents : MonoBehaviour
     [SerializeField] TextMeshProUGUI questText;
     [SerializeField] TextMeshProUGUI rewardText;
     [SerializeField] MerchandiseOption merchandiseOption;
-    List<RewardFormat> rewards;
+    [SerializeField] Button rerollButton;
+    List<RewardFormat> rewards = new();
 
     QuestManager.Quest quest;
 
     private void OnEnable()
     {
-        switch(type)
+        rewards.Clear();
+        switch (type)
         {
             case EventType.Quest:
                 SetRandomQuest();
@@ -28,6 +31,7 @@ public class RandomEvents : MonoBehaviour
                 SetRandomMerchandise();
                 break;
             case EventType.GetRandomStat:
+                SetRandomRewards();
                 break;
         }
     }
@@ -42,6 +46,7 @@ public class RandomEvents : MonoBehaviour
             if(i != 0) rewardExplain += ", ";
             rewardExplain += quest.rewards[i].Explain;
         }
+        rewardText.text = rewardExplain;
     }
 
     void Rest()
@@ -58,14 +63,40 @@ public class RandomEvents : MonoBehaviour
         merchandiseOption.Soldout = false;
     }
 
+    void SetRandomRewards()
+    {
+        questText.text = "You can sacrifice 0.1 bar length to gain 3 random stat rewards.";
+        bool interactable = GameManager.Instance.StageManager.bar.BarLength >= GameManager.Instance.StageManager.bar.BarMinLength + 0.1;
+        rerollButton.interactable = interactable;
+    }
+
+    public void RerollRewards()
+    {
+        GameManager.Instance.StageManager.bar.Shrink(0.1f);
+        rewards.Clear();
+        rewards.Add(GameManager.Instance.StageManager.GetRandomeReward());
+        rewards.Add(GameManager.Instance.StageManager.GetRandomeReward());
+        rewards.Add(GameManager.Instance.StageManager.GetRandomeReward());
+
+        string rewardExplain = "";
+        for (int i = 0; i < rewards.Count; i++)
+        {
+            if (i != 0) rewardExplain += ", ";
+            rewardExplain += rewards[i].Explain;
+        }
+        questText.text = rewardExplain;
+    }
+
     public void AcceptQuest()
     {
         GameManager.Instance.StageManager.AddQuest(quest);
+        GameManager.Instance.Shop.ExitShop();
     }
 
     public void ConfirmOrDecline()
     {
         gameObject.SetActive(false);
+        GameManager.Instance.StageManager.ApplyRewards(rewards);
         GameManager.Instance.Shop.ExitShop();
     }
 }

@@ -137,6 +137,8 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    RewardFormat[] randomRewards = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
+
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
@@ -239,13 +241,21 @@ public class StageManager : MonoBehaviour
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
             //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5), (new(BlockType.Attacker), 5)),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
+            GenerateShopStage(),
             GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -808,6 +818,11 @@ public class StageManager : MonoBehaviour
         newBead.activated = false;
         beads.Add(newBead);
         bar.grabbedBeads.Add(newBead);
+    }
+
+    public RewardFormat GetRandomeReward()
+    {
+        return randomRewards[Random.Range(0, randomRewards.Length)];
     }
 
     public void ApplyReward(RewardFormat reward)

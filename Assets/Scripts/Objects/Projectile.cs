@@ -30,7 +30,7 @@ public class Projectile : CustomObject
             {
                 GameManager.Instance.StageManager.projectiles.Remove(this);
                 PoolManager.Despawn(gameObject);
-                bar.Shrink();
+                bar.Shrink(0.1f);
             }
         }
     }

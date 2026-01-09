@@ -11,13 +11,15 @@ public class Bar : CustomObject
     [SerializeField] Animator anim;
 
     const float originalLength = 4;
+    const float barMinLength = 0.3f;
+    public float BarMinLength => barMinLength;
     float barLength = 1;
     public float BarLength
     {
         get => barLength;
         set
         {
-            barLength = value;
+            barLength = Mathf.Max(barMinLength, value);
             barBody.transform.localScale = new(originalLength * barLength, 0.5f);
         }
     }
@@ -73,9 +75,9 @@ public class Bar : CustomObject
         blueprints = characterData.blueprints.ToList();
     }
 
-    public void Shrink()
+    public void Shrink(float value)
     {
-        BarLength = Mathf.Max(0.3f, barLength - 0.1f);
+        BarLength -= value;
         anim.SetTrigger("TakeDamage");
     }
 

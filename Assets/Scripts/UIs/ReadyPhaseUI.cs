@@ -45,7 +45,6 @@ public class ReadyPhaseUI : MonoBehaviour
     [SerializeField] Button rightArrow;
     [SerializeField] BlueprintDrawer currentBuildBlueprint;
 
-    readonly RewardFormat[] randomReward = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
     bool isShop;
     bool isDisplace;
     public bool IsShop => isShop;
@@ -115,7 +114,7 @@ public class ReadyPhaseUI : MonoBehaviour
     {
         foreach(RewardOption rewardOption in rewardOptions)
         {
-            rewardOption.SetOption("", UnityEngine.Random.Range(1, 5), randomReward[UnityEngine.Random.Range(0, randomReward.Length)]);
+            rewardOption.SetOption("", UnityEngine.Random.Range(1, 5), GameManager.Instance.StageManager.GetRandomeReward());
         }
     }
 
