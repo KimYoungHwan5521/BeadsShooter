@@ -40,13 +40,12 @@ public class Shop : MonoBehaviour
 
     public void ExitShop()
     {
-        Time.timeScale = 0;
         GameManager.Instance.StageManager.currentStage++;
-        GameManager.Instance.phase = GameManager.Phase.ReadyPhase;
         foreach (var shop in GameManager.Instance.StageManager.currentStageEnemies)
         {
             PoolManager.Despawn(shop.gameObject);
         }
         GameManager.Instance.StageManager.currentStageEnemies.Clear();
+        GameManager.Instance.ReadyPhase();
     }
 }

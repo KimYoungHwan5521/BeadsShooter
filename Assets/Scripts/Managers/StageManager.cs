@@ -243,20 +243,15 @@ public class StageManager : MonoBehaviour
             //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5), (new(BlockType.Attacker), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter), 5), (new(BlockType.Attacker), 5)),
             GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
-            GenerateShopStage(),
+            //GenerateShopStage(),
+            //GenerateShopStage(),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 20)),
             GenerateBossStage(BlockType.Boss1),
 
             //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
@@ -845,7 +840,11 @@ public class StageManager : MonoBehaviour
     {
         ongoingQuests.Add(quest);
         ongoingQuestsBox.SetActive(true);
-        ongoingQuestsObject[ongoingQuests.Count].GetComponentInChildren<TextMeshProUGUI>().text = quest.Explain;
+        for (int i = 0; i < ongoingQuestsObject.Length; i++)
+        {
+            ongoingQuestsObject[i].SetActive(i < ongoingQuests.Count);
+        }
+        ongoingQuestsObject[ongoingQuests.Count - 1].GetComponentInChildren<TextMeshProUGUI>().text = quest.Explain;
     }
 
     bool questHided;

@@ -7,6 +7,7 @@ public class ShopSelect : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Time.timeScale = 0;
         if(type == 0)
         {
             GameManager.Instance.OpenShop();

@@ -66,13 +66,15 @@ public class RandomEvents : MonoBehaviour
     void SetRandomRewards()
     {
         questText.text = "You can sacrifice 0.1 bar length to gain 3 random stat rewards.";
-        bool interactable = GameManager.Instance.StageManager.bar.BarLength >= GameManager.Instance.StageManager.bar.BarMinLength + 0.1;
+        bool interactable = GameManager.Instance.StageManager.bar.BarLength >= GameManager.Instance.StageManager.bar.BarMinLength + 0.1f;
         rerollButton.interactable = interactable;
     }
 
     public void RerollRewards()
     {
         GameManager.Instance.StageManager.bar.Shrink(0.1f);
+        bool interactable = GameManager.Instance.StageManager.bar.BarLength >= GameManager.Instance.StageManager.bar.BarMinLength + 0.1f;
+        rerollButton.interactable = interactable;
         rewards.Clear();
         rewards.Add(GameManager.Instance.StageManager.GetRandomeReward());
         rewards.Add(GameManager.Instance.StageManager.GetRandomeReward());
@@ -89,6 +91,7 @@ public class RandomEvents : MonoBehaviour
 
     public void AcceptQuest()
     {
+        gameObject.SetActive(false);
         GameManager.Instance.StageManager.AddQuest(quest);
         GameManager.Instance.Shop.ExitShop();
     }
