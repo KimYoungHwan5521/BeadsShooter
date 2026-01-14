@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class CounterBlock : Block
 {
-    [SerializeField] GameObject activatedSquare;
+    SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite activedSprite;
+    [SerializeField] Sprite caughtSprite;
+    [SerializeField] Sprite inactivedSprite;
     BoxCollider2D col;
     //[SerializeField] bool counterActivated;
     [SerializeField] Bead caughted;
@@ -14,6 +17,7 @@ public class CounterBlock : Block
     {
         base.Awake();
         col = GetComponent<BoxCollider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     protected override void OnEnable()
@@ -21,7 +25,7 @@ public class CounterBlock : Block
         base.OnEnable();
         //counterActivated = true;
         col.isTrigger = true;
-        activatedSquare.SetActive(true);
+        spriteRenderer.sprite = activedSprite;
     }
 
     protected override void MyUpdate()
@@ -31,6 +35,7 @@ public class CounterBlock : Block
             curCaughtTime += Time.deltaTime;
             if(curCaughtTime > caughtTime)
             {
+                spriteRenderer.sprite = inactivedSprite;
                 caughted.SetDirection(Vector2.down + Vector2.right * Random.Range(-1f, 1f));
                 caughted.temporarySpeedMagnification *= counterSpeed;
                 caughted.stop = false;
@@ -43,6 +48,7 @@ public class CounterBlock : Block
     {
         if(collision.TryGetComponent(out Bead bead))
         {
+            spriteRenderer.sprite = caughtSprite;
             caughted = bead;
             caughted.transform.position = transform.position;
             caughted.stop = true;
@@ -55,7 +61,6 @@ public class CounterBlock : Block
         {
             //counterActivated = false;
             col.isTrigger = false;
-            activatedSquare.SetActive(false);
             caughted = null;
         }
     }

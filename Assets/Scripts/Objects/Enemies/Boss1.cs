@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Boss1 : Enemy
 {
-    [SerializeField] GameObject activatedSquare;
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite activedSprite;
+    [SerializeField] Sprite inactivedSprite;
     [SerializeField] GameObject shield;
-    BoxCollider2D col;
+    Collider2D col;
     [SerializeField] Bead caughted;
     [SerializeField] float counterSpeed = 2f;
     [SerializeField] float caughtTime = 1f;
@@ -27,21 +29,22 @@ public class Boss1 : Enemy
             {
                 counterCool -= 0.2f;
                 col.isTrigger = true;
-                activatedSquare.SetActive(true);
+                spriteRenderer.sprite = activedSprite;
             }
         }
     }
 
     protected void Awake()
     {
-        col = GetComponentInChildren<BoxCollider2D>(true);
+        col = GetComponentInChildren<Collider2D>(true);
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
     }
 
     protected override void OnEnable()
     {
         base.OnEnable();
         col.isTrigger = true;
-        activatedSquare.SetActive(true);
+        spriteRenderer.sprite = activedSprite;
         curTemporaryInactiveTime = temporaryInactiveTime;
         shield.SetActive(false);
         counterCool = 0.8f;
@@ -50,11 +53,13 @@ public class Boss1 : Enemy
 
     protected override void MyUpdate()
     {
+        if (!gameObject.activeSelf) return;
         if (caughted != null)
         {
             curCaughtTime += Time.deltaTime;
             if (curCaughtTime > caughtTime)
             {
+                spriteRenderer.sprite = inactivedSprite;
                 caughted.SetDirection(Vector2.down + Vector2.right * Random.Range(-1f, 1f));
                 caughted.temporarySpeedMagnification *= counterSpeed;
                 caughted.stop = false;
@@ -94,7 +99,6 @@ public class Boss1 : Enemy
         if (collision.TryGetComponent(out Bead bead) && bead == caughted)
         {
             col.isTrigger = false;
-            activatedSquare.SetActive(false);
             caughted = null;
         }
     }
