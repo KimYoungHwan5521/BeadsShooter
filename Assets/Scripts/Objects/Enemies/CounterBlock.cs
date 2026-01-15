@@ -28,11 +28,11 @@ public class CounterBlock : Block
         spriteRenderer.sprite = activedSprite;
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if(caughted != null)
         {
-            curCaughtTime += Time.deltaTime;
+            curCaughtTime += deltaTime;
             if(curCaughtTime > caughtTime)
             {
                 spriteRenderer.sprite = inactivedSprite;

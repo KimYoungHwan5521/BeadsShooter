@@ -9,6 +9,8 @@ public class Bar : CustomObject
     [SerializeField] Sprite dottedLineSprite;
     [SerializeField] GameObject character;
     [SerializeField] Animator anim;
+    public FeverAction fever;
+    public int feverLevel = 0;
 
     const float originalLength = 4;
     const float barMinLength = 0.3f;
@@ -73,6 +75,8 @@ public class Bar : CustomObject
     {
         moveSpeed = characterData.moveSpeed;
         blueprints = characterData.blueprints.ToList();
+        fever = characterData.fever;
+        feverLevel = 0;
     }
 
     public void Shrink(float value)
@@ -105,5 +109,6 @@ public class Bar : CustomObject
     public void Fever()
     {
         anim.SetTrigger("Fever");
+        fever?.Invoke(feverLevel);
     }
 }

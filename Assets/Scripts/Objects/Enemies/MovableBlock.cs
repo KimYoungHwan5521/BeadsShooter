@@ -38,7 +38,7 @@ public class MovableBlock : Block
         GameManager.Instance.ObjectStart += () => { rigid.bodyType = RigidbodyType2D.Dynamic; };
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if (IsDead) return;
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase) rigid.linearVelocity = Vector2.zero;

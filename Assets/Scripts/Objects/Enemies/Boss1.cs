@@ -51,12 +51,12 @@ public class Boss1 : Enemy
         curAttackCool = 0;
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
         if (caughted != null)
         {
-            curCaughtTime += Time.deltaTime;
+            curCaughtTime += deltaTime;
             if (curCaughtTime > caughtTime)
             {
                 spriteRenderer.sprite = inactivedSprite;

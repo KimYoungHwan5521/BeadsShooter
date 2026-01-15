@@ -17,11 +17,11 @@ public class SplitterBlock : Block
         curReunionTime = 0;
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if(isSplit && !halfBody1.IsDead && !halfBody2.IsDead)
         {
-            curReunionTime += Time.deltaTime;
+            curReunionTime += deltaTime;
             halfBody1.transform.localPosition = new(-1 + curReunionTime / reunionTime, 0, 0);
             halfBody2.transform.localPosition = new(1 - curReunionTime / reunionTime, 0, 0);
             if(curReunionTime > reunionTime)

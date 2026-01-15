@@ -11,11 +11,11 @@ public class AttackerBlock : Block
         curAttackCool = 0;
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
 
-        curAttackCool += Time.deltaTime;
+        curAttackCool += deltaTime;
         if(curAttackCool > attackCool )
         {
             PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, transform.position);

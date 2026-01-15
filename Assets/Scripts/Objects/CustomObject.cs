@@ -10,7 +10,7 @@ public class CustomObject : MonoBehaviour
     }
 
     protected virtual void MyStart() { }
-    protected virtual void MyUpdate() { }
+    protected virtual void MyUpdate(float deltaTime) { }
     protected virtual void MyDestroy()
     {
         GameManager.Instance.ObjectUpdate -= MyUpdate;

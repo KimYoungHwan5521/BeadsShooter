@@ -249,18 +249,14 @@ public class StageManager : MonoBehaviour
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1)), 20)),
-            //RandomStageGenerate((new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2,1)), 10)),
-            //RandomStageGenerate((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Normal, new Vector2Int(2, 3)), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
-            GenerateBossStage(BlockType.Boss1),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter, new Vector2Int(2,2)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.Counter, new Vector2Int(2,2)), 5), (new(BlockType.Attacker), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2)), 5), (new(BlockType.Attacker), 5)),
             GenerateShopStage(),
             //GenerateShopStage(),
             //GenerateShopStage(),
@@ -809,11 +805,6 @@ public class StageManager : MonoBehaviour
     public void Fever()
     {
         if (currentStageEnemies.Count == 0) return;
-        int rand = Random.Range(0, currentStageEnemies.Count);
-        Enemy target = currentStageEnemies[rand];
-        LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverAttack).GetComponent<LineRenderer>();
-        line.SetPositions(new Vector3[]{ bar.transform.position, target.transform.position });
-        target.TakeDamage(1);
         FeverCharged = false;
         feverGauge = 0;
         bar.Fever();

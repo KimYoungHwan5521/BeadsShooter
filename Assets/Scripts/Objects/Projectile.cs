@@ -10,10 +10,10 @@ public class Projectile : CustomObject
         GameManager.Instance.StageManager.projectiles.Add(this);
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
-        transform.position += speed * Vector3.down * Time.deltaTime;
+        transform.position += speed * Vector3.down * deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

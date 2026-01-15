@@ -6,11 +6,11 @@ public class DrippingBlock : MovableBlock
     [SerializeField] float drippingCool;
     [SerializeField] float curDrippingCool;
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if(IsDead) return;
-        base.MyUpdate();
-        curDrippingCool += Time.deltaTime;
+        base.MyUpdate(deltaTime);
+        curDrippingCool += deltaTime;
         if(curDrippingCool > drippingCool)
         {
             curDrippingCool = 0;

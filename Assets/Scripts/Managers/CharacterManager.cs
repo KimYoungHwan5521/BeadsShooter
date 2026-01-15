@@ -13,7 +13,7 @@ public class CharacterManager
             BlueprintManager.blueprints[1],
             BlueprintManager.blueprints[2],
         };
-        characters.Add(new("Ball Handler", 20, blueprints));
+        characters.Add(new("Laser man", 20, blueprints, FeverManager.FeverName.Laser));
         yield return null;
     }
 }

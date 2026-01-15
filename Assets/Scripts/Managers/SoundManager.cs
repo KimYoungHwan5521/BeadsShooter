@@ -61,7 +61,7 @@ public class SoundManager
         yield return null;
     }
 
-    void SoundManagerUpdate()
+    void SoundManagerUpdate(float deltaTime)
     {
         AudioEffectUpdate?.Invoke();
     }

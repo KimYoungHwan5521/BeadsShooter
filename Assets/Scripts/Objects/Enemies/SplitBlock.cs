@@ -43,11 +43,11 @@ public class SplitBlock : Block
         col = GetComponent<Collider2D>();
     }
 
-    protected override void MyUpdate()
+    protected override void MyUpdate(float deltaTime)
     {
         if(isInvincible)
         {
-            curInvincibleTime += Time.deltaTime;
+            curInvincibleTime += deltaTime;
             if(curInvincibleTime > invincibleTime)
             {
                 col.enabled = true;

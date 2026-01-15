@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public delegate void CustomStart();
-public delegate void CustomUpdate();
+public delegate void CustomUpdate(float deltaTime);
 public delegate void CustomDestroy();
 
 public class GameManager : MonoBehaviour
@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     public ResourceManager ResourceManager => resourceManager;
     SoundManager soundManager;
     public SoundManager SoundManager => soundManager;
+    FeverManager feverManager;
+    public FeverManager FeverManager => feverManager;
     PoolManager poolManager;
     public PoolManager PoolManager => poolManager;
     StageManager stageManager;
@@ -82,6 +84,8 @@ public class GameManager : MonoBehaviour
         yield return soundManager.Initiate();
         poolManager = new PoolManager();
         yield return poolManager.Initiate();
+        feverManager = new FeverManager();
+        yield return feverManager.Initiate();
         blueprintManager = new BlueprintManager();
         yield return blueprintManager.Initiate();
         characterManager = new CharacterManager();
@@ -93,7 +97,6 @@ public class GameManager : MonoBehaviour
 
         gameReady = true;
         SetCameraAspect();
-        ManagerUpdate += BattlePhaseUpdate;
         //CloseLoadInfo();
     }
 
@@ -109,8 +112,8 @@ public class GameManager : MonoBehaviour
         ObjectStart?.Invoke();
         ObjectStart = null;
 
-        ManagerUpdate?.Invoke();
-        ObjectUpdate?.Invoke();
+        ManagerUpdate?.Invoke(Time.deltaTime);
+        ObjectUpdate?.Invoke(Time.deltaTime);
 
         ObjectDestroy?.Invoke();
         ObjectDestroy = null;
@@ -185,14 +188,12 @@ public class GameManager : MonoBehaviour
 
     }
 
-    void BattlePhaseUpdate()
-    {
-    }
 
     public void ReadyPhase()
     {
         readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
+        ObjectUpdate = null;
         phase = Phase.ReadyPhase;
     }
 
