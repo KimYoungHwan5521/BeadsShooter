@@ -17,7 +17,7 @@ public class SplitterBlock : Block
         curReunionTime = 0;
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if(isSplit && !halfBody1.IsDead && !halfBody2.IsDead)
         {

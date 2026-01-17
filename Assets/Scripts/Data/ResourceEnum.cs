@@ -6,6 +6,7 @@ namespace ResourceEnum
 
         Slime,
         NormalBlock,
+        Wall,
         ShieldBlock,
         CounterBlock,
         PentagonalBlock,

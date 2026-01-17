@@ -51,7 +51,7 @@ public class Boss1 : Enemy
         curAttackCool = 0;
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
         if (caughted != null)
@@ -70,14 +70,14 @@ public class Boss1 : Enemy
 
         if(shieldTemporaryInactivated)
         {
-            curTemporaryInactiveTime += Time.deltaTime;
+            curTemporaryInactiveTime += deltaTime;
             if(curTemporaryInactiveTime > temporaryInactiveTime)
             {
                 ShieldReactive();
             }
         }
 
-        curAttackCool += Time.deltaTime;
+        curAttackCool += deltaTime;
         if(curAttackCool > attackCool)
         {
             Attack();

@@ -11,7 +11,7 @@ public class AttackerBlock : Block
         curAttackCool = 0;
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
 

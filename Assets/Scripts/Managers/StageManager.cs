@@ -255,8 +255,8 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2)), 5), (new(BlockType.Attacker), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
             GenerateShopStage(),
             //GenerateShopStage(),
             //GenerateShopStage(),
@@ -300,6 +300,7 @@ public class StageManager : MonoBehaviour
                     beads[i].trail.Clear();
                     int reverse = i % 2 == 0 ? 1 : -1;
                     Vector2 destination = new(bar.transform.position.x + reverse * ((i + 1) / 2), bar.transform.position.y + 0.51f);
+                    if (Vector2.Distance(beads[i].transform.position, destination) < 0.1f) continue;
                     beads[i].transform.position += (Vector3)((destination - (Vector2)beads[i].transform.position)).normalized * 20 * Time.unscaledDeltaTime;
                     beads[i].Strike = 0;
                 }
@@ -452,7 +453,7 @@ public class StageManager : MonoBehaviour
         {
             for(int i=-5; i<=5; i++)
             {
-                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.Wall).GetComponent<Block>();
                 if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
                 if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
                 if (currentStage == 0) wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
@@ -460,7 +461,6 @@ public class StageManager : MonoBehaviour
                 wall.transform.SetParent(board, true);
                 wall.GetComponent<BoxCollider2D>().size = new(2,1);
                 wall.GetComponent<SpriteRenderer>().size = new(2,1);
-                wall.GetComponent<SpriteRenderer>().color = Color.gray;
                 wall.SetInfo(currentStage, 3, true, currentStage > 0);
                 if (clearBothStage) currentStageWalls.Add(wall.gameObject);
                 else nextStageWalls.Add(wall.gameObject);
@@ -481,14 +481,13 @@ public class StageManager : MonoBehaviour
 
                 for (int i = -5; i <= 5; i++)
                 {
-                    Block wall = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                    Block wall = PoolManager.Spawn(ResourceEnum.Prefab.Wall).GetComponent<Block>();
                     wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row + 1 + row);
                     if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
                     if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
                     wall.transform.SetParent(board, true);
                     wall.GetComponent<BoxCollider2D>().size = new(2, 1);
                     wall.GetComponent<SpriteRenderer>().size = new(2, 1);
-                    wall.GetComponent<SpriteRenderer>().color = Color.gray;
                     wall.SetInfo(currentStage + 1, 3, true, true);
                     nextStageWalls.Add(wall.gameObject);
                 }
@@ -531,7 +530,6 @@ public class StageManager : MonoBehaviour
             else
             {
                 block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                block.GetComponent<SpriteRenderer>().color = Color.white;
             }
 
             if (frontStage)

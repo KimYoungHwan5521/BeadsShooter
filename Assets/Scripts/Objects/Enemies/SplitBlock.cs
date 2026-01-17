@@ -43,7 +43,7 @@ public class SplitBlock : Block
         col = GetComponent<Collider2D>();
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if(isInvincible)
         {

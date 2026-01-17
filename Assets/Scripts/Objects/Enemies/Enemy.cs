@@ -47,15 +47,15 @@ public class Enemy : CustomObject
     public bool isInvincible;
     protected Bead attaker;
 
-    protected override void Start()
+    protected virtual void Start()
     {
         //animator = GetComponent<Animator>();
         //animator.SetFloat("moveSpeed", moveSpeed);
-        base.Start();
     }
 
-    protected virtual void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         IsDead = false;
         CurHP = maxHP;
     }

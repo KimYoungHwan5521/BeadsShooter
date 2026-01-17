@@ -5,12 +5,13 @@ public class Projectile : CustomObject
     [SerializeField] float damage;
     [SerializeField] float speed;
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         GameManager.Instance.StageManager.projectiles.Add(this);
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
         transform.position += speed * Vector3.down * deltaTime;

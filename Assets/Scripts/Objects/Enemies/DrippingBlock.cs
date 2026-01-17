@@ -6,7 +6,7 @@ public class DrippingBlock : MovableBlock
     [SerializeField] float drippingCool;
     [SerializeField] float curDrippingCool;
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if(IsDead) return;
         base.MyUpdate(deltaTime);

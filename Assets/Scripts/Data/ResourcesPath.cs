@@ -6,6 +6,7 @@ public class ResourcesPath
 
         "Prefabs/Enemies/Slime",
         "Prefabs/Enemies/NormalBlock",
+        "Prefabs/Enemies/Wall",
         "Prefabs/Enemies/ShieldBlock",
         "Prefabs/Enemies/CounterBlock",
         "Prefabs/Enemies/PentagonalBlock",

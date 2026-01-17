@@ -8,6 +8,7 @@ public delegate void CustomStart();
 public delegate void CustomUpdate(float deltaTime);
 public delegate void CustomDestroy();
 
+[DefaultExecutionOrder(-1000)]
 public class GameManager : MonoBehaviour
 {
     public static string gameVirsion = "1.0";
@@ -182,6 +183,15 @@ public class GameManager : MonoBehaviour
             bead.activated = false;
             stageManager.beads.Add(bead);
             stageManager.bar.grabbedBeads.Add(bead);
+        }
+        foreach(var enemy in stageManager.currentStageEnemies)
+        {
+            ObjectUpdate += enemy.MyUpdate;
+            ObjectUpdate += enemy.MyUpdateOnlyCurrentStage;
+        }
+        foreach (var enemy in stageManager.nextStageEnemies)
+        {
+            ObjectUpdate += enemy.MyUpdate;
         }
         phase = Phase.BattlePhase;
         Time.timeScale = 1f;

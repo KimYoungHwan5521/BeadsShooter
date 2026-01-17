@@ -28,7 +28,7 @@ public class CounterBlock : Block
         spriteRenderer.sprite = activedSprite;
     }
 
-    protected override void MyUpdate(float deltaTime)
+    public override void MyUpdate(float deltaTime)
     {
         if(caughted != null)
         {

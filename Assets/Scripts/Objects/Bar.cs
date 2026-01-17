@@ -8,7 +8,7 @@ public class Bar : CustomObject
     LineRenderer lineRenderer;
     [SerializeField] Sprite dottedLineSprite;
     [SerializeField] GameObject character;
-    [SerializeField] Animator anim;
+    //[SerializeField] Animator anim;
     public FeverAction fever;
     public int feverLevel = 0;
 
@@ -22,7 +22,8 @@ public class Bar : CustomObject
         set
         {
             barLength = Mathf.Max(barMinLength, value);
-            barBody.transform.localScale = new(originalLength * barLength, 0.5f);
+            barBody.GetComponent<SpriteRenderer>().size = new(originalLength * barLength, 1f);
+            barBody.GetComponent<BoxCollider2D>().size = new(originalLength * barLength, 1f);
         }
     }
     public List<Bead> grabbedBeads;
@@ -31,9 +32,8 @@ public class Bar : CustomObject
     public List<Blueprint> blueprints;
     public Color feverColor;
 
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
         yPos = GameManager.Instance.barYPos;
         transform.position = new Vector3(0, yPos, 0);
 
@@ -44,13 +44,14 @@ public class Bar : CustomObject
 
     public void MoveBar(float xPos)
     {
-        if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
-        {
-            anim.SetFloat("MoveSpeed", 0);
-            return;
-        }
+        if (Mathf.Abs(xPos - transform.position.x) < 0.1f) return;
+        //if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
+        //{
+        //    anim.SetFloat("MoveSpeed", 0);
+        //    return;
+        //}
+        //anim.SetFloat("MoveSpeed", moveSpeed);
         Vector2 direction = new Vector2(xPos - transform.position.x, 0).normalized;
-        anim.SetFloat("MoveSpeed", moveSpeed);
         character.transform.localScale = new(-direction.x, 1);
         transform.position += (Vector3)direction * moveSpeed * Time.unscaledDeltaTime;
         foreach(var bead in grabbedBeads)
@@ -82,7 +83,7 @@ public class Bar : CustomObject
     public void Shrink(float value)
     {
         BarLength -= value;
-        anim.SetTrigger("TakeDamage");
+        //anim.SetTrigger("TakeDamage");
     }
 
     public void DrawPredictionLine(Vector3 shotPosition)
@@ -108,7 +109,7 @@ public class Bar : CustomObject
 
     public void Fever()
     {
-        anim.SetTrigger("Fever");
+        //anim.SetTrigger("Fever");
         fever?.Invoke(feverLevel);
     }
 }
