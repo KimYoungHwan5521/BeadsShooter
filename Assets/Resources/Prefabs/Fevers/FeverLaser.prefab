@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8833998619225961740}
   - component: {fileID: 8790361147045722144}
   m_Layer: 0
-  m_Name: FeverAttack
+  m_Name: FeverLaser
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

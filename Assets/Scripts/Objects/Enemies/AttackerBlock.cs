@@ -18,7 +18,8 @@ public class AttackerBlock : Block
         curAttackCool += deltaTime;
         if(curAttackCool > attackCool )
         {
-            PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, transform.position);
+            Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, transform.position).GetComponent<Projectile>();
+            projectile.SetDirection(Vector2.down);
             curAttackCool = 0;
         }
     }

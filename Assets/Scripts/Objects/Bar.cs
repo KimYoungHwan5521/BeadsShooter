@@ -44,7 +44,7 @@ public class Bar : CustomObject
 
     public void MoveBar(float xPos)
     {
-        if (Mathf.Abs(xPos - transform.position.x) < 0.1f) return;
+        if (Mathf.Abs(xPos - transform.position.x) < 0.3f) return;
         //if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
         //{
         //    anim.SetFloat("MoveSpeed", 0);

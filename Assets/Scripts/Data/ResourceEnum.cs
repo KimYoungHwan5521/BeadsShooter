@@ -23,7 +23,9 @@ namespace ResourceEnum
 
         Coin,
 
-        FeverAttack,
+        FeverLaser,
+        FeverFireBall,
+
         ShopStage,
     }
 

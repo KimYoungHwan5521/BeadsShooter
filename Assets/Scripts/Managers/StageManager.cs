@@ -102,7 +102,9 @@ public class StageManager : MonoBehaviour
 
     [Header("Ingame")]
     [SerializeField] Transform board;
+    [SerializeField] TextMeshProUGUI currentStageText;
     [SerializeField] TextMeshProUGUI stageStartCountText;
+    int selectedStageIndex;
     public int currentStage = 0;
     public List<Enemy> currentStageEnemies;
     public List<Enemy> nextStageEnemies;
@@ -251,11 +253,11 @@ public class StageManager : MonoBehaviour
             // Stage 0
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
+            GenerateRandomStage((new(BlockType.Shield, new Vector2Int(2,1), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(2, 1)), 5), (new(BlockType.PentagonalBlock), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(2, 1)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
             GenerateShopStage(),
             //GenerateShopStage(),
@@ -297,10 +299,11 @@ public class StageManager : MonoBehaviour
                 // °ø È¸¼ö
                 for (int i = 0; i < beads.Count; i++)
                 {
+                    if (!beads[i].activated) continue;
                     beads[i].trail.Clear();
                     int reverse = i % 2 == 0 ? 1 : -1;
                     Vector2 destination = new(bar.transform.position.x + reverse * ((i + 1) / 2), bar.transform.position.y + 0.51f);
-                    if (Vector2.Distance(beads[i].transform.position, destination) < 0.1f) continue;
+                    if (Vector2.Distance(beads[i].transform.position, destination) < 0.3f) continue;
                     beads[i].transform.position += (Vector3)((destination - (Vector2)beads[i].transform.position)).normalized * 20 * Time.unscaledDeltaTime;
                     beads[i].Strike = 0;
                 }
@@ -382,6 +385,7 @@ public class StageManager : MonoBehaviour
 
     public void Initiate(int currentStageIndex)
     {
+        selectedStageIndex = currentStageIndex;
         selectedStageInfos = stages[currentStageIndex];
         currentStage = 0;
         Life = 3;
@@ -394,7 +398,6 @@ public class StageManager : MonoBehaviour
     public void StageSetting()
     {
         bool clearBothStage = nextStageEnemies.Count == 0;
-        Debug.Log($"{clearBothStage} currentStage : {currentStage}");
         if (!clearBothStage)
         {
             currentStageEnemies = nextStageEnemies.ToList();
@@ -429,6 +432,8 @@ public class StageManager : MonoBehaviour
         {
             PoolManager.Despawn(wall);
         }
+
+        currentStageText.text = $"Stage {selectedStageIndex} - {currentStage + 1}";
         if(!clearBothStage)
         {
             currentStageWalls = nextStageWalls.ToList();
@@ -656,7 +661,7 @@ public class StageManager : MonoBehaviour
                 bool discrimination = true;
                 int shieldPos = 0;
                 int xPos;
-                if(form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.Splitter) xPos = Random.Range(1, column - form.Item1.size.x);
+                if(form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.Splitter) xPos = Random.Range(1, column - form.Item1.size.x - 1);
                 else xPos = Random.Range(0, column - form.Item1.size.x + 1);
                 int yPos;
                 if (form.Item1.blockType == BlockType.Shield)
@@ -690,7 +695,7 @@ public class StageManager : MonoBehaviour
                     // 0 : down, 1 : left, 2 : right, 3 : up
                     if(shieldPos == 0)
                     {
-                        if (stageBoard[yPos - 1, xPos - 1] == 1 || stageBoard[yPos - 1, xPos] == 1 || stageBoard[yPos - 1, xPos + 1] == 1)
+                        if (stageBoard[yPos - 1, xPos - 1] == 1 || stageBoard[yPos - 1, xPos] == 1 || stageBoard[yPos - 1, xPos + 1] == 1 || stageBoard[yPos - 1, xPos + 2] == 1)
                         {
                             discrimination = false;
                         }
@@ -704,14 +709,14 @@ public class StageManager : MonoBehaviour
                     }
                     else if (shieldPos == 2)
                     {
-                        if (stageBoard[yPos - 1, xPos + 1] == 1 || stageBoard[yPos, xPos + 1] == 1 || stageBoard[yPos + 1, xPos + 1] == 1)
+                        if (stageBoard[yPos - 1, xPos + 2] == 1 || stageBoard[yPos, xPos + 2] == 1 || stageBoard[yPos + 1, xPos + 2] == 1)
                         {
                             discrimination = false;
                         }
                     }
                     else
                     {
-                        if (stageBoard[yPos + 1, xPos - 1] == 1 || stageBoard[yPos + 1, xPos] == 1 || stageBoard[yPos + 1, xPos + 1] == 1)
+                        if (stageBoard[yPos + 1, xPos - 1] == 1 || stageBoard[yPos + 1, xPos] == 1 || stageBoard[yPos + 1, xPos + 1] == 1 || stageBoard[yPos + 1, xPos + 2] == 1)
                         {
                             discrimination = false;
                         }
@@ -745,6 +750,7 @@ public class StageManager : MonoBehaviour
                         stageBoard[yPos - 1, xPos - 1] = 1;
                         stageBoard[yPos - 1, xPos] = 1;
                         stageBoard[yPos - 1, xPos + 1] = 1;
+                        stageBoard[yPos - 1, xPos + 2] = 1;
                     }
                     else if (shieldPos == 1)
                     {
@@ -754,15 +760,16 @@ public class StageManager : MonoBehaviour
                     }
                     else if (shieldPos == 2)
                     {
-                        stageBoard[yPos - 1, xPos + 1] = 1;
-                        stageBoard[yPos, xPos + 1] = 1;
-                        stageBoard[yPos + 1, xPos + 1] = 1;
+                        stageBoard[yPos - 1, xPos + 2] = 1;
+                        stageBoard[yPos, xPos + 2] = 1;
+                        stageBoard[yPos + 1, xPos + 2] = 1;
                     }
                     else
                     {
                         stageBoard[yPos + 1, xPos - 1] = 1;
                         stageBoard[yPos + 1, xPos] = 1;
                         stageBoard[yPos + 1, xPos + 1] = 1;
+                        stageBoard[yPos + 1, xPos + 2] = 1;
                     }
                 }
             }

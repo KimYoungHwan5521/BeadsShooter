@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using UnityEngine.Events;
+using UnityEngine;
 
 public class CharacterData
 {
@@ -7,6 +7,7 @@ public class CharacterData
     public float moveSpeed;
     public List<Blueprint> blueprints = new();
     public FeverAction fever;
+    public FeverManager.FeverName feverName;
 
     public CharacterData(string characterName, float moveSpeed, List<Blueprint> blueprints, FeverManager.FeverName fever)
     {
@@ -14,5 +15,6 @@ public class CharacterData
         this.moveSpeed = moveSpeed;
         this.blueprints = blueprints;
         this.fever = GameManager.Instance.FeverManager.Fevers[fever];
+        this.feverName = fever;
     }
 }

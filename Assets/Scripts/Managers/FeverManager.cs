@@ -30,13 +30,26 @@ public class FeverManager
                         {
                             int rand = Random.Range(0, GameManager.Instance.StageManager.currentStageEnemies.Count);
                             Enemy target = GameManager.Instance.StageManager.currentStageEnemies[rand];
-                            LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverAttack).GetComponent<LineRenderer>();
+                            LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverLaser).GetComponent<LineRenderer>();
                             line.SetPositions(new Vector3[] { GameManager.Instance.StageManager.bar.transform.position, target.transform.position });
                             target.TakeDamage(1);
                         };
                         actived = true;
                     }
                 };
+            }
+        });
+        fevers.Add(FeverName.Fireball, (int level) =>
+        {
+            for(int i=0; i< (level >= 2 ? 2 : 1); i++)
+            {
+                Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FeverFireBall, GameManager.Instance.StageManager.bar.transform.position).GetComponent<Projectile>();
+                if(level == 0) projectile.SetDirection(Vector2.up);
+                else
+                {
+                    var target = GameManager.Instance.StageManager.currentStageEnemies[Random.Range(0, GameManager.Instance.StageManager.currentStageEnemies.Count)];
+                    projectile.SetDirection(target.transform.position - GameManager.Instance.StageManager.bar.transform.position);
+                }
             }
         });
         yield return null;

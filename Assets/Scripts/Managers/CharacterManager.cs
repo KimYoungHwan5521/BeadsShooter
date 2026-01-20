@@ -14,6 +14,7 @@ public class CharacterManager
             BlueprintManager.blueprints[2],
         };
         characters.Add(new("Laser man", 20, blueprints, FeverManager.FeverName.Laser));
+        characters.Add(new("Fire ball man", 20, blueprints, FeverManager.FeverName.Fireball));
         yield return null;
     }
 }

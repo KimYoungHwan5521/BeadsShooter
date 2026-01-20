@@ -23,7 +23,9 @@ public class ResourcesPath
 
         "Prefabs/Drops/Coin",
 
-        "Prefabs/ETC/FeverAttack",
+        "Prefabs/Fevers/FeverLaser",
+        "Prefabs/Fevers/FeverFireBall",
+
         "Prefabs/ETC/ShopStage",
     };
 
