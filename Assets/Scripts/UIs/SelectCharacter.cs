@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class SelectCharacter : MonoBehaviour
 {
@@ -34,7 +35,6 @@ public class SelectCharacter : MonoBehaviour
         showingBlueprintDetail = value;
     }
 
-    int currentSelectedCharacterIndex;
     public void OpenLargeCharacterCard(int index)
     {
         if (showingBlueprintDetail)
@@ -45,13 +45,21 @@ public class SelectCharacter : MonoBehaviour
         List<CharacterData> charactersData = GameManager.Instance.CharacterManager.characters;
         largeCharacterCard.gameObject.SetActive(true);
         largeCharacterCard.SetInfoDetail(charactersData[index]);
-        currentSelectedCharacterIndex = index;
+        GameManager.Instance.StageManager.currentSelectedCharacterIndex = index;
     }
 
     public void Select()
     {
-        GameManager.Instance.StageManager.bar.SetBar(GameManager.Instance.CharacterManager.characters[currentSelectedCharacterIndex]);
+        StartCoroutine(nameof(ISelect));
+    }
+
+    IEnumerator ISelect()
+    {
+        GameManager.ClaimLoadInfo("Setting stage");
+        GameManager.Instance.StageManager.bar.SetBar(GameManager.Instance.CharacterManager.characters[GameManager.Instance.StageManager.currentSelectedCharacterIndex]);
         GameManager.Instance.StageManager.currentStage = 0;
         GameManager.Instance.StartBattlePhase();
+        GameManager.CloseLoadInfo();
+        yield return null;
     }
 }

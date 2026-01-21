@@ -78,6 +78,7 @@ public class Bar : CustomObject
         blueprints = characterData.blueprints.ToList();
         fever = characterData.fever;
         feverLevel = 0;
+        BarLength = 1f;
     }
 
     public void Shrink(float value)

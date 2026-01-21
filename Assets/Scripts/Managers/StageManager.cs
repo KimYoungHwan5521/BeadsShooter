@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -143,6 +144,8 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] GameObject pauseUI;
 
+    public int currentSelectedCharacterIndex;
+
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
@@ -154,6 +157,7 @@ public class StageManager : MonoBehaviour
 
     bool stageClear;
 
+    #region Stage Info
     public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper, Boss1 }
 
     public class BlockForm
@@ -245,7 +249,7 @@ public class StageManager : MonoBehaviour
     public StageInfo[] selectedStageInfos;
     public enum Stage { Practice, Slime, Portal }
     public List<StageInfo[]> stages = new();
-
+    #endregion
     float wantDown;
 
     private void Start()
@@ -392,9 +396,12 @@ public class StageManager : MonoBehaviour
         currentStage = 0;
         Life = 3;
         Coin = 0;
+        FeverGauge = 0;
+        feverHalf = false;
         shopRerollStack = 0;
         ShopFreeReroll = 0;
         GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
+        ongoingQuests.Clear();
     }
 
     public void StageSetting()
@@ -642,6 +649,8 @@ public class StageManager : MonoBehaviour
         nextStageWalls.Clear();
         foreach (var projectile in projectiles) PoolManager.Despawn(projectile.gameObject);
         projectiles.Clear();
+        foreach(var coin in coins) PoolManager.Despawn(coin.gameObject);
+        coins.Clear();
     }
 
     // Input : (Size Vector(x, y), count)
@@ -901,22 +910,43 @@ public class StageManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0;
-        pauseUI.SetActive(true);
+        pauseUI.SetActive(pauseUI.activeSelf);
     }
 
     public void Resume()
     {
         pauseUI.SetActive(false);
+        stageStartCountText.gameObject.SetActive(true);
         curStageStartCount = 3f;
     }
 
     public void Restart()
     {
+        pauseUI.SetActive(false);
+        GameManager.Instance.shopCanvas.SetActive(false);
+        GameManager.Instance.readyPhaseWindow.SetActive(false);
+        StartCoroutine(nameof(IRestart));
+        Time.timeScale = 1f;
+    }
 
+    IEnumerator IRestart()
+    {
+        GameManager.ClaimLoadInfo("Reset stage");
+        Clear();
+        Initiate(selectedStageIndex);
+        bar.SetBar(GameManager.Instance.CharacterManager.characters[currentSelectedCharacterIndex]);
+        GameManager.Instance.StageManager.currentStage = 0;
+        GameManager.Instance.StartBattlePhase();
+        GameManager.CloseLoadInfo();
+        yield return null;
     }
 
     public void QuitStage()
     {
-
+        pauseUI.SetActive(false);
+        GameManager.Instance.shopCanvas.SetActive(false);
+        GameManager.Instance.readyPhaseWindow.SetActive(false);
+        Clear();
+        GameManager.Instance.mainUI.SetActive(true);
     }
 }
