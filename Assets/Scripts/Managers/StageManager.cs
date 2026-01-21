@@ -141,6 +141,8 @@ public class StageManager : MonoBehaviour
 
     RewardFormat[] randomRewards = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
 
+    [SerializeField] GameObject pauseUI;
+
     const float stageStartCount = 3f;
     [SerializeField]float curStageStartCount;
     bool readyToReadyPhase;
@@ -894,5 +896,27 @@ public class StageManager : MonoBehaviour
                 if (i < ongoingQuests.Count) ongoingQuestsObject[i].GetComponentInChildren<TextMeshProUGUI>().text = ongoingQuests[i].Explain;
             }
         }
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0;
+        pauseUI.SetActive(true);
+    }
+
+    public void Resume()
+    {
+        pauseUI.SetActive(false);
+        curStageStartCount = 3f;
+    }
+
+    public void Restart()
+    {
+
+    }
+
+    public void QuitStage()
+    {
+
     }
 }

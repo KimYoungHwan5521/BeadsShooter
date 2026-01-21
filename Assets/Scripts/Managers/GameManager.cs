@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public ShopManager ShopManager => shopManager;
     QuestManager questManager;
     public QuestManager QuestManager => questManager;
-    //public LoadingCanvas loadingCanvas;
+    public Loading loading;
 
     public GameObject blueprintDetail;
     public GameObject shopCanvas;
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
 
         gameReady = true;
         SetCameraAspect();
-        //CloseLoadInfo();
+        CloseLoadInfo();
     }
 
     void Update()
@@ -231,28 +231,28 @@ public class GameManager : MonoBehaviour
 
     public static void ClaimLoadInfo(string info, int numerator = 0, int denominator = 1)
     {
-        //if (instance && instance.loadingCanvas)
-        //{
-        //    instance.loadingCanvas.SetLoadInfo(info, numerator, denominator);
-        //    instance.loadingCanvas.gameObject.SetActive(true);
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("There is no GameManager or loadingCanvas");
-        //}
+        if (instance && instance.loading)
+        {
+            instance.loading.SetLoadInfo(info, numerator, denominator);
+            instance.loading.gameObject.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("There is no GameManager or loadingCanvas");
+        }
     }
 
     public static void CloseLoadInfo()
     {
-        //if (instance && instance.loadingCanvas)
-        //{
-        //    instance.loadingCanvas.CloseLoadInfo();
-        //    instance.loadingCanvas.gameObject.SetActive(false);
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("There is no GameManager or loadingCanvas");
-        //}
+        if (instance && instance.loading)
+        {
+            //instance.loading.CloseLoadInfo();
+            instance.loading.gameObject.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("There is no GameManager or loadingCanvas");
+        }
     }
 
     public void FixLayout(RectTransform rect)

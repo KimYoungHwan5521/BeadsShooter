@@ -6,12 +6,14 @@ public delegate void FeverAction(int level);
 
 public class FeverManager
 {
+    const int feversCount = 2;
     public enum FeverName { Laser, Fireball, Phychokinesis }
     Dictionary<FeverName, FeverAction> fevers;
     public Dictionary<FeverName, FeverAction> Fevers => fevers;
 
     public IEnumerator Initiate()
     {
+        GameManager.ClaimLoadInfo("Loading fevers", 0, feversCount);
         fevers = new();
         fevers.Add(FeverName.Laser, (int level) => 
         {
@@ -39,6 +41,7 @@ public class FeverManager
                 };
             }
         });
+        GameManager.ClaimLoadInfo("Loading fevers", 1, feversCount);
         fevers.Add(FeverName.Fireball, (int level) =>
         {
             for(int i=0; i< (level >= 2 ? 2 : 1); i++)
@@ -52,6 +55,7 @@ public class FeverManager
                 }
             }
         });
+        GameManager.ClaimLoadInfo("Loading fevers", 2, feversCount);
         yield return null;
     }
 }
