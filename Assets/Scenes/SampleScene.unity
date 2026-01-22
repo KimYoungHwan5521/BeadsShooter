@@ -9987,7 +9987,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 386070288}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 678439825}
+        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
+        m_MethodName: SetCurrentStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: -1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &386070288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16142,17 +16154,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593209029}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1709929238}
-  m_Father: {fileID: 1948575853}
+  m_Father: {fileID: 1919915021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -300}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 280, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &593209031
@@ -19219,7 +19231,17 @@ MonoBehaviour:
   stage: {fileID: 1948575852}
   character: {fileID: 1301744550}
   setting: {fileID: 919823276}
-  stageImage: {fileID: 690654861}
+  stageCard: {fileID: 690654861}
+  stageBoss: {fileID: 2147419715}
+  stageCards:
+  - {fileID: 4251840520262826815, guid: 917cf637051c04b4c991267875bf1c01, type: 3}
+  - {fileID: 553108029275643031, guid: 8edab03b4fbe89d408fcba632fb3f9e1, type: 3}
+  - {fileID: -7327724018209857321, guid: 8edab03b4fbe89d408fcba632fb3f9e1, type: 3}
+  - {fileID: -234670160893013479, guid: 8edab03b4fbe89d408fcba632fb3f9e1, type: 3}
+  - {fileID: -3630837067365831225, guid: 8edab03b4fbe89d408fcba632fb3f9e1, type: 3}
+  stageBosses:
+  - {fileID: 7552218760340626732, guid: 4dc39b976730e2f4e998b4c9f92c677c, type: 3}
+  - {fileID: -3478757820220319994, guid: 21165ac38a8631545842c4f4b45d2e01, type: 3}
   stageName: {fileID: 1260770094}
   leftArrow: {fileID: 386070287}
   rightArrow: {fileID: 1927018187}
@@ -19300,7 +19322,7 @@ GameObject:
   - component: {fileID: 690654862}
   - component: {fileID: 690654861}
   m_Layer: 5
-  m_Name: Stage 01
+  m_Name: Stage Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33636,7 +33658,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1260770093
 RectTransform:
   m_ObjectHideFlags: 0
@@ -33651,9 +33673,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1919915021}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 207, y: -844}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1260770094
@@ -52831,6 +52853,7 @@ RectTransform:
   m_Children:
   - {fileID: 690654860}
   - {fileID: 1260770093}
+  - {fileID: 593209030}
   m_Father: {fileID: 1948575853}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -53078,7 +53101,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1927018188}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 678439825}
+        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
+        m_MethodName: SetCurrentStage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1927018188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53668,7 +53703,6 @@ GameObject:
   - component: {fileID: 1948575853}
   - component: {fileID: 1948575856}
   - component: {fileID: 1948575855}
-  - component: {fileID: 1948575854}
   m_Layer: 5
   m_Name: Stage
   m_TagString: Untagged
@@ -53691,7 +53725,6 @@ RectTransform:
   - {fileID: 386070286}
   - {fileID: 1927018186}
   - {fileID: 1919915021}
-  - {fileID: 593209030}
   m_Father: {fileID: 397092910}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -53699,26 +53732,6 @@ RectTransform:
   m_AnchoredPosition: {x: 443.6019, y: -900}
   m_SizeDelta: {x: 787.2038, y: 1400}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1948575854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948575852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: 1
-  m_FlexibleHeight: 1
-  m_LayoutPriority: 1
 --- !u!114 &1948575855
 MonoBehaviour:
   m_ObjectHideFlags: 0

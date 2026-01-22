@@ -266,18 +266,22 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(2, 1)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
             GenerateShopStage(),
-            //GenerateShopStage(),
-            //GenerateShopStage(),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 20)),
             GenerateBossStage(BlockType.Boss1),
 
-            //RandomStageGenerate((new(BlockType.Normal, new(2,1)), 10), (new(BlockType.PentagonalBlock), 3), (new(BlockType.SpeedUp, new(1,2)), 3), (new(BlockType.Illusion, new(2,1)), 3)),
-            // Stage 1
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2,1)), 8), (new(BlockType.Normal, new Vector2Int(1,2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 4)),
-            // ...
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 6), (new(BlockType.Normal, new Vector2Int(1, 2)), 6), (new(BlockType.Normal, new Vector2Int(2, 2)), 6), (new(BlockType.Shield), 4),  (new(BlockType.Counter), 4)),
         };
-
+        stages.Add(stageInfos);
+        
+        stageInfos = new StageInfo[]
+        {
+            // Stage 1
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateShopStage(),
+            GenerateBossStage(BlockType.Boss1),
+        };
         stages.Add(stageInfos);
     }
 
@@ -391,6 +395,8 @@ public class StageManager : MonoBehaviour
 
     public void Initiate(int currentStageIndex)
     {
+        board.transform.position = Vector3.zero;
+        wantDown = 0;
         selectedStageIndex = currentStageIndex;
         selectedStageInfos = stages[currentStageIndex];
         currentStage = 0;
@@ -910,7 +916,7 @@ public class StageManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0;
-        pauseUI.SetActive(pauseUI.activeSelf);
+        pauseUI.SetActive(!pauseUI.activeSelf);
     }
 
     public void Resume()

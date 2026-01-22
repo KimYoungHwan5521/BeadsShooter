@@ -1,43 +1,10 @@
 fileFormatVersion: 2
-guid: 8edab03b4fbe89d408fcba632fb3f9e1
+guid: 8d52085ac59ad234ca0ddd652738d593
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2682457194499045448
-    second: Stages_0
-  - first:
-      213: 553108029275643031
-    second: Stages_1
-  - first:
-      213: 245331279836845902
-    second: Stages_2
-  - first:
-      213: -472386776762397609
-    second: Stages_3
-  - first:
-      213: -7327724018209857321
-    second: Stages_4
-  - first:
-      213: -6623992559641836024
-    second: Stages_5
-  - first:
-      213: -6545056601635837420
-    second: Stages_6
-  - first:
-      213: -234670160893013479
-    second: Stages_7
-  - first:
-      213: 6785633981233277762
-    second: Stages_8
-  - first:
-      213: 6731733880126961474
-    second: Stages_9
-  - first:
-      213: -3630837067365831225
-    second: Stages_10
-  - first:
-      213: -3502044967031336289
-    second: Stages_11
+      213: -9002529716096984420
+    second: Boss03_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -159,89 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stages_1
+      name: Boss03_0
       rect:
         serializedVersion: 2
-        x: 41
-        y: 361
-        width: 122
-        height: 194
+        x: 94
+        y: 88
+        width: 307
+        height: 333
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 79c146772d80da700800000000000000
-      internalID: 553108029275643031
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stages_4
-      rect:
-        serializedVersion: 2
-        x: 246
-        y: 360
-        width: 123
-        height: 195
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7d0e08254d1be4a90800000000000000
-      internalID: -7327724018209857321
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stages_7
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 55
-        width: 122
-        height: 193
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 91296946bb84ebcf0800000000000000
-      internalID: -234670160893013479
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stages_10
-      rect:
-        serializedVersion: 2
-        x: 246
-        y: 55
-        width: 122
-        height: 193
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7cda65a9cecac9dc0800000000000000
-      internalID: -3630837067365831225
+      spriteID: c9a1420bbe6901380800000000000000
+      internalID: -9002529716096984420
       vertices: []
       indices: 
       edges: []
@@ -250,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f0d656dc646b16b4eafee479310bf562
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -260,18 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Stages_0: 2682457194499045448
-      Stages_1: 553108029275643031
-      Stages_10: -3630837067365831225
-      Stages_11: -3502044967031336289
-      Stages_2: 245331279836845902
-      Stages_3: -472386776762397609
-      Stages_4: -7327724018209857321
-      Stages_5: -6623992559641836024
-      Stages_6: -6545056601635837420
-      Stages_7: -234670160893013479
-      Stages_8: 6785633981233277762
-      Stages_9: 6731733880126961474
+      Boss03_0: -9002529716096984420
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

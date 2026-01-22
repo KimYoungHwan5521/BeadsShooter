@@ -240,13 +240,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DrippingBlock
   maxHP: 2
   curHP: 2
+  isInvincible: 0
   crack: {fileID: 7803725675173644419}
   spriteMask: {fileID: 0}
   crackSprite: {fileID: 0}
   movePattern: 0
   moveSpeed: 3
   curMoveDirection: {x: 0, y: 0}
-  dripping: 12
+  dripping: 14
   drippingCool: 0.1
   curDrippingCool: 0
 --- !u!1 &7163911096092563884

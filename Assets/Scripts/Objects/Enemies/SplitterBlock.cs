@@ -64,8 +64,8 @@ public class SplitterBlock : Block
         halfBody2.transform.localPosition = new(1, 0, 0);
         halfBody1.gameObject.SetActive(true);
         halfBody2.gameObject.SetActive(true);
-        halfBody1.SetInfo(stage, 1);
-        halfBody2.SetInfo(stage, 1);
+        halfBody1.SetInfo(stage, 1, false, true);
+        halfBody2.SetInfo(stage, 1, false, true);
         isSplit = true;
     }
 

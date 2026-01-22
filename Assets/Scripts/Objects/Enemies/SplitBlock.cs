@@ -4,7 +4,7 @@ public class SplitBlock : Block
 {
     Collider2D col;
     [SerializeField] SplitterBlock owner;
-    // 0 : fullBody, 1 : halfBody1, 2 : halfBody2
+    // part : 0 = fullBody, 1 = halfBody1, 2 = halfBody2
     [SerializeField] int part;
     [SerializeField] float invincibleTime;
     [SerializeField] float curInvincibleTime;
@@ -63,7 +63,6 @@ public class SplitBlock : Block
         {
             curInvincibleTime = 0;
             col.enabled = false;
-            isInvincible = true;
         }
     }
 }

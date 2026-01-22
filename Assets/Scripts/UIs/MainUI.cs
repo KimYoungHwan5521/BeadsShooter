@@ -15,7 +15,10 @@ public class MainUI : MonoBehaviour
 
     [Header("Stage")]
     int currentStageIndex;
-    [SerializeField] Image stageImage;
+    [SerializeField] Image stageCard;
+    [SerializeField] Image stageBoss;
+    [SerializeField] Sprite[] stageCards;
+    [SerializeField] Sprite[] stageBosses;
     [SerializeField] TextMeshProUGUI stageName;
     [SerializeField] Button leftArrow;
     [SerializeField] Button rightArrow;
@@ -37,7 +40,7 @@ public class MainUI : MonoBehaviour
 
     private void Start()
     {
-        SetCurrentStage(0);
+        GameManager.Instance.ManagerStart += () => SetCurrentStage(0);
     }
 
     public void SetCurrentStage(int index)
@@ -46,6 +49,8 @@ public class MainUI : MonoBehaviour
         else currentStageIndex += index;
 
         stageName.text = $"{((StageManager.Stage)currentStageIndex)} + Stage";
+        stageCard.sprite = stageCards[currentStageIndex];
+        stageBoss.sprite = stageBosses[currentStageIndex];
         leftArrow.interactable = currentStageIndex > 0;
         rightArrow.interactable = currentStageIndex < GameManager.Instance.StageManager.stages.Count - 1;
     }
