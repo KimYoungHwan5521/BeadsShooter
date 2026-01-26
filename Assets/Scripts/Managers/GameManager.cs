@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     public BlueprintManager BlueprintManager => blueprintManager;
     CharacterManager characterManager;
     public CharacterManager CharacterManager => characterManager;
+    AbilityManager abilityManager;
+    public AbilityManager AbilityManager => abilityManager;
     ShopManager shopManager;
     public ShopManager ShopManager => shopManager;
     QuestManager questManager;
@@ -45,10 +47,8 @@ public class GameManager : MonoBehaviour
     public GameObject blueprintDetail;
     public GameObject shopCanvas;
     public GameObject mainUI;
-    public GameObject characterSelectUI;
     Shop shop;
     public Shop Shop => shop;
-    public SelectCharacter selectCharacter;
     public GameObject restOptions;
     public GameObject[] randomEvents;
 
@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
         yield return blueprintManager.Initiate();
         characterManager = new CharacterManager();
         yield return characterManager.Initiate();
+        abilityManager = new AbilityManager();
+        yield return abilityManager.Initiate();
         shopManager = new ShopManager();
         yield return shopManager.Initiate();
         questManager = new QuestManager();
@@ -170,7 +172,6 @@ public class GameManager : MonoBehaviour
     {
         readyPhaseWindow.SetActive(false);
         shopCanvas.SetActive(false);
-        characterSelectUI.SetActive(false);
         stageManager.StageSetting();
     }
 

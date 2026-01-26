@@ -29,23 +29,6 @@ public class InputManager : MonoBehaviour
             if(value.Get<float>() == 0)
             {
                 bar.ReleaseBeads(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                if (GameManager.Instance.StageManager.FeverCharged) GameManager.Instance.StageManager.Fever();
-                else
-                {
-                    foreach(var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
-                    {
-                        Color color = bar.feverColor;
-                        color.a = 0.5f;
-                        sprite.color = color;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
-                {
-                    sprite.color = Color.white;
-                }
             }
         }
     }

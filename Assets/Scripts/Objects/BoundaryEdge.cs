@@ -23,17 +23,14 @@ public class BoundaryEdge : CustomObject
             else if (edgeType == 1)
             {
                 bead.SetDirection(new(bead.Direction.x, -Mathf.Abs(bead.Direction.y)));
-                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 2)
             {
                 bead.SetDirection(new(Mathf.Abs(bead.Direction.x), bead.Direction.y));
-                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
             else if (edgeType == 3)
             {
                 bead.SetDirection(new(-Mathf.Abs(bead.Direction.x), bead.Direction.y));
-                if (!bead.IsFake) GameManager.Instance.StageManager.FeverHalf = true;
             }
         }
         else
@@ -47,11 +44,4 @@ public class BoundaryEdge : CustomObject
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.TryGetComponent(out Bead projectile) && projectile.gameObject.activeSelf && !projectile.IsFake)
-        {
-            GameManager.Instance.StageManager.FeverHalf = true;
-        }
-    }
 }

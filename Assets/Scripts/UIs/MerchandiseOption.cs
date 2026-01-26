@@ -53,7 +53,7 @@ public class MerchandiseOption : MonoBehaviour
         switch(merchandiseInfo.type)
         {
             case ShopManager.MerchandiseType.Material:
-                GameManager.Instance.readyPhaseUI.SetPurchasedMaterial(merchandiseInfo);
+                //GameManager.Instance.readyPhaseUI.SetPurchasedMaterial(merchandiseInfo);
                 GameManager.Instance.readyPhaseWindow.SetActive(true);
                 break;
             case ShopManager.MerchandiseType.Blueprint:

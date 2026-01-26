@@ -29,11 +29,6 @@ public class PentagonalBlock : Block
         }
     }
 
-    public void AddFeverGauge()
-    {
-        GameManager.Instance.StageManager.FeverGauge++;
-    }
-
     public void Release()
     {
         caughted.spriteRenderer.enabled = true;

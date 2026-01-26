@@ -36,7 +36,6 @@ public class BlueprintDrawer : MonoBehaviour, IPointerEnterHandler, IPointerExit
         GameManager.Instance.blueprintDetail.SetActive(true);
         GameManager.Instance.blueprintDetail.transform.position = transform.position + new Vector3(0, 10);
         GameManager.Instance.blueprintDetail.GetComponentInChildren<BlueprintDrawer>().SetBlueprint(blueprint, true);
-        GameManager.Instance.selectCharacter.SetShowBlueprint(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)

@@ -12,9 +12,9 @@ public class RestOptions : MonoBehaviour
             case 1:
                 GameManager.Instance.StageManager.Life++;
                 break;
-            case 2:
-                GameManager.Instance.readyPhaseUI.SetDisplace();
-                break;
+            //case 2:
+            //    GameManager.Instance.readyPhaseUI.SetDisplace();
+            //    break;
             default:
                 break;
         }

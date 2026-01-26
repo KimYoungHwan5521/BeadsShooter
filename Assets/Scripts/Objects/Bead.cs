@@ -133,11 +133,7 @@ public class Bead : CustomObject
         Enemy enemy = collision.collider.GetComponentInParent<Enemy>();
         if(enemy != null || collision.collider.gameObject.TryGetComponent(out enemy))
         {
-            if(!IsFake)
-            {
-                enemy.TakeDamage(damage, this);
-                GameManager.Instance.StageManager.FeverGauge++;
-            }
+            enemy.TakeDamage(damage, this);
         }
         else
         {
@@ -146,7 +142,6 @@ public class Bead : CustomObject
             {
                 temporarySpeedMagnification = 1;
                 SetDirection(transform.position - bar.transform.position);
-                GameManager.Instance.StageManager.FeverHalf = true;
                 Strike = 0;
             }
         }

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,8 +58,18 @@ public class MainUI : MonoBehaviour
 
     public void SelectStage()
     {
-        GameManager.Instance.StageManager.Initiate(currentStageIndex);
+        StartCoroutine(nameof(ISelect));
         GameManager.Instance.mainUI.SetActive(false);
-        GameManager.Instance.characterSelectUI.SetActive(true);
+    }
+
+    IEnumerator ISelect()
+    {
+        GameManager.ClaimLoadInfo("Setting stage");
+        GameManager.Instance.StageManager.Initiate(currentStageIndex);
+        GameManager.Instance.StageManager.bar.SetBar(GameManager.Instance.CharacterManager.characters[GameManager.Instance.StageManager.currentSelectedCharacterIndex]);
+        GameManager.Instance.StageManager.currentStage = 0;
+        GameManager.Instance.StartBattlePhase();
+        GameManager.CloseLoadInfo();
+        yield return null;
     }
 }

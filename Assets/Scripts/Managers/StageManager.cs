@@ -12,60 +12,7 @@ public class StageManager : MonoBehaviour
     const int term = 6;
 
     [Header("Header UI")]
-    [SerializeField] Image feverGaugeImage;
-    [SerializeField] Sprite[] feverGaugeSprites;
-    bool feverCharged;
-    public bool FeverCharged
-    {
-        get => feverCharged;
-        set
-        {
-            feverCharged = value;
-            if(value)
-            {
-                foreach(var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
-                {
-                    sprite.color = bar.feverColor;
-                }
-            }
-            else
-            {
-                foreach (var sprite in bar.GetComponentsInChildren<SpriteRenderer>())
-                {
-                    sprite.color = Color.white;
-                }
-            }
-        }
-    }
-    [SerializeField]int feverGauge;
-    public int FeverGauge
-    {
-        get => feverGauge;
-        set
-        {
-            feverGauge = Mathf.Min(value, feverGaugeSprites.Length - 1);
-            FeverCharged = feverGauge >= feverGaugeSprites.Length - 1;
-            feverGaugeImage.sprite = feverGaugeSprites[feverGauge];
-        }
-    }
-    bool feverHalf;
-    public bool FeverHalf
-    {
-        get => feverHalf;
-        set
-        {
-            if(value)
-            {
-                if (feverHalf)
-                {
-                    FeverGauge++;
-                    feverHalf = false;
-                }
-                else feverHalf = true;
-            }
-            else feverHalf = false;
-        }
-    }
+    [SerializeField] TextMeshProUGUI currentStageText;
 
     [SerializeField] TextMeshProUGUI coinText;
     int coin;
@@ -103,7 +50,6 @@ public class StageManager : MonoBehaviour
 
     [Header("Ingame")]
     [SerializeField] Transform board;
-    [SerializeField] TextMeshProUGUI currentStageText;
     [SerializeField] TextMeshProUGUI stageStartCountText;
     int selectedStageIndex;
     public int currentStage = 0;
@@ -141,6 +87,10 @@ public class StageManager : MonoBehaviour
     }
 
     RewardFormat[] randomRewards = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
+
+    [Header("Ability")]
+    public List<AbilityManager.Ability> possibleToAppearAbilities;
+    public List<AbilityManager.Ability> selectedAbilities;
 
     [SerializeField] GameObject pauseUI;
 
@@ -227,7 +177,7 @@ public class StageManager : MonoBehaviour
         {
             this.blockType = blockType;
             this.position = position;
-            size = new Vector2Int(1, 1);
+            size = new Vector2Int(4, 2);
             maxHP = 1;
             shieldPosition = shieldPos;
         }
@@ -254,17 +204,27 @@ public class StageManager : MonoBehaviour
 
     private void Start()
     {
+        SetStages();
+    }
+
+    void SetStages()
+    {
+        stages.Clear();
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Shield, new Vector2Int(2,1), 1), 10)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1), 10)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4,2), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(2, 1)), 5), (new(BlockType.PentagonalBlock), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(2, 1)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4 ,2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
             GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -341,7 +301,7 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-        if(curStageStartCount > 0)
+        if(curStageStartCount > 0 && !pauseUI.activeSelf)
         {
             curStageStartCount -= Time.unscaledDeltaTime;
             stageStartCountText.text = $"{(int)curStageStartCount + 1}";
@@ -395,6 +355,7 @@ public class StageManager : MonoBehaviour
 
     public void Initiate(int currentStageIndex)
     {
+        SetStages();
         board.transform.position = Vector3.zero;
         wantDown = 0;
         selectedStageIndex = currentStageIndex;
@@ -402,12 +363,18 @@ public class StageManager : MonoBehaviour
         currentStage = 0;
         Life = 3;
         Coin = 0;
-        FeverGauge = 0;
-        feverHalf = false;
         shopRerollStack = 0;
         ShopFreeReroll = 0;
-        GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
+        //GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
         ongoingQuests.Clear();
+
+        possibleToAppearAbilities = new();
+        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice));
+        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire));
+        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
+        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
+
+        selectedAbilities = new();
     }
 
     public void StageSetting()
@@ -678,12 +645,12 @@ public class StageManager : MonoBehaviour
                 bool discrimination = true;
                 int shieldPos = 0;
                 int xPos;
-                if(form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.Splitter) xPos = Random.Range(1, column - form.Item1.size.x - 1);
+                if(form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.Splitter) xPos = Random.Range(1, column - form.Item1.size.x);
                 else xPos = Random.Range(0, column - form.Item1.size.x + 1);
                 int yPos;
                 if (form.Item1.blockType == BlockType.Shield)
                 {
-                    yPos = Random.Range(1, (row - form.Item1.size.y + 1) * 2 / 3);
+                    yPos = Random.Range(1, (row - form.Item1.size.y) * 2 / 3);
                     shieldPos = Random.Range(0, 4);
                 }
                 else if(form.Item1.blockType == BlockType.MucusDripper)
@@ -712,30 +679,46 @@ public class StageManager : MonoBehaviour
                     // 0 : down, 1 : left, 2 : right, 3 : up
                     if(shieldPos == 0)
                     {
-                        if (stageBoard[yPos - 1, xPos - 1] == 1 || stageBoard[yPos - 1, xPos] == 1 || stageBoard[yPos - 1, xPos + 1] == 1 || stageBoard[yPos - 1, xPos + 2] == 1)
+                        for(int x = xPos - 1; x <= xPos + form.Item1.size.x; x++)
                         {
-                            discrimination = false;
+                            if (stageBoard[yPos - 1, x] == 1)
+                            {
+                                discrimination = false;
+                                break;
+                            }
                         }
                     }
                     else if(shieldPos == 1)
                     {
-                        if (stageBoard[yPos - 1, xPos - 1] == 1 || stageBoard[yPos, xPos - 1] == 1 || stageBoard[yPos + 1, xPos - 1] == 1)
+                        for (int y = yPos - 1; y <= yPos + form.Item1.size.y; y++)
                         {
-                            discrimination = false;
+                            if (stageBoard[y, xPos - 1] == 1)
+                            {
+                                discrimination = false;
+                                break;
+                            }
                         }
                     }
                     else if (shieldPos == 2)
                     {
-                        if (stageBoard[yPos - 1, xPos + 2] == 1 || stageBoard[yPos, xPos + 2] == 1 || stageBoard[yPos + 1, xPos + 2] == 1)
+                        for (int y = yPos - 1; y <= yPos + form.Item1.size.y; y++)
                         {
-                            discrimination = false;
+                            if (stageBoard[y, xPos + form.Item1.size.x] == 1)
+                            {
+                                discrimination = false;
+                                break;
+                            }
                         }
                     }
                     else
                     {
-                        if (stageBoard[yPos + 1, xPos - 1] == 1 || stageBoard[yPos + 1, xPos] == 1 || stageBoard[yPos + 1, xPos + 1] == 1 || stageBoard[yPos + 1, xPos + 2] == 1)
+                        for (int x = xPos - 1; x <= xPos + form.Item1.size.x; x++)
                         {
-                            discrimination = false;
+                            if (stageBoard[yPos + form.Item1.size.y, x] == 1)
+                            {
+                                discrimination = false;
+                                break;
+                            }
                         }
                     }
                 }
@@ -764,29 +747,31 @@ public class StageManager : MonoBehaviour
                 {
                     if (shieldPos == 0)
                     {
-                        stageBoard[yPos - 1, xPos - 1] = 1;
-                        stageBoard[yPos - 1, xPos] = 1;
-                        stageBoard[yPos - 1, xPos + 1] = 1;
-                        stageBoard[yPos - 1, xPos + 2] = 1;
+                        for (int x = xPos - 1; x <= xPos + form.Item1.size.x; x++)
+                        {
+                            stageBoard[yPos - 1, x] = 1;
+                        }
                     }
                     else if (shieldPos == 1)
                     {
-                        stageBoard[yPos - 1, xPos - 1] = 1;
-                        stageBoard[yPos, xPos - 1] = 1;
-                        stageBoard[yPos + 1, xPos - 1] = 1;
+                        for (int y = yPos - 1; y <= yPos + form.Item1.size.y; y++)
+                        {
+                            stageBoard[y, xPos - 1] = 1;
+                        }
                     }
                     else if (shieldPos == 2)
                     {
-                        stageBoard[yPos - 1, xPos + 2] = 1;
-                        stageBoard[yPos, xPos + 2] = 1;
-                        stageBoard[yPos + 1, xPos + 2] = 1;
+                        for (int y = yPos - 1; y <= yPos + form.Item1.size.y; y++)
+                        {
+                            stageBoard[y, xPos + form.Item1.size.x] = 1;
+                        }
                     }
                     else
                     {
-                        stageBoard[yPos + 1, xPos - 1] = 1;
-                        stageBoard[yPos + 1, xPos] = 1;
-                        stageBoard[yPos + 1, xPos + 1] = 1;
-                        stageBoard[yPos + 1, xPos + 2] = 1;
+                        for (int x = xPos - 1; x <= xPos + form.Item1.size.x; x++)
+                        {
+                            stageBoard[yPos + form.Item1.size.y, x] = 1;
+                        }
                     }
                 }
             }
@@ -817,7 +802,7 @@ public class StageManager : MonoBehaviour
         switch(wantBoss)
         {
             case BlockType.Boss1:
-                enemyArrangementInfo = new(BlockType.Boss1, new(0, 0), 100);
+                enemyArrangementInfo = new(BlockType.Boss1, new(0, 0), 100f);
                 break;
         }
         if (enemyArrangementInfo == null) Debug.LogWarning("Null boss!");
@@ -827,8 +812,6 @@ public class StageManager : MonoBehaviour
     public void Fever()
     {
         if (currentStageEnemies.Count == 0) return;
-        FeverCharged = false;
-        feverGauge = 0;
         bar.Fever();
     }
 
