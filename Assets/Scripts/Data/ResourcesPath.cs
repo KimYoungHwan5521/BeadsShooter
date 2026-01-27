@@ -18,6 +18,8 @@ public class ResourcesPath
         "Prefabs/Enemies/Boss1",
 
         "Prefabs/Projectiles/NormalProjectile",
+        "Prefabs/Projectiles/FireBall",
+        "Prefabs/Projectiles/Icicle",
 
         "Prefabs/Area/Mucus",
 

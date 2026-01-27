@@ -149,20 +149,7 @@ public class ReadyPhaseUI : MonoBehaviour
     public void SelectAbility(int index)
     {
         AbilityManager.Ability selectedAbility = abilityOptions[index].linkedAbility;
-        GameManager.Instance.StageManager.selectedAbilities.Add(selectedAbility);
-        GameManager.Instance.StageManager.possibleToAppearAbilities.Remove(selectedAbility);
-        foreach(var ability in AbilityManager.Abilities.Find(x => x == selectedAbility).lowerAbilities)
-        {
-            bool unlock = true;
-            foreach (var need in ability.upperAbilities)
-            {
-                if(!GameManager.Instance.StageManager.selectedAbilities.Contains(need))
-                {
-                    unlock = false; break;
-                }
-            }
-            if (unlock) GameManager.Instance.StageManager.possibleToAppearAbilities.Add(ability);
-        }
+        GameManager.Instance.StageManager.GetAbility(selectedAbility);
         StartNextStage();
     }
 

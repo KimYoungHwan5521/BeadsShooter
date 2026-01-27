@@ -173,6 +173,7 @@ public class GameManager : MonoBehaviour
         readyPhaseWindow.SetActive(false);
         shopCanvas.SetActive(false);
         stageManager.StageSetting();
+        stageManager.bar.RoundReset();
     }
 
     public void BattlePhaseStart()
@@ -187,12 +188,7 @@ public class GameManager : MonoBehaviour
         }
         foreach(var enemy in stageManager.currentStageEnemies)
         {
-            ObjectUpdate += enemy.MyUpdate;
             ObjectUpdate += enemy.MyUpdateOnlyCurrentStage;
-        }
-        foreach (var enemy in stageManager.nextStageEnemies)
-        {
-            ObjectUpdate += enemy.MyUpdate;
         }
         phase = Phase.BattlePhase;
         Time.timeScale = 1f;
@@ -204,7 +200,7 @@ public class GameManager : MonoBehaviour
     {
         readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
-        ObjectUpdate = null;
+        //readyPhaseWindow.GetComponentInChildren<Animator>().SetTrigger("Appear");
         phase = Phase.ReadyPhase;
     }
 

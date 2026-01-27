@@ -24,6 +24,10 @@ public class Bar : CustomObject
             barLength = Mathf.Max(barMinLength, value);
             barBody.GetComponent<SpriteRenderer>().size = new(originalLength * barLength, 1f);
             barBody.GetComponent<BoxCollider2D>().size = new(originalLength * barLength, 1f);
+            for(int i = 0; i < iceBlocks.Length; i++)
+            {
+                iceBlocks[i].transform.localPosition = new(i % 2 == 0 ? - originalLength * barLength / 2 - 0.5f - i / 2 : originalLength * barLength / 2 + 0.5f + i / 2, 0, 0);
+            }
         }
     }
     public List<Bead> grabbedBeads;
@@ -31,6 +35,24 @@ public class Bar : CustomObject
     [SerializeField] float moveSpeed = 1;
     public List<Blueprint> blueprints;
     public Color feverColor;
+
+    [Header("Ice ability")]
+    [SerializeField] public IceBlock[] iceBlocks;
+    [SerializeField] int activedIceBlock;
+    public int ActivedIceBlock
+    {
+        get => activedIceBlock;
+        set
+        {
+            activedIceBlock = value;
+            for(int i = 0; i < iceBlocks.Length; i++)
+            {
+                iceBlocks[i].gameObject.SetActive(i < activedIceBlock);
+                iceBlocks[i].isActived = i < activedIceBlock;
+            }
+        }
+    }
+    public Area chilingAura;
 
     protected virtual void Start()
     {
@@ -79,6 +101,13 @@ public class Bar : CustomObject
         fever = characterData.fever;
         feverLevel = 0;
         BarLength = 1f;
+        ActivedIceBlock = 0;
+        chilingAura.gameObject.SetActive(false);
+    }
+
+    public void RoundReset()
+    {
+        foreach (var iceBlock in iceBlocks) iceBlock.ResetObject();
     }
 
     public void Shrink(float value)

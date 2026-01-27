@@ -18,6 +18,8 @@ namespace ResourceEnum
         Boss1,
 
         NormalProjectile,
+        FireBall,
+        Icicle,
 
         Mucus,
 

@@ -220,6 +220,7 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4,2), 1), 10)),
+            //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 10), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1)),
@@ -937,5 +938,85 @@ public class StageManager : MonoBehaviour
         GameManager.Instance.readyPhaseWindow.SetActive(false);
         Clear();
         GameManager.Instance.mainUI.SetActive(true);
+    }
+
+    public void GetAbility(AbilityManager.Ability selectedAbility)
+    {
+        GameManager.Instance.StageManager.selectedAbilities.Add(selectedAbility);
+        GameManager.Instance.StageManager.possibleToAppearAbilities.Remove(selectedAbility);
+        foreach (var ability in AbilityManager.Abilities.Find(x => x == selectedAbility).lowerAbilities)
+        {
+            bool unlock = true;
+            foreach (var need in ability.upperAbilities)
+            {
+                if (!GameManager.Instance.StageManager.selectedAbilities.Contains(need))
+                {
+                    unlock = false; break;
+                }
+            }
+            if (unlock) GameManager.Instance.StageManager.possibleToAppearAbilities.Add(ability);
+        }
+        ApplyAbility(selectedAbility);
+    }
+
+    void ApplyAbility(AbilityManager.Ability ability)
+    {
+        switch(ability.name)
+        {
+            case AbilityManager.AbilityName.Ice:
+                bar.ActivedIceBlock = 2;
+                foreach (var iceBlock in bar.iceBlocks)
+                {
+                    iceBlock.regenerateCool = 10f;
+                    iceBlock.durability = 1;
+                }
+                break;
+            case AbilityManager.AbilityName.FastFreezeLV1:
+                foreach(var iceBlock in bar.iceBlocks) iceBlock.regenerateCool = 8f;
+                break;
+            case AbilityManager.AbilityName.FastFreezeLV2:
+                foreach(var iceBlock in bar.iceBlocks) iceBlock.regenerateCool = 6f;
+                break;
+            case AbilityManager.AbilityName.FastFreezeLV3:
+                foreach(var iceBlock in bar.iceBlocks) iceBlock.regenerateCool = 4f;
+                break;
+            case AbilityManager.AbilityName.IcicleBurstLV1:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.icicleCount = 1;
+                break;
+            case AbilityManager.AbilityName.IcicleBurstLV2:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.icicleCount = 2;
+                break;
+            case AbilityManager.AbilityName.IcicleBurstLV3:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.icicleCount = 3;
+                break;
+            case AbilityManager.AbilityName.ChilingAuraLV1:
+                bar.chilingAura.gameObject.SetActive(true);
+                bar.chilingAura.speedMagnification = 0.8f;
+                break;
+            case AbilityManager.AbilityName.ChilingAuraLV2:
+                bar.chilingAura.speedMagnification = 0.6f;
+                break;
+            case AbilityManager.AbilityName.ChilingAuraLV3:
+                bar.chilingAura.speedMagnification = 0.4f;
+                break;
+            case AbilityManager.AbilityName.MultiLayerLV1:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.durability = 2;
+                break;
+            case AbilityManager.AbilityName.MultiLayerLV2:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.durability = 3;
+                break;
+            case AbilityManager.AbilityName.MultiLayerLV3:
+                foreach (var iceBlock in bar.iceBlocks) iceBlock.durability = 4;
+                break;
+            case AbilityManager.AbilityName.FrostWideLV1:
+                bar.ActivedIceBlock = 4;
+                break;
+            case AbilityManager.AbilityName.FrostWideLV2:
+                bar.ActivedIceBlock = 6;
+                break;
+            case AbilityManager.AbilityName.FrostWideLV3:
+                bar.ActivedIceBlock = 8;
+                break;
+        }
     }
 }

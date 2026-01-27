@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c375dd6ced3bd949971ecbd459b9861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoDespawn
+  isUnscaled: 0
   despawnTime: 3
   curDespawnTime: 0
 --- !u!50 &4113325012858298164
@@ -215,4 +216,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0d63d26bcb63242ae9b5f31e457012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Area
-  speedMagnification: 0.5
+  speedMagnification: 0.3
