@@ -36,8 +36,8 @@ public class Bar : CustomObject
     public List<Blueprint> blueprints;
     public Color feverColor;
 
-    [Header("Ice ability")]
-    [SerializeField] public IceBlock[] iceBlocks;
+    [Header("Ice Ability")]
+    public IceBlock[] iceBlocks;
     [SerializeField] int activedIceBlock;
     public int ActivedIceBlock
     {
@@ -53,6 +53,14 @@ public class Bar : CustomObject
         }
     }
     public Area chilingAura;
+    [Header("Fire Ability")]
+    public float fireBallCool;
+    float curFireBallCool;
+    public float fireBallDamage;
+    public bool fireBallExplosion;
+    public float fireBallExplosionRange;
+    public bool fireBallBurn;
+    public float fireBallBurnDamage;
 
     protected virtual void Start()
     {
@@ -62,6 +70,20 @@ public class Bar : CustomObject
         ColorUtility.TryParseHtmlString("#44CDCD", out feverColor);
         lineRenderer = GetComponentInChildren<LineRenderer>();
         lineRenderer.material.mainTexture = dottedLineSprite.texture;
+    }
+
+    public override void MyUpdate(float deltaTime)
+    {
+        if(fireBallCool > 0)
+        {
+            curFireBallCool += deltaTime;
+            if(curFireBallCool > fireBallCool)
+            {
+                AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FeverFireBall, transform.position).GetComponent<AllianceProjectile>();
+                projectile.SetDirection(Vector2.up);
+                projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
+            }
+        }
     }
 
     public void MoveBar(float xPos)
@@ -103,11 +125,15 @@ public class Bar : CustomObject
         BarLength = 1f;
         ActivedIceBlock = 0;
         chilingAura.gameObject.SetActive(false);
+        fireBallCool = -1;
+        fireBallExplosion = false;
+        fireBallBurn = false;
     }
 
     public void RoundReset()
     {
         foreach (var iceBlock in iceBlocks) iceBlock.ResetObject();
+        curFireBallCool = 0;
     }
 
     public void Shrink(float value)

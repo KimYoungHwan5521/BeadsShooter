@@ -28,6 +28,12 @@ public class Projectile : CustomObject
         }
     }
 
+    public void SetProjectile(float damage, float speed)
+    {
+        this.damage = damage;
+        this.speed = speed;
+    }
+
     public void SetDirection(Vector2 wantDirection)
     {
         direction = wantDirection;

@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : CustomObject
 {
     //Animator animator;
-    //[SerializeField] Image hpBar;
+    [SerializeField] Image hpBar;
     protected int stage;
     protected bool isDead;
     public bool IsDead
@@ -39,13 +40,17 @@ public class Enemy : CustomObject
         set
         {
             curHP = value;
-            //hpBar.fillAmount = curHP / maxHP;
+            if(hpBar != null) hpBar.fillAmount = curHP / maxHP;
             if (curHP <= 0) IsDead = true;
         }
     }
     protected int coins;
     public bool isInvincible;
     protected Bead attaker;
+
+    float burnDamage;
+    float curBurnCool;
+    float burnLeft;
 
     protected virtual void Start()
     {
@@ -58,6 +63,21 @@ public class Enemy : CustomObject
         base.OnEnable();
         IsDead = false;
         CurHP = maxHP;
+        curBurnCool = 0;
+    }
+
+    public override void MyUpdate(float deltaTime)
+    {
+        if(burnLeft > 0)
+        {
+            burnLeft -= deltaTime;
+            curBurnCool += deltaTime;
+            if(curBurnCool >= 1)
+            {
+                TakeDamage(burnDamage);
+                curBurnCool = 0;
+            }
+        }
     }
 
     public virtual void SetInfo(int stage, float maxHP, bool isWall = false, bool isInvincible = false)
@@ -78,5 +98,11 @@ public class Enemy : CustomObject
         if (isInvincible) return;
         this.attaker = attaker;
         CurHP -= damage;
+    }
+
+    public virtual void Burn(float burnDamage)
+    {
+        this.burnDamage = burnDamage;
+        burnLeft = 3f;
     }
 }

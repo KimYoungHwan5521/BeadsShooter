@@ -4943,7 +4943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllianceProjectile
   damage: 2
-  speed: 20
+  speed: 15
   direction: {x: 0, y: 0}
   shotDelay: 0
 --- !u!58 &-1265829911147762126

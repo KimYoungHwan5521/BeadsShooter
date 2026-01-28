@@ -221,12 +221,12 @@ public class StageManager : MonoBehaviour
             //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 10), 10)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4 ,2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
-            GenerateShopStage(),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4 ,2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
+            //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
         };
@@ -581,7 +581,7 @@ public class StageManager : MonoBehaviour
         {
             case BlockType.Boss1:
                 boss = PoolManager.Spawn(ResourceEnum.Prefab.Boss1).GetComponent<Enemy>();
-                boss.transform.position = new(0, -0.75f + 5 + row + 1 + term + row + 1);
+                boss.transform.position = new(0, -0.75f + 3 + row + 1 + term + row + 1);
                 break;
             default:
                 Debug.LogWarning("Wrong Boss!");
@@ -1016,6 +1016,48 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.FrostWideLV3:
                 bar.ActivedIceBlock = 8;
+                break;
+            case AbilityManager.AbilityName.Fire:
+                bar.fireBallCool = 9f;
+                bar.fireBallDamage = 2f;
+                break;
+            case AbilityManager.AbilityName.QuickDrawLV1:
+                bar.fireBallCool = 7f;
+                break;
+            case AbilityManager.AbilityName.QuickDrawLV2:
+                bar.fireBallCool = 5f;
+                break;
+            case AbilityManager.AbilityName.QuickDrawLV3:
+                bar.fireBallCool = 3f;
+                break;
+            case AbilityManager.AbilityName.HotterBallLV1:
+                bar.fireBallDamage = 4f;
+                break;
+            case AbilityManager.AbilityName.HotterBallLV2:
+                bar.fireBallDamage = 6f;
+                break;
+            case AbilityManager.AbilityName.HotterBallLV3:
+                bar.fireBallDamage = 8f;
+                break;
+            case AbilityManager.AbilityName.ExplosionLV1:
+                bar.fireBallExplosion = true;
+                bar.fireBallExplosionRange = 1f;
+                break;
+            case AbilityManager.AbilityName.ExplosionLV2:
+                bar.fireBallExplosionRange = 2f;
+                break;
+            case AbilityManager.AbilityName.ExplosionLV3:
+                bar.fireBallExplosionRange = 3f;
+                break;
+            case AbilityManager.AbilityName.BurningLV1:
+                bar.fireBallBurn = true;
+                bar.fireBallBurnDamage = 1f;
+                break;
+            case AbilityManager.AbilityName.BurningLV2:
+                bar.fireBallBurnDamage = 2f;
+                break;
+            case AbilityManager.AbilityName.BurningLV3:
+                bar.fireBallBurnDamage = 3f;
                 break;
         }
     }

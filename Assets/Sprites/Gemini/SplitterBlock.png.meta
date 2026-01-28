@@ -1,0 +1,897 @@
+fileFormatVersion: 2
+guid: 3970177ccbc12b8478a6953a89fe7b53
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8291519973928254344
+    second: SplitterBlock_0
+  - first:
+      213: -8629969456128742523
+    second: SplitterBlock_1
+  - first:
+      213: 4275298091570336983
+    second: SplitterBlock_2
+  - first:
+      213: 6276988364349767672
+    second: SplitterBlock_3
+  - first:
+      213: 4712179332761490958
+    second: SplitterBlock_4
+  - first:
+      213: -1370091622902399744
+    second: SplitterBlock_5
+  - first:
+      213: -1239955312247213609
+    second: SplitterBlock_6
+  - first:
+      213: 1706168137580814400
+    second: SplitterBlock_7
+  - first:
+      213: 4561742241169166612
+    second: SplitterBlock_8
+  - first:
+      213: -3456069294300585817
+    second: SplitterBlock_9
+  - first:
+      213: -472907764861505336
+    second: SplitterBlock_10
+  - first:
+      213: 6389588450756497650
+    second: SplitterBlock_11
+  - first:
+      213: 6778828297397166377
+    second: SplitterBlock_12
+  - first:
+      213: -8608838380275976799
+    second: SplitterBlock_13
+  - first:
+      213: 6803780220868947613
+    second: SplitterBlock_14
+  - first:
+      213: -7252507086060519629
+    second: SplitterBlock_15
+  - first:
+      213: -4815748526803998780
+    second: SplitterBlock_16
+  - first:
+      213: 5500193705792918483
+    second: SplitterBlock_17
+  - first:
+      213: -380503876495576291
+    second: SplitterBlock_18
+  - first:
+      213: -2292271116135393045
+    second: SplitterBlock_19
+  - first:
+      213: -3540646323847566912
+    second: SplitterBlock_20
+  - first:
+      213: -8580827777386164384
+    second: SplitterBlock_21
+  - first:
+      213: -3278111682974237293
+    second: SplitterBlock_22
+  - first:
+      213: 346854843230377318
+    second: SplitterBlock_23
+  - first:
+      213: 6628668600688006533
+    second: SplitterBlock_24
+  - first:
+      213: -4527246433143012685
+    second: SplitterBlock_25
+  - first:
+      213: 7680506762404034335
+    second: SplitterBlock_26
+  - first:
+      213: 4064585600127129265
+    second: SplitterBlock_27
+  - first:
+      213: 126030943572499811
+    second: SplitterBlock_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SplitterBlock_0
+      rect:
+        serializedVersion: 2
+        x: 221
+        y: 0
+        width: 9
+        height: 369
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87443f9938a9eec80800000000000000
+      internalID: -8291519973928254344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_1
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 291
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58ba9f0d0803c3880800000000000000
+      internalID: -8629969456128742523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_2
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 297
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d494f876f8e45b30800000000000000
+      internalID: 4275298091570336983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_3
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 269
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fff35419a75c1750800000000000000
+      internalID: 6276988364349767672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_4
+      rect:
+        serializedVersion: 2
+        x: 447
+        y: 0
+        width: 9
+        height: 369
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e069f2f0326056140800000000000000
+      internalID: 4712179332761490958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_5
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 285
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00df9239de47cfce0800000000000000
+      internalID: -1370091622902399744
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_6
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 283
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d1752c863bcacee0800000000000000
+      internalID: -1239955312247213609
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_7
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 269
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0402897a1e68da710800000000000000
+      internalID: 1706168137580814400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_8
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 271
+        width: 11
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 41158c136609e4f30800000000000000
+      internalID: 4561742241169166612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_9
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 255
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a02412b9439900d0800000000000000
+      internalID: -3456069294300585817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_10
+      rect:
+        serializedVersion: 2
+        x: 381
+        y: 274
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c0f7e7b4e4ef69f0800000000000000
+      internalID: -472907764861505336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_11
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 257
+        width: 24
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f0974ca7d06ca850800000000000000
+      internalID: 6389588450756497650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_12
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 114
+        width: 170
+        height: 148
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92169b3bb6c331e50800000000000000
+      internalID: 6778828297397166377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_13
+      rect:
+        serializedVersion: 2
+        x: 427
+        y: 251
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a5b6eeca13478880800000000000000
+      internalID: -8608838380275976799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_14
+      rect:
+        serializedVersion: 2
+        x: 477
+        y: 164
+        width: 82
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9ee8ba1012eb6e50800000000000000
+      internalID: 6803780220868947613
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_15
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 117
+        width: 171
+        height: 133
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33ffb5c0b3be95b90800000000000000
+      internalID: -7252507086060519629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_16
+      rect:
+        serializedVersion: 2
+        x: 413
+        y: 217
+        width: 29
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c7ac34da360b2db0800000000000000
+      internalID: -4815748526803998780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_17
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 195
+        width: 23
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d350adb80d945c40800000000000000
+      internalID: 5500193705792918483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_18
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 187
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1372d58dbd28baf0800000000000000
+      internalID: -380503876495576291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_19
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 94
+        width: 80
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be89cd990973030e0800000000000000
+      internalID: -2292271116135393045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_20
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 173
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c9e5c77de81ddec0800000000000000
+      internalID: -3540646323847566912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_21
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 150
+        width: 20
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06fc7128996cae880800000000000000
+      internalID: -8580827777386164384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_22
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 156
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39d3342eacec182d0800000000000000
+      internalID: -3278111682974237293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_23
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 148
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 665de5764a640d400800000000000000
+      internalID: 346854843230377318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_24
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 111
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5855bcdd8f2cdfb50800000000000000
+      internalID: 6628668600688006533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_25
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 99
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b24bddfa5dfb21c0800000000000000
+      internalID: -4527246433143012685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_26
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 108
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f17f3141534a69a60800000000000000
+      internalID: 7680506762404034335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_27
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 102
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b6deb6711f486830800000000000000
+      internalID: 4064585600127129265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplitterBlock_28
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 94
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36d9856b970cfb100800000000000000
+      internalID: 126030943572499811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      SplitterBlock_0: -8291519973928254344
+      SplitterBlock_1: -8629969456128742523
+      SplitterBlock_10: -472907764861505336
+      SplitterBlock_11: 6389588450756497650
+      SplitterBlock_12: 6778828297397166377
+      SplitterBlock_13: -8608838380275976799
+      SplitterBlock_14: 6803780220868947613
+      SplitterBlock_15: -7252507086060519629
+      SplitterBlock_16: -4815748526803998780
+      SplitterBlock_17: 5500193705792918483
+      SplitterBlock_18: -380503876495576291
+      SplitterBlock_19: -2292271116135393045
+      SplitterBlock_2: 4275298091570336983
+      SplitterBlock_20: -3540646323847566912
+      SplitterBlock_21: -8580827777386164384
+      SplitterBlock_22: -3278111682974237293
+      SplitterBlock_23: 346854843230377318
+      SplitterBlock_24: 6628668600688006533
+      SplitterBlock_25: -4527246433143012685
+      SplitterBlock_26: 7680506762404034335
+      SplitterBlock_27: 4064585600127129265
+      SplitterBlock_28: 126030943572499811
+      SplitterBlock_3: 6276988364349767672
+      SplitterBlock_4: 4712179332761490958
+      SplitterBlock_5: -1370091622902399744
+      SplitterBlock_6: -1239955312247213609
+      SplitterBlock_7: 1706168137580814400
+      SplitterBlock_8: 4561742241169166612
+      SplitterBlock_9: -3456069294300585817
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
