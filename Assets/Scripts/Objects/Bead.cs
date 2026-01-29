@@ -129,9 +129,9 @@ public class Bead : CustomObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
-        if (collision.collider.tag == "Wall") return;
+        if (collision.collider.CompareTag("Wall")) return;
         Enemy enemy = collision.collider.GetComponentInParent<Enemy>();
-        if(enemy != null || collision.collider.gameObject.TryGetComponent(out enemy))
+        if(enemy != null)
         {
             enemy.TakeDamage(damage, this);
         }

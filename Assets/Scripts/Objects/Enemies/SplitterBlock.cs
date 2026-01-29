@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class SplitterBlock : Block
 {
-    [SerializeField] SplitBlock fullBody;
-    [SerializeField] SplitBlock halfBody1;
-    [SerializeField] SplitBlock halfBody2;
+    public SplitBlock fullBody;
+    public SplitBlock halfBody1;
+    public SplitBlock halfBody2;
     bool isSplit;
     [SerializeField] float reunionTime;
     [SerializeField] float curReunionTime;

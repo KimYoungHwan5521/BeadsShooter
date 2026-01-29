@@ -189,6 +189,16 @@ public class GameManager : MonoBehaviour
         foreach(var enemy in stageManager.currentStageEnemies)
         {
             ObjectUpdate += enemy.MyUpdateOnlyCurrentStage;
+            if(enemy is SplitterBlock splitter)
+            {
+                ObjectUpdate += splitter.fullBody.MyUpdateOnlyCurrentStage;
+                ObjectUpdate += splitter.halfBody1.MyUpdateOnlyCurrentStage;
+                ObjectUpdate += splitter.halfBody2.MyUpdateOnlyCurrentStage;
+            }
+            else if(enemy is Boss2 boss2)
+            {
+                ObjectUpdate += boss2.fullBody.MyUpdateOnlyCurrentStage;
+            }
         }
         phase = Phase.BattlePhase;
         Time.timeScale = 1f;

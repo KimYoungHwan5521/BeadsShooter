@@ -25,20 +25,34 @@ public class AllianceProjectile : Projectile
         }
         else
         {
-            Enemy enemy = collision.GetComponentInParent<Enemy>();
-            if (enemy != null)
+            if (collision.CompareTag("Wall"))
             {
                 if(explosible)
                 {
-
-                }
-                else
-                {
-                    enemy.TakeDamage(damage);
-                    if (burnable) enemy.Burn(burnDamage);
+                    Explosion explosion = PoolManager.Spawn(ResourceEnum.Prefab.Explosion, transform.position).GetComponent<Explosion>();
+                    explosion.SetExplosion(explosionRange, damage, burnDamage);
                 }
                 GameManager.Instance.StageManager.projectiles.Remove(this);
                 PoolManager.Despawn(gameObject);
+            }
+            else
+            {
+                Enemy enemy = collision.GetComponentInParent<Enemy>();
+                if (enemy != null)
+                {
+                    if(explosible)
+                    {
+                        Explosion explosion = PoolManager.Spawn(ResourceEnum.Prefab.Explosion, transform.position).GetComponent<Explosion>();
+                        explosion.SetExplosion(explosionRange, damage, burnDamage);
+                    }
+                    else
+                    {
+                        enemy.TakeDamage(damage);
+                        if (burnable) enemy.Burn(burnDamage);
+                    }
+                    GameManager.Instance.StageManager.projectiles.Remove(this);
+                    PoolManager.Despawn(gameObject);
+                }
             }
         }
     }

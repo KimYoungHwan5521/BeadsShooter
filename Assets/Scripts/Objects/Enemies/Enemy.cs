@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Enemy : CustomObject
 {
     //Animator animator;
-    [SerializeField] Image hpBar;
+    [SerializeField] protected Image hpBar;
     protected int stage;
     protected bool isDead;
     public bool IsDead
@@ -33,13 +33,14 @@ public class Enemy : CustomObject
         }
     }
     [SerializeField] protected float maxHP;
+    public float MaxHP => maxHP;
     [SerializeField] protected float curHP;
     public virtual float CurHP
     {
         get => curHP;
         set
         {
-            curHP = value;
+            curHP = Mathf.Max(0, value);
             if(hpBar != null) hpBar.fillAmount = curHP / maxHP;
             if (curHP <= 0) IsDead = true;
         }
@@ -61,6 +62,11 @@ public class Enemy : CustomObject
     protected override void OnEnable()
     {
         base.OnEnable();
+        if(GameManager.Instance.StageManager.currentStage == stage)
+        {
+            GameManager.Instance.ObjectUpdate -= MyUpdateOnlyCurrentStage;
+            GameManager.Instance.ObjectUpdate += MyUpdateOnlyCurrentStage;
+        }
         IsDead = false;
         CurHP = maxHP;
         curBurnCool = 0;

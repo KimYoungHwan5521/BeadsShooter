@@ -9,6 +9,7 @@ TagManager:
   - Bottom
   - Bar
   - Wall
+  - Boss2RestrictArea
   layers:
   - Default
   - TransparentFX
@@ -26,8 +27,8 @@ TagManager:
   - Portal
   - Border
   - Coin
-  - 
-  - 
+  - Boss2 Restrict Area
+  - Boss2
   - 
   - 
   - 

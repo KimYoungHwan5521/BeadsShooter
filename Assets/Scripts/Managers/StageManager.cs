@@ -108,7 +108,10 @@ public class StageManager : MonoBehaviour
     bool stageClear;
 
     #region Stage Info
-    public enum BlockType { Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper, Boss1 }
+    public enum BlockType 
+    { 
+        Normal, Wall, Shield, Counter, PentagonalBlock, SpeedUp, Illusion, Attacker, Splitter, MucusDripper, Boss1, Boss2
+    }
 
     public class BlockForm
     {
@@ -213,19 +216,24 @@ public class StageManager : MonoBehaviour
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 10), 10)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Shield, new Vector2Int(4 ,2)), 5), (new(BlockType.PentagonalBlock), 1), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 15)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Normal, new Vector2Int(2, 2)), 10)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Normal, new Vector2Int(2, 2)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 10), (new(BlockType.Normal, new Vector2Int(2, 2)), 10), (new(BlockType.Normal, new Vector2Int(4, 2)), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4, 2)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4, 2)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4, 2)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4, 2)), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
             //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -241,7 +249,7 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
             GenerateShopStage(),
-            GenerateBossStage(BlockType.Boss1),
+            GenerateBossStage(BlockType.Boss2),
         };
         stages.Add(stageInfos);
     }
@@ -408,7 +416,7 @@ public class StageManager : MonoBehaviour
         {
             if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
             else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
-            else SpawnBoss(nextStageInfo);
+            else SpawnBoss(nextStageInfo, wantStage);
         }
 
         foreach (GameObject wall in currentStageWalls)
@@ -459,13 +467,13 @@ public class StageManager : MonoBehaviour
         {
             Debug.Log("Clear both stage");
             nextStageInfo = null;
-            if (currentStage < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[currentStage + 1];
+            if (currentStage + 1 < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[currentStage + 1];
 
             if (nextStageInfo != null)
             {
                 if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
                 else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, false);
-                else SpawnBoss(nextStageInfo);
+                else SpawnBoss(nextStageInfo, wantStage);
 
                 for (int i = -5; i <= 5; i++)
                 {
@@ -574,14 +582,20 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    void SpawnBoss(StageInfo stageInfo)
+    void SpawnBoss(StageInfo stageInfo, int wantStage)
     {
         Enemy boss = null;
         switch (stageInfo.enemyArrangementInfo[0].blockType)
         {
             case BlockType.Boss1:
                 boss = PoolManager.Spawn(ResourceEnum.Prefab.Boss1).GetComponent<Enemy>();
-                boss.transform.position = new(0, -0.75f + 3 + row + 1 + term + row + 1);
+                boss.transform.position = new(0, -0.75f + 1 + row + 1 + term + row + 1);
+                boss.SetInfo(wantStage, 100f);
+                break;
+            case BlockType.Boss2:
+                boss = PoolManager.Spawn(ResourceEnum.Prefab.Boss2).GetComponent<Enemy>();
+                boss.transform.position = new(0, -0.75f + 1 + row + 1 + term + row + 1);
+                boss.SetInfo(wantStage, 60f);
                 break;
             default:
                 Debug.LogWarning("Wrong Boss!");
@@ -804,6 +818,9 @@ public class StageManager : MonoBehaviour
         {
             case BlockType.Boss1:
                 enemyArrangementInfo = new(BlockType.Boss1, new(0, 0), 100f);
+                break;
+            case BlockType.Boss2:
+                enemyArrangementInfo = new(BlockType.Boss2, new(0, 0), 60f);
                 break;
         }
         if (enemyArrangementInfo == null) Debug.LogWarning("Null boss!");

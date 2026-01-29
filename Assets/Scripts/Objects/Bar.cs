@@ -79,7 +79,8 @@ public class Bar : CustomObject
             curFireBallCool += deltaTime;
             if(curFireBallCool > fireBallCool)
             {
-                AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FeverFireBall, transform.position).GetComponent<AllianceProjectile>();
+                curFireBallCool = 0;
+                AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
                 projectile.SetDirection(Vector2.up);
                 projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
             }

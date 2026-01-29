@@ -16,12 +16,16 @@ namespace ResourceEnum
         SplitterBlock,
         MucusDrippingBlock,
         Boss1,
+        Boss2,
 
         NormalProjectile,
         FireBall,
         Icicle,
 
         Mucus,
+        MucusL,
+        MucusXL,
+        MucusXXL,
 
         Coin,
 
@@ -29,6 +33,7 @@ namespace ResourceEnum
         FeverFireBall,
 
         ShopStage,
+        Explosion,
     }
 
     public enum Sprite

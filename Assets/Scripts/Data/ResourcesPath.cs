@@ -16,12 +16,16 @@ public class ResourcesPath
         "Prefabs/Enemies/SplitterBlock",
         "Prefabs/Enemies/MucusDrippingBlock",
         "Prefabs/Enemies/Boss1",
+        "Prefabs/Enemies/Boss2",
 
         "Prefabs/Projectiles/NormalProjectile",
         "Prefabs/Projectiles/FireBall",
         "Prefabs/Projectiles/Icicle",
 
         "Prefabs/Area/Mucus",
+        "Prefabs/Area/MucusL",
+        "Prefabs/Area/MucusXL",
+        "Prefabs/Area/MucusXXL",
 
         "Prefabs/Drops/Coin",
 
@@ -29,6 +33,7 @@ public class ResourcesPath
         "Prefabs/Fevers/FeverFireBall",
 
         "Prefabs/ETC/ShopStage",
+        "Prefabs/ETC/Explosion",
     };
 
 

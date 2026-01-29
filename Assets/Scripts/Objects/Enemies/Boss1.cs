@@ -51,7 +51,7 @@ public class Boss1 : Enemy
         curAttackCool = 0;
     }
 
-    public override void MyUpdate(float deltaTime)
+    public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
         if (!gameObject.activeSelf) return;
         if (caughted != null)
@@ -126,7 +126,8 @@ public class Boss1 : Enemy
     {
         int rand = Random.Range(-5, 6);
         Vector3 spawnPos = new(transform.position.x + rand, transform.position.y);
-        PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, spawnPos);
+        Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, spawnPos).GetComponent<Projectile>();
+        projectile.SetDirection(Vector2.down);
         curAttackCool = 0;
     }
 }
