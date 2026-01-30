@@ -18,14 +18,16 @@ namespace ResourceEnum
         Boss1,
         Boss2,
 
-        NormalProjectile,
-        FireBall,
-        Icicle,
+        NormalProjectile = 100,
+        FireBall = 101,
+        Icicle = 102,
+        Boss2Attack1 = 103,
+        Boss2Attack2 = 104,
 
-        Mucus,
-        MucusL,
-        MucusXL,
-        MucusXXL,
+        Mucus = 200,
+        MucusL = 201,
+        MucusXL = 202,
+        MucusXXL = 203,
 
         Coin,
 

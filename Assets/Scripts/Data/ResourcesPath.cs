@@ -21,6 +21,8 @@ public class ResourcesPath
         "Prefabs/Projectiles/NormalProjectile",
         "Prefabs/Projectiles/FireBall",
         "Prefabs/Projectiles/Icicle",
+        "Prefabs/Projectiles/Boss2Attack1",
+        "Prefabs/Projectiles/Boss2Attack2",
 
         "Prefabs/Area/Mucus",
         "Prefabs/Area/MucusL",

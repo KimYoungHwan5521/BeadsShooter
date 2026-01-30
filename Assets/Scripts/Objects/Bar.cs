@@ -33,6 +33,9 @@ public class Bar : CustomObject
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
     [SerializeField] float moveSpeed = 1;
+    public float timeLimitedSpeedMagnification = 1;
+    public float timeLimitedSpeedMagnificationTime;
+
     public List<Blueprint> blueprints;
     public Color feverColor;
 
@@ -85,6 +88,12 @@ public class Bar : CustomObject
                 projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
             }
         }
+
+        if (timeLimitedSpeedMagnificationTime > 0)
+        {
+            timeLimitedSpeedMagnificationTime -= Time.deltaTime;
+        }
+        else timeLimitedSpeedMagnification = 1f;
     }
 
     public void MoveBar(float xPos)
@@ -98,10 +107,10 @@ public class Bar : CustomObject
         //anim.SetFloat("MoveSpeed", moveSpeed);
         Vector2 direction = new Vector2(xPos - transform.position.x, 0).normalized;
         character.transform.localScale = new(-direction.x, 1);
-        transform.position += (Vector3)direction * moveSpeed * Time.unscaledDeltaTime;
+        transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
         foreach(var bead in grabbedBeads)
         {
-            bead.transform.position += (Vector3)direction * moveSpeed * Time.unscaledDeltaTime;
+            bead.transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
         }
     }
 
@@ -120,6 +129,7 @@ public class Bar : CustomObject
     public void SetBar(CharacterData characterData)
     {
         moveSpeed = characterData.moveSpeed;
+        timeLimitedSpeedMagnification = 1f;
         blueprints = characterData.blueprints.ToList();
         fever = characterData.fever;
         feverLevel = 0;

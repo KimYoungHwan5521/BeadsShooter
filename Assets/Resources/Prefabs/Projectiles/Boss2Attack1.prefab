@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4769687832302380298}
   - component: {fileID: 7450294240916447710}
   m_Layer: 0
-  m_Name: NormalProjectile
+  m_Name: Boss2Attack1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,10 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a70b46089699a349973b78274e2f31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  lookAngle: 0
   damage: 1
   speed: 5
   direction: {x: 0, y: 0}
   shotDelay: 0
+  slow: 1
+  slowMagnitude: 0.7
+  slowTime: 3
 --- !u!50 &7450294240916447710
 Rigidbody2D:
   serializedVersion: 5
@@ -105,7 +109,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7395771246108712804}
@@ -157,7 +161,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -3404333886518146401, guid: 5115e4a347a99004684bf1f1e7ae47e4, type: 3}
+  m_Sprite: {fileID: -2938288979304129457, guid: ab8b46c596f1bbf4781a58c3079ea8c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -202,5 +206,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 1
+  m_Offset: {x: 0.04, y: 0}
+  m_Radius: 0.59

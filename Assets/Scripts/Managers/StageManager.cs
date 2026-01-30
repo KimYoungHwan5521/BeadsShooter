@@ -243,12 +243,14 @@ public class StageManager : MonoBehaviour
         stageInfos = new StageInfo[]
         {
             // Stage 1
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.MucusDripper, 2), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
-            GenerateShopStage(),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss2),
         };
         stages.Add(stageInfos);

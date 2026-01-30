@@ -44,6 +44,8 @@ public class Boss2Split : Enemy
     [SerializeField] ResourceEnum.Prefab dripping;
     [SerializeField] float drippingCool;
     [SerializeField] float curDrippingCool;
+    [SerializeField] float attackCool;
+    [SerializeField] float curAttackCool;
 
     private void Awake()
     {
@@ -70,28 +72,29 @@ public class Boss2Split : Enemy
             curDrippingCool = 0;
             PoolManager.Spawn(dripping, transform.position);
         }
+
+        if(part < 3)
+        {
+            curAttackCool += deltaTime;
+            if (curAttackCool > attackCool)
+            {
+                Attack();
+            }
+        }
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.collider.TryGetComponent(out BoundaryEdge edge))
-    //    {
-    //        if (edge.edgeType == 1)
-    //        {
-    //            curMoveDirection = new(curMoveDirection.x, -curMoveDirection.y);
-    //        }
-    //        else if (edge.edgeType == 2)
-    //        {
-    //            curMoveDirection = new(Mathf.Abs(curMoveDirection.x), curMoveDirection.y);
-    //        }
-    //        else
-    //        {
-    //            curMoveDirection = new(-Mathf.Abs(curMoveDirection.x), curMoveDirection.y);
-    //        }
-    //    }
-    //    else if (collision.collider.CompareTag("Boss2RestrictArea"))
-    //    {
-    //        curMoveDirection = new(curMoveDirection.x, -curMoveDirection.y);
-    //    }
-    //}
+    void Attack()
+    {
+        Projectile projectile;
+        if(part == 0)
+        {
+            projectile = PoolManager.Spawn(ResourceEnum.Prefab.Boss2Attack1, transform.position).GetComponent<Projectile>();
+        }
+        else
+        {
+            projectile = PoolManager.Spawn(ResourceEnum.Prefab.Boss2Attack2, transform.position).GetComponent<Projectile>();
+        }
+        projectile.SetDirection(Vector2.down);
+        curAttackCool = 0;
+    }
 }

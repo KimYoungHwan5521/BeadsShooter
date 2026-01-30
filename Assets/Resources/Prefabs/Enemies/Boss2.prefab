@@ -149,9 +149,11 @@ MonoBehaviour:
   part: 2
   moveSpeed: 5
   curMoveDirection: {x: 0, y: 0}
-  dripping: 19
+  dripping: 202
   drippingCool: 0.25
   curDrippingCool: 0
+  attackCool: 10
+  curAttackCool: 0
 --- !u!50 &4048142971490244225
 Rigidbody2D:
   serializedVersion: 5
@@ -232,8 +234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss2
   hpBar: {fileID: 308042523013170040}
-  maxHP: 60
-  curHP: 60
+  maxHP: 40
+  curHP: 40
   isInvincible: 0
   fullBody: {fileID: 2786119872584381965}
   halfBody1: {fileID: 7156563567845531665}
@@ -355,9 +357,11 @@ MonoBehaviour:
   part: 4
   moveSpeed: 10
   curMoveDirection: {x: 0, y: 0}
-  dripping: 18
-  drippingCool: 0.125
+  dripping: 201
+  drippingCool: 0.05
   curDrippingCool: 0
+  attackCool: 0
+  curAttackCool: 0
 --- !u!58 &3074963633836105523
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -783,9 +787,11 @@ MonoBehaviour:
   part: 1
   moveSpeed: 5
   curMoveDirection: {x: 0, y: 0}
-  dripping: 19
+  dripping: 202
   drippingCool: 0.25
   curDrippingCool: 0
+  attackCool: 10
+  curAttackCool: 0
 --- !u!50 &1691639473462954098
 Rigidbody2D:
   serializedVersion: 5
@@ -868,9 +874,11 @@ MonoBehaviour:
   part: 0
   moveSpeed: 2.5
   curMoveDirection: {x: 0, y: 0}
-  dripping: 20
+  dripping: 203
   drippingCool: 0.5
   curDrippingCool: 0
+  attackCool: 10
+  curAttackCool: 0
 --- !u!58 &7689006679524526177
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1122,9 +1130,11 @@ MonoBehaviour:
   part: 5
   moveSpeed: 10
   curMoveDirection: {x: 0, y: 0}
-  dripping: 18
-  drippingCool: 0.125
+  dripping: 201
+  drippingCool: 0.05
   curDrippingCool: 0
+  attackCool: 0
+  curAttackCool: 0
 --- !u!58 &8767540285811462830
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1403,9 +1413,11 @@ MonoBehaviour:
   part: 3
   moveSpeed: 10
   curMoveDirection: {x: 0, y: 0}
-  dripping: 18
-  drippingCool: 0.125
+  dripping: 201
+  drippingCool: 0.05
   curDrippingCool: 0
+  attackCool: 0
+  curAttackCool: 0
 --- !u!58 &9076952917918100923
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1582,9 +1594,11 @@ MonoBehaviour:
   part: 6
   moveSpeed: 10
   curMoveDirection: {x: 0, y: 0}
-  dripping: 18
-  drippingCool: 0.125
+  dripping: 201
+  drippingCool: 0.05
   curDrippingCool: 0
+  attackCool: 0
+  curAttackCool: 0
 --- !u!58 &5886648710545295990
 CircleCollider2D:
   m_ObjectHideFlags: 0

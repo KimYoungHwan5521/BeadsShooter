@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12fa0b064e1d1fd4a94a020201c6fd47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DrippingBlock
+  hpBar: {fileID: 0}
   maxHP: 2
   curHP: 2
   isInvincible: 0
@@ -247,7 +248,7 @@ MonoBehaviour:
   movePattern: 0
   moveSpeed: 3
   curMoveDirection: {x: 0, y: 0}
-  dripping: 14
+  dripping: 200
   drippingCool: 0.1
   curDrippingCool: 0
 --- !u!1 &7163911096092563884

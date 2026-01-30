@@ -4918,7 +4918,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 7934883637961306568, guid: 6a5496cdb62e1b048829b3745d2d94c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4942,6 +4942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0ab60e556db28489e4b7667327d105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AllianceProjectile
+  lookAngle: -90
   damage: 2
   speed: 15
   direction: {x: 0, y: 0}
