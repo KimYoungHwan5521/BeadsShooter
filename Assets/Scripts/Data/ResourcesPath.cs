@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+
 public class ResourcesPath
 {
     public static string[] PrefabPathArray =
@@ -41,6 +43,14 @@ public class ResourcesPath
 
     public static string[] SpritePathArray =
     {
+        // Ability Icons
+        "Sprites/Icons/Unknown",
+        "Sprites/Icons/Ice",
+        "Sprites/Icons/FastFreeze",
+        "Sprites/Icons/IcicleBurst",
+        "Sprites/Icons/ChilingAura",
+        "Sprites/Icons/MultiLayer",
+        "Sprites/Icons/FrostWide",
     };
 
     public static string[] MaterialPathArray =

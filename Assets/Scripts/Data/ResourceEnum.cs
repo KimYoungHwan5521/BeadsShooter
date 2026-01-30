@@ -40,7 +40,14 @@ namespace ResourceEnum
 
     public enum Sprite
     {
-
+        // Ability Icons
+        Unknown,
+        Ice,
+        FastFreeze,
+        IcicleBurst,
+        ChilingAura,
+        MultiLayer,
+        FrostWide,
     }
 
     public enum Material
