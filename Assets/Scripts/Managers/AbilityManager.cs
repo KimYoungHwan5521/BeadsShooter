@@ -7,7 +7,8 @@ public class AbilityManager
     public enum AbilityName { Ice, FastFreezeLV1, FastFreezeLV2, FastFreezeLV3, IcicleBurstLV1, IcicleBurstLV2, IcicleBurstLV3,
         ChilingAuraLV1, ChilingAuraLV2, ChilingAuraLV3, MultiLayerLV1, MultiLayerLV2, MultiLayerLV3, FrostWideLV1, FrostWideLV2, FrostWideLV3, 
         Fire, QuickDrawLV1, QuickDrawLV2, QuickDrawLV3, HotterBallLV1, HotterBallLV2, HotterBallLV3, ExplosionLV1, ExplosionLV2, ExplosionLV3,
-        BurningLV1, BurningLV2, BurningLV3, Laser, Telekinesis, Steel}
+        BurningLV1, BurningLV2, BurningLV3, Laser, FrequentShotLV1, FrequentShotLV2, FrequentShotLV3, MultipleShotLV1, MultipleShotLV2,
+        MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, Steel}
     
     public class Ability
     {
@@ -23,6 +24,7 @@ public class AbilityManager
     public IEnumerator Initiate()
     {
         GameManager.ClaimLoadInfo("Loading abilities");
+        #region Ice
         abilities = new();
         Ability ability = new()
         {
@@ -180,7 +182,8 @@ public class AbilityManager
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
         abilities.Add(ability);
-
+        #endregion
+        #region Fire
         ability = new()
         {
             name = AbilityName.Fire,
@@ -307,7 +310,105 @@ public class AbilityManager
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
         abilities.Add(ability);
+        #endregion
+        #region LASER
+        ability = new()
+        {
+            name = AbilityName.Laser,
+            explain = "Shot a laser once every 7 seconds."
+        };
+        abilities.Add(ability);
 
+        ability = new()
+        {
+            name = AbilityName.FrequentShotLV1,
+            explain = "Reduced cooldown of shot laser. (7s ¡æ 6s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Laser);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FrequentShotLV2,
+            explain = "Reduced cooldown of shot laser. (6s ¡æ 5s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FrequentShotLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FrequentShotLV3,
+            explain = "Reduced cooldown of shot laser. (5s ¡æ 4s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FrequentShotLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV1,
+            explain = "Shoot more lasers. (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Laser);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV2,
+            explain = "Shoot more lasers. (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleShotLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV3,
+            explain = "Shoot more lasers. (3 ¡æ 4)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleShotLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV4,
+            explain = "Shoot more lasers. (4 ¡æ 6)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleShotLV3);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV5,
+            explain = "Shoot more lasers. (6 ¡æ 8)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleShotLV4);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleShotLV6,
+            explain = "Shoot more lasers. (8 ¡æ 10)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleShotLV5);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+        #endregion
         ability = new()
         {
             name = AbilityName.Telekinesis,

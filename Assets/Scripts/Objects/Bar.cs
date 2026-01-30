@@ -56,6 +56,7 @@ public class Bar : CustomObject
         }
     }
     public Area chilingAura;
+
     [Header("Fire Ability")]
     public float fireBallCool;
     float curFireBallCool;
@@ -64,6 +65,15 @@ public class Bar : CustomObject
     public float fireBallExplosionRange;
     public bool fireBallBurn;
     public float fireBallBurnDamage;
+
+    [Header("Laser Ability")]
+    public float laserCool;
+    float curLaserCool;
+    public int laserCount;
+    int firedLaserCount;
+    const float laserDelay = 0.1f;
+    float curLaserDelay;
+    bool laserFire;
 
     protected virtual void Start()
     {
@@ -77,23 +87,57 @@ public class Bar : CustomObject
 
     public override void MyUpdate(float deltaTime)
     {
-        if(fireBallCool > 0)
-        {
-            curFireBallCool += deltaTime;
-            if(curFireBallCool > fireBallCool)
-            {
-                curFireBallCool = 0;
-                AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
-                projectile.SetDirection(Vector2.up);
-                projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
-            }
-        }
-
         if (timeLimitedSpeedMagnificationTime > 0)
         {
             timeLimitedSpeedMagnificationTime -= Time.deltaTime;
         }
         else timeLimitedSpeedMagnification = 1f;
+
+        if(grabbedBeads != null)
+        {
+            if(fireBallCool > 0)
+            {
+                curFireBallCool += deltaTime;
+                if(curFireBallCool > fireBallCool)
+                {
+                    curFireBallCool = 0;
+                    AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
+                    projectile.SetDirection(Vector2.up);
+                    projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
+                }
+            }
+
+            if(laserCount > 0)
+            {
+                curLaserCool += deltaTime;
+                if(curLaserCool > laserCool)
+                {
+                    curLaserCool = 0;
+                    laserFire = true;
+                }
+            }
+
+            if(laserFire)
+            {
+                curLaserDelay += deltaTime;
+                if(curLaserDelay > laserDelay)
+                {
+                    curLaserDelay = 0;
+                    firedLaserCount++;
+                    int rand = Random.Range(0, GameManager.Instance.StageManager.currentStageEnemies.Count);
+                    Enemy target = GameManager.Instance.StageManager.currentStageEnemies[rand];
+                    LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverLaser).GetComponent<LineRenderer>();
+                    line.SetPositions(new Vector3[] { GameManager.Instance.StageManager.bar.transform.position, target.transform.position });
+                    target.TakeDamage(1);
+
+                    if(firedLaserCount == laserCount)
+                    {
+                        laserFire = false;
+                        firedLaserCount = 0;
+                    }
+                }
+            }
+        }
     }
 
     public void MoveBar(float xPos)
@@ -134,17 +178,20 @@ public class Bar : CustomObject
         fever = characterData.fever;
         feverLevel = 0;
         BarLength = 1f;
+        
         ActivedIceBlock = 0;
         chilingAura.gameObject.SetActive(false);
         fireBallCool = -1;
         fireBallExplosion = false;
         fireBallBurn = false;
+        laserCount = 0;
     }
 
     public void RoundReset()
     {
         foreach (var iceBlock in iceBlocks) iceBlock.ResetObject();
         curFireBallCool = 0;
+        curLaserCool = 0;
     }
 
     public void Shrink(float value)

@@ -180,7 +180,8 @@ public class StageManager : MonoBehaviour
         {
             this.blockType = blockType;
             this.position = position;
-            size = new Vector2Int(4, 2);
+            if (blockType == BlockType.Shield) size = new Vector2Int(4, 2);
+            else size = new Vector2Int(1, 1);
             maxHP = 1;
             shieldPosition = shieldPos;
         }
@@ -243,13 +244,13 @@ public class StageManager : MonoBehaviour
         stageInfos = new StageInfo[]
         {
             // Stage 1
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.MucusDripper, 2), 4)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(2, 1)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
             //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss2),
         };
@@ -382,6 +383,7 @@ public class StageManager : MonoBehaviour
         possibleToAppearAbilities = new();
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice));
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire));
+        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser));
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
 
@@ -1077,6 +1079,37 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.BurningLV3:
                 bar.fireBallBurnDamage = 3f;
+                break;
+            case AbilityManager.AbilityName.Laser:
+                bar.laserCount = 1;
+                bar.laserCool = 7f;
+                break;
+            case AbilityManager.AbilityName.FrequentShotLV1:
+                bar.laserCool = 6f;
+                break;
+            case AbilityManager.AbilityName.FrequentShotLV2:
+                bar.laserCool = 5f;
+                break;
+            case AbilityManager.AbilityName.FrequentShotLV3:
+                bar.laserCool = 4f;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV1:
+                bar.laserCount = 2;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV2:
+                bar.laserCount = 3;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV3:
+                bar.laserCount = 4;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV4:
+                bar.laserCount = 6;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV5:
+                bar.laserCount = 8;
+                break;
+            case AbilityManager.AbilityName.MultipleShotLV6:
+                bar.laserCount = 10;
                 break;
         }
     }

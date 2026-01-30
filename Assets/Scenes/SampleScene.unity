@@ -19191,6 +19191,8 @@ MonoBehaviour:
   feverLevel: 0
   grabbedBeads: []
   moveSpeed: 20
+  timeLimitedSpeedMagnification: 1
+  timeLimitedSpeedMagnificationTime: 0
   feverColor: {r: 0, g: 0, b: 0, a: 0}
   iceBlocks:
   - {fileID: 858503369}
@@ -19209,6 +19211,8 @@ MonoBehaviour:
   fireBallExplosionRange: 0
   fireBallBurn: 0
   fireBallBurnDamage: 0
+  laserCool: 0
+  laserCount: 0
 --- !u!1 &758097636
 GameObject:
   m_ObjectHideFlags: 0
@@ -41832,7 +41836,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 352cd6da4d60e9e49a8147eed0366e90, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
