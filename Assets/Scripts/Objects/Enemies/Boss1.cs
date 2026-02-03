@@ -53,7 +53,7 @@ public class Boss1 : Enemy
 
     public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf || GameManager.Instance.StageManager.bar.grabbedBeads.Count > 0) return;
         if (caughted != null)
         {
             curCaughtTime += deltaTime;

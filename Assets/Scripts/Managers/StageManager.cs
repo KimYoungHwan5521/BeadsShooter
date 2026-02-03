@@ -384,8 +384,8 @@ public class StageManager : MonoBehaviour
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice));
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire));
         possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser));
-        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
-        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
+        //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
+        //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
 
         selectedAbilities = new();
     }
@@ -518,7 +518,6 @@ public class StageManager : MonoBehaviour
             }
             else if (enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.SpeedUp) block = PoolManager.Spawn(ResourceEnum.Prefab.SpeedUpBlock).GetComponent<SpeedUpBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Illusion) block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Attacker) block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
             else if (enemyArrangementInfo.blockType == BlockType.Splitter) block = PoolManager.Spawn(ResourceEnum.Prefab.SplitterBlock).GetComponent<SplitterBlock>();
@@ -985,7 +984,7 @@ public class StageManager : MonoBehaviour
         switch(ability.name)
         {
             case AbilityManager.AbilityName.Ice:
-                bar.ActivedIceBlock = 2;
+                bar.ActivedIceBlock = 4;
                 foreach (var iceBlock in bar.iceBlocks)
                 {
                     iceBlock.regenerateCool = 10f;
@@ -1030,23 +1029,23 @@ public class StageManager : MonoBehaviour
                 foreach (var iceBlock in bar.iceBlocks) iceBlock.durability = 4;
                 break;
             case AbilityManager.AbilityName.FrostWideLV1:
-                bar.ActivedIceBlock = 4;
-                break;
-            case AbilityManager.AbilityName.FrostWideLV2:
                 bar.ActivedIceBlock = 6;
                 break;
-            case AbilityManager.AbilityName.FrostWideLV3:
+            case AbilityManager.AbilityName.FrostWideLV2:
                 bar.ActivedIceBlock = 8;
                 break;
+            case AbilityManager.AbilityName.FrostWideLV3:
+                bar.ActivedIceBlock = 12;
+                break;
             case AbilityManager.AbilityName.Fire:
-                bar.fireBallCool = 9f;
+                bar.fireBallCool = 6f;
                 bar.fireBallDamage = 2f;
                 break;
             case AbilityManager.AbilityName.QuickDrawLV1:
-                bar.fireBallCool = 7f;
+                bar.fireBallCool = 5f;
                 break;
             case AbilityManager.AbilityName.QuickDrawLV2:
-                bar.fireBallCool = 5f;
+                bar.fireBallCool = 4f;
                 break;
             case AbilityManager.AbilityName.QuickDrawLV3:
                 bar.fireBallCool = 3f;
@@ -1072,26 +1071,26 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.BurningLV1:
                 bar.fireBallBurn = true;
-                bar.fireBallBurnDamage = 1f;
+                bar.fireBallBurnDamage = 0.4f;
                 break;
             case AbilityManager.AbilityName.BurningLV2:
-                bar.fireBallBurnDamage = 2f;
+                bar.fireBallBurnDamage = 0.8f;
                 break;
             case AbilityManager.AbilityName.BurningLV3:
-                bar.fireBallBurnDamage = 3f;
+                bar.fireBallBurnDamage = 1.2f;
                 break;
             case AbilityManager.AbilityName.Laser:
                 bar.laserCount = 1;
-                bar.laserCool = 7f;
+                bar.laserCool = 6f;
                 break;
             case AbilityManager.AbilityName.FrequentShotLV1:
-                bar.laserCool = 6f;
+                bar.laserCool = 5.5f;
                 break;
             case AbilityManager.AbilityName.FrequentShotLV2:
                 bar.laserCool = 5f;
                 break;
             case AbilityManager.AbilityName.FrequentShotLV3:
-                bar.laserCool = 4f;
+                bar.laserCool = 4.5f;
                 break;
             case AbilityManager.AbilityName.MultipleShotLV1:
                 bar.laserCount = 2;

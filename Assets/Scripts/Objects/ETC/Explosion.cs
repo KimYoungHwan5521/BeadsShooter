@@ -34,6 +34,7 @@ public class Explosion : CustomObject
 
         foreach (Collider2D col in cols)
         {
+            if (col.CompareTag("Wall")) continue;
             Enemy enemy = col.GetComponentInParent<Enemy>();
             if (enemy != null && damaged.Add(enemy))
             {

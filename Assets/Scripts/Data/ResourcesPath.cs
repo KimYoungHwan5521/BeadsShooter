@@ -12,7 +12,6 @@ public class ResourcesPath
         "Prefabs/Enemies/ShieldBlock",
         "Prefabs/Enemies/CounterBlock",
         "Prefabs/Enemies/PentagonalBlock",
-        "Prefabs/Enemies/SpeedUpBlock",
         "Prefabs/Enemies/IllusionBlock",
         "Prefabs/Enemies/AttackerBlock",
         "Prefabs/Enemies/SplitterBlock",
@@ -51,6 +50,11 @@ public class ResourcesPath
         "Sprites/Icons/ChilingAura",
         "Sprites/Icons/MultiLayer",
         "Sprites/Icons/FrostWide",
+        "Sprites/Icons/Fire",
+        "Sprites/Icons/QuickDraw",
+        "Sprites/Icons/HotterBall",
+        "Sprites/Icons/Explosion",
+        "Sprites/Icons/Burning",
     };
 
     public static string[] MaterialPathArray =

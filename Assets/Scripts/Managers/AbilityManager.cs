@@ -8,7 +8,7 @@ public class AbilityManager
         ChilingAuraLV1, ChilingAuraLV2, ChilingAuraLV3, MultiLayerLV1, MultiLayerLV2, MultiLayerLV3, FrostWideLV1, FrostWideLV2, FrostWideLV3, 
         Fire, QuickDrawLV1, QuickDrawLV2, QuickDrawLV3, HotterBallLV1, HotterBallLV2, HotterBallLV3, ExplosionLV1, ExplosionLV2, ExplosionLV3,
         BurningLV1, BurningLV2, BurningLV3, Laser, FrequentShotLV1, FrequentShotLV2, FrequentShotLV3, MultipleShotLV1, MultipleShotLV2,
-        MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, Steel}
+        MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, }
     
     public class Ability
     {
@@ -156,7 +156,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FrostWideLV1,
-            explain = "Increase the number of ice cubes (2 ¡æ 4)"
+            explain = "Increase the number of ice cubes (4 ¡æ 6)"
         };
         root = abilities.Find(x => x.name == AbilityName.Ice);
         ability.upperAbilities.Add(root);
@@ -166,7 +166,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FrostWideLV2,
-            explain = "Increase the number of ice cubes (4 ¡æ 6)"
+            explain = "Increase the number of ice cubes (6 ¡æ 8)"
         };
         root = abilities.Find(x => x.name == AbilityName.FrostWideLV1);
         ability.upperAbilities.Add(root);
@@ -176,7 +176,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FrostWideLV3,
-            explain = "Increase the number of ice cubes (6 ¡æ 8)"
+            explain = "Increase the number of ice cubes (8 ¡æ 12)"
         };
         root = abilities.Find(x => x.name == AbilityName.FrostWideLV2);
         ability.upperAbilities.Add(root);
@@ -194,7 +194,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.QuickDrawLV1,
-            explain = "Reduced cooldown of fireball launch (9s ¡æ 7s)"
+            explain = "Reduced cooldown of fireball launch (6s ¡æ 5s)"
         };
         root = abilities.Find(x => x.name == AbilityName.Fire);
         ability.upperAbilities.Add(root);
@@ -204,7 +204,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.QuickDrawLV2,
-            explain = "Reduced cooldown of fireball launch (7s ¡æ 5s)"
+            explain = "Reduced cooldown of fireball launch (5s ¡æ 4s)"
         };
         root = abilities.Find(x => x.name == AbilityName.QuickDrawLV1);
         ability.upperAbilities.Add(root);
@@ -214,7 +214,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.QuickDrawLV3,
-            explain = "Reduced cooldown of fireball launch (5s ¡æ 3s)"
+            explain = "Reduced cooldown of fireball launch (4s ¡æ 3s)"
         };
         root = abilities.Find(x => x.name == AbilityName.QuickDrawLV2);
         ability.upperAbilities.Add(root);
@@ -284,7 +284,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BurningLV1,
-            explain = "Blocks damaged by the fireball will burn, dealing 1 damage per second for 3 seconds."
+            explain = "Blocks damaged by the fireball will burn, dealing 0.4 damage per second for 3 seconds."
         };
         root = abilities.Find(x => x.name == AbilityName.Fire);
         ability.upperAbilities.Add(root);
@@ -294,7 +294,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BurningLV2,
-            explain = "Increased burning damage (1 ¡æ 2 per second)"
+            explain = "Increased burning damage (0.4 ¡æ 0.8 per second)"
         };
         root = abilities.Find(x => x.name == AbilityName.BurningLV1);
         ability.upperAbilities.Add(root);
@@ -304,7 +304,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BurningLV3,
-            explain = "Increased burning damage (2 ¡æ 3 per second)"
+            explain = "Increased burning damage (0.8 ¡æ 1.2 per second)"
         };
         root = abilities.Find(x => x.name == AbilityName.BurningLV2);
         ability.upperAbilities.Add(root);
@@ -315,14 +315,14 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.Laser,
-            explain = "Shot a laser once every 7 seconds."
+            explain = "Shot a laser once every 6 seconds."
         };
         abilities.Add(ability);
 
         ability = new()
         {
             name = AbilityName.FrequentShotLV1,
-            explain = "Reduced cooldown of shot laser. (7s ¡æ 6s)"
+            explain = "Reduced cooldown of shot laser. (6s ¡æ 5.5s)"
         };
         root = abilities.Find(x => x.name == AbilityName.Laser);
         ability.upperAbilities.Add(root);
@@ -332,7 +332,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FrequentShotLV2,
-            explain = "Reduced cooldown of shot laser. (6s ¡æ 5s)"
+            explain = "Reduced cooldown of shot laser. (5.5s ¡æ 5s)"
         };
         root = abilities.Find(x => x.name == AbilityName.FrequentShotLV1);
         ability.upperAbilities.Add(root);
@@ -342,7 +342,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FrequentShotLV3,
-            explain = "Reduced cooldown of shot laser. (5s ¡æ 4s)"
+            explain = "Reduced cooldown of shot laser. (5s ¡æ 4.5s)"
         };
         root = abilities.Find(x => x.name == AbilityName.FrequentShotLV2);
         ability.upperAbilities.Add(root);
@@ -416,12 +416,6 @@ public class AbilityManager
         };
         abilities.Add(ability);
 
-        ability = new()
-        {
-            name = AbilityName.Steel,
-            explain = "Increased number of balls"
-        };
-        abilities.Add(ability);
 
         yield return null;
     }

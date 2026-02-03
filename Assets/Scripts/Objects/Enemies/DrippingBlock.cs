@@ -5,6 +5,7 @@ public class DrippingBlock : MovableBlock
     [SerializeField] ResourceEnum.Prefab dripping;
     [SerializeField] float drippingCool;
     [SerializeField] float curDrippingCool;
+    public float slowRate = 1f;
 
     public override void MyUpdate(float deltaTime)
     {

@@ -10,6 +10,7 @@ TagManager:
   - Bar
   - Wall
   - Boss2RestrictArea
+  - Aura
   layers:
   - Default
   - TransparentFX

@@ -251,6 +251,7 @@ MonoBehaviour:
   dripping: 200
   drippingCool: 0.1
   curDrippingCool: 0
+  slowRate: 0.3
 --- !u!1 &7163911096092563884
 GameObject:
   m_ObjectHideFlags: 0

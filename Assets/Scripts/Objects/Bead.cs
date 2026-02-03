@@ -1,26 +1,48 @@
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class Bead : CustomObject
 {
+    const float horizontalMinimumAngle = 20f;
+
     [SerializeField] float damage;
     [SerializeField] float defaultSpeed;
     public float speedMagnification = 1;
-    public float timeLimitedSpeedMagnification = 1;
-    public float timeLimitedSpeedMagnificationTime;
-    public float temporarySpeedMagnification = 1;
-    List<Area> curInAreas = new();
-    Vector2 lastDirection;
-    public float SpeedMagnificationByArea
+    public class TimeLimitedSpeedMagnification
+    {
+        public float magnification;
+        public float time;
+
+        public TimeLimitedSpeedMagnification(float magnification, float time)
+        {
+            this.magnification = magnification;
+            this.time = time;
+        }
+    }
+    List<TimeLimitedSpeedMagnification> timeLimitedSpeedMagnifications = new();
+    float TotalTimeLimitedSpeedMagnification
     {
         get
         {
-            if (curInAreas.Count > 0) return curInAreas[0].speedMagnification;
-            else return 1;
+            float min = 1;
+            foreach (var x in timeLimitedSpeedMagnifications) if (min > x.magnification) min = x.magnification;
+            return min;
         }
     }
+    public float temporarySpeedMagnification = 1;
+    //List<Area> curInAreas = new();
+    Vector2 lastDirection;
+    //public float SpeedMagnificationByArea
+    //{
+    //    get
+    //    {
+    //        if (curInAreas.Count > 0) return curInAreas[0].speedMagnification;
+    //        else return 1;
+    //    }
+    //}
     public float speedCorrection = 0;
-    float CurrentSpeed => (defaultSpeed * speedMagnification * timeLimitedSpeedMagnification * temporarySpeedMagnification * SpeedMagnificationByArea) + speedCorrection;
+    //float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification * SpeedMagnificationByArea) + speedCorrection;
+    float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
 
     Rigidbody2D rigidBody;
@@ -65,11 +87,6 @@ public class Bead : CustomObject
         trail = GetComponent<TrailRenderer>();
     }
 
-    protected override void MyStart()
-    {
-        base.MyStart();
-    }
-
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
     {
         this.damage = damage;
@@ -84,45 +101,82 @@ public class Bead : CustomObject
 
     protected override void OnEnable()
     {
+        base.OnEnable();
         speedMagnification = 1f;
-        timeLimitedSpeedMagnification = 1f;
+        timeLimitedSpeedMagnifications.Clear();
         temporarySpeedMagnification = 1f;
-        curInAreas = new();
+        //curInAreas = new();
         speedCorrection = 0f;
     }
 
-    private void FixedUpdate()
+    public override void MyUpdate(float deltaTime)
     {
         trail.enabled = activated;
         //rigidBody.bodyType = activated ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
         if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase) return;
         if (!stop)
         {
-            // ���� �ּҰ�
-            if(Vector2.Angle(Vector2.right, rigidBody.linearVelocity) < 3)
+            // 수평 최소각
+            //if(Vector2.Angle(Vector2.right, rigidBody.linearVelocity) < horizontalMinimumAngle)
+            //{
+            //    if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) < horizontalMinimumAngle) SetDirection(new(1, Mathf.Atan2(horizontalMinimumAngle, 1)));
+            //    else if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) > -horizontalMinimumAngle) SetDirection(new(1, -Mathf.Atan2(horizontalMinimumAngle, 1)));
+            //}
+            //else if (Vector2.Angle(Vector2.left, rigidBody.linearVelocity) < horizontalMinimumAngle)
+            //{
+            //    if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) < horizontalMinimumAngle) SetDirection(new(-1, Mathf.Atan2(horizontalMinimumAngle, 1)));
+            //    else if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) > -horizontalMinimumAngle) SetDirection(new(-1, -Mathf.Atan2(horizontalMinimumAngle, 1)));
+            //}
+            //rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
+            //lastDirection = rigidBody.linearVelocity;
+            Vector2 v = rigidBody.linearVelocity;
+            float speed = CurrentSpeed;
+
+            if (v.sqrMagnitude > 0.0001f)
             {
-                if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) < 3) SetDirection(new(15, 1));
-                else if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) > -3) SetDirection(new(15, -1));
+                float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;   // -180~180
+                float min = horizontalMinimumAngle;                  // deg
+
+                // 오른쪽(ang≈0) / 왼쪽(ang≈180 or -180) 각각에서 "수평에 너무 가까우면" 보정
+                if (Mathf.Abs(ang) < min) // right side near 0 deg
+                {
+                    ang = Mathf.Sign(ang == 0 ? v.y : ang) * min; // 0일 때는 기존 y부호로 위/아래 결정
+                }
+                else if (Mathf.Abs(Mathf.DeltaAngle(ang, 180f)) < min) // left side near 180 deg
+                {
+                    float sign = Mathf.Sign(Mathf.DeltaAngle(ang, 180f)); // 180 기준 위/아래
+                    if (sign == 0) sign = Mathf.Sign(v.y);
+                    ang = 180f + sign * min;
+                }
+
+                Vector2 dir = new Vector2(Mathf.Cos(ang * Mathf.Deg2Rad), Mathf.Sin(ang * Mathf.Deg2Rad));
+                rigidBody.linearVelocity = dir * speed;
+                lastDirection = rigidBody.linearVelocity;
             }
-            else if (Vector2.Angle(Vector2.left, rigidBody.linearVelocity) < 3)
-            {
-                if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) < 3) SetDirection(new(-15, -1));
-                else if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) > -3) SetDirection(new(-15, 1));
-            }
-            rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
-            lastDirection = rigidBody.linearVelocity;
         }
         else
         {
             rigidBody.linearVelocity = Vector2.zero;
         }
 
-        if (timeLimitedSpeedMagnificationTime > 0)
+        List<TimeLimitedSpeedMagnification> toBeDeleted = new();
+        foreach(var tlsm in timeLimitedSpeedMagnifications)
         {
-            timeLimitedSpeedMagnificationTime -= Time.deltaTime;
-            timeLimitedSpeedMagnification = 1.3f;
+            tlsm.time -= deltaTime;
+            if(tlsm.time < 0) toBeDeleted.Add(tlsm);
         }
-        else timeLimitedSpeedMagnification = 1f;
+        foreach (var tlsm in toBeDeleted) timeLimitedSpeedMagnifications.Remove(tlsm);
+        
+        if(timeLimitedSpeedMagnifications.Count > 0)
+        {
+            trail.startColor = Color.green;
+            trail.endColor = Color.green;
+        }
+        else
+        {
+            trail.startColor = Color.white;
+            trail.endColor = Color.white;
+        }
     }
 
 
@@ -134,6 +188,14 @@ public class Bead : CustomObject
         if(enemy != null)
         {
             enemy.TakeDamage(damage, this);
+            if(enemy is DrippingBlock dripper)
+            {
+                timeLimitedSpeedMagnifications.Add(new(dripper.slowRate, 3f));
+            }
+            else if(enemy is Boss2Split boss2)
+            {
+                timeLimitedSpeedMagnifications.Add(new(boss2.slowRate, 3f));
+            }
         }
         else
         {
@@ -153,9 +215,10 @@ public class Bead : CustomObject
         {
             split.TakeDamage(damage, this);
         }
-        else if(collision.TryGetComponent(out Area area))
+        else if (collision.TryGetComponent(out Area area))
         {
-            curInAreas.Add(area);
+            //curInAreas.Add(area);
+            timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
         }
     }
 
@@ -163,7 +226,8 @@ public class Bead : CustomObject
     {
         if (collision.TryGetComponent(out Area area))
         {
-            curInAreas.Remove(area);
+            //curInAreas.Remove(area);
+            timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
         }
     }
 

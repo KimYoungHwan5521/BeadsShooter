@@ -83,6 +83,7 @@ public class Bar : CustomObject
         ColorUtility.TryParseHtmlString("#44CDCD", out feverColor);
         lineRenderer = GetComponentInChildren<LineRenderer>();
         lineRenderer.material.mainTexture = dottedLineSprite.texture;
+        iceBlocks = GetComponentsInChildren<IceBlock>();
     }
 
     public override void MyUpdate(float deltaTime)

@@ -8,12 +8,12 @@ public class EnemyProjectile : Projectile
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out BoundaryEdge _))
+        if (collision.TryGetComponent(out BoundaryEdge _) || collision.TryGetComponent(out IceBlock _))
         {
             GameManager.Instance.StageManager.projectiles.Remove(this);
             PoolManager.Despawn(gameObject);
         }
-        else if (collision.TryGetComponent(out IceBlock _)) return;
+        else if (collision.CompareTag("Aura")) return;
         else
         {
             Bar bar = collision.GetComponentInParent<Bar>();

@@ -154,6 +154,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 10
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!50 &4048142971490244225
 Rigidbody2D:
   serializedVersion: 5
@@ -362,6 +363,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 0
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!58 &3074963633836105523
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -792,6 +794,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 10
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!50 &1691639473462954098
 Rigidbody2D:
   serializedVersion: 5
@@ -879,6 +882,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 10
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!58 &7689006679524526177
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1135,6 +1139,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 0
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!58 &8767540285811462830
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1418,6 +1423,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 0
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!58 &9076952917918100923
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1599,6 +1605,7 @@ MonoBehaviour:
   curDrippingCool: 0
   attackCool: 0
   curAttackCool: 0
+  slowRate: 0.3
 --- !u!58 &5886648710545295990
 CircleCollider2D:
   m_ObjectHideFlags: 0

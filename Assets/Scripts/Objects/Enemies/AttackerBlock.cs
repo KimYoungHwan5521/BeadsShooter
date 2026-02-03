@@ -13,7 +13,7 @@ public class AttackerBlock : Block
 
     public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
-        if (!gameObject.activeSelf) return;
+        if (!gameObject.activeSelf || GameManager.Instance.StageManager.bar.grabbedBeads.Count > 0) return;
 
         curAttackCool += deltaTime;
         if(curAttackCool > attackCool )

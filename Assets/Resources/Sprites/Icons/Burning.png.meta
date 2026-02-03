@@ -1,25 +1,28 @@
 fileFormatVersion: 2
-guid: 2be588447d013e941986f3dc49ea7b65
+guid: 4671af9161c855a4ab9f3a12e396aba2
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 709607857632553738
-    second: ChilingArea_0
+      213: 2801448113155347191
+    second: Burning_0
   - first:
-      213: 9088695880500024275
-    second: ChilingArea_1
+      213: -1764656385636193396
+    second: Burning_1
   - first:
-      213: -4567494593803869986
-    second: ChilingArea_2
+      213: 663332445445551136
+    second: Burning_2
   - first:
-      213: 48300528346211002
-    second: ChilingArea_3
+      213: 2658718103913301559
+    second: Burning_3
   - first:
-      213: 8698475062757086832
-    second: ChilingArea_4
+      213: 2453623918157266200
+    second: Burning_4
   - first:
-      213: -1436547790078303302
-    second: ChilingArea_5
+      213: -6480535547383694500
+    second: Burning_5
+  - first:
+      213: 1410126370390537146
+    second: Burning_6
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -141,34 +144,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ChilingArea_0
+      name: Burning_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 48
-        width: 419
-        height: 404
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a0ba30c369809d900800000000000000
-      internalID: 709607857632553738
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ChilingArea_1
-      rect:
-        serializedVersion: 2
-        x: 333
-        y: 443
-        width: 14
+        x: 238
+        y: 418
+        width: 13
         height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -178,41 +159,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3d392c4dfb8812e70800000000000000
-      internalID: 9088695880500024275
+      spriteID: 7f21059573eb0e620800000000000000
+      internalID: 2801448113155347191
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ChilingArea_2
+      name: Burning_1
       rect:
         serializedVersion: 2
-        x: 38
-        y: 338
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ed0adc6dddffc90c0800000000000000
-      internalID: -4567494593803869986
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ChilingArea_3
-      rect:
-        serializedVersion: 2
-        x: 23
-        y: 308
-        width: 14
+        x: 269
+        y: 418
+        width: 13
         height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -222,41 +181,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab22a8a13199ba000800000000000000
-      internalID: 48300528346211002
+      spriteID: c8ba787ed5ea287e0800000000000000
+      internalID: -1764656385636193396
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ChilingArea_4
+      name: Burning_2
       rect:
         serializedVersion: 2
-        x: 448
-        y: 288
-        width: 24
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 076da3babf037b870800000000000000
-      internalID: 8698475062757086832
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ChilingArea_5
-      rect:
-        serializedVersion: 2
-        x: 338
-        y: 43
+        x: 288
+        y: 359
         width: 9
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 024f5ca3851a43900800000000000000
+      internalID: 663332445445551136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Burning_3
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 403
+        width: 14
         height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -266,8 +225,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ab3a285656b501ce0800000000000000
-      internalID: -1436547790078303302
+      spriteID: 73607ad670aa5e420800000000000000
+      internalID: 2658718103913301559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Burning_4
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 83
+        width: 223
+        height: 299
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81d7a2624f50d0220800000000000000
+      internalID: 2453623918157266200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Burning_5
+      rect:
+        serializedVersion: 2
+        x: 198
+        y: 379
+        width: 14
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5b37e741438016a0800000000000000
+      internalID: -6480535547383694500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Burning_6
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 314
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ab3f9837676c19310800000000000000
+      internalID: 1410126370390537146
       vertices: []
       indices: 
       edges: []
@@ -286,12 +311,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ChilingArea_0: 709607857632553738
-      ChilingArea_1: 9088695880500024275
-      ChilingArea_2: -4567494593803869986
-      ChilingArea_3: 48300528346211002
-      ChilingArea_4: 8698475062757086832
-      ChilingArea_5: -1436547790078303302
+      Burning_0: 2801448113155347191
+      Burning_1: -1764656385636193396
+      Burning_2: 663332445445551136
+      Burning_3: 2658718103913301559
+      Burning_4: 2453623918157266200
+      Burning_5: -6480535547383694500
+      Burning_6: 1410126370390537146
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

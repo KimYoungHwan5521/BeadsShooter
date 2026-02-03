@@ -17,19 +17,37 @@ public class IceBlock : CustomObject
             {
                 gameObject.SetActive(false);
                 curDurability = durability;
-                for(int i=0; i<icicleCount; i++)
-                {
-                    Projectile icicle = PoolManager.Spawn(ResourceEnum.Prefab.Icicle, transform.position).GetComponent<Projectile>();
-                    icicle.SetDirection(Vector2.up);
-                    icicle.shotDelay = i * 0.5f;
-                }
+                spawnIcicles = true;
             }
         }
     }
     public int icicleCount = 0;
+    int curSpawnIcicles;
+    bool spawnIcicles;
+    const float icicleSpawnTerm = 0.5f;
+    float curIcicleSpawnTerm = icicleSpawnTerm;
 
     public override void MyUpdate(float deltaTime)
     {
+        if(spawnIcicles)
+        {
+            curIcicleSpawnTerm += deltaTime;
+            if(curIcicleSpawnTerm >  icicleSpawnTerm)
+            {
+                curIcicleSpawnTerm = 0;
+                curSpawnIcicles++;
+                if(curSpawnIcicles > icicleCount)
+                {
+                    spawnIcicles = false;
+                    curSpawnIcicles = 0;
+                    curIcicleSpawnTerm = icicleSpawnTerm;
+                    return;
+                }
+                Projectile icicle = PoolManager.Spawn(ResourceEnum.Prefab.Icicle, transform.position).GetComponent<Projectile>();
+                icicle.SetDirection(Vector2.up);
+            }
+        }
+
         if(isActived && !gameObject.activeSelf)
         {
             curRegenerateCool += deltaTime;
@@ -54,5 +72,6 @@ public class IceBlock : CustomObject
         gameObject.SetActive(isActived);
         curRegenerateCool = 0;
         CurDurability = durability;
+        spawnIcicles = false;
     }
 }

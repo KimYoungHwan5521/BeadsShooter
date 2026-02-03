@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   lookAngle: 0
   damage: 1
-  speed: 5
+  speed: 3
   direction: {x: 0, y: 0}
   shotDelay: 0
   slow: 1

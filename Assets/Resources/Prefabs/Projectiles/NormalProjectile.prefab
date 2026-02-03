@@ -46,10 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a70b46089699a349973b78274e2f31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
+  lookAngle: 0
   damage: 1
-  speed: 5
+  speed: 3
   direction: {x: 0, y: 0}
   shotDelay: 0
+  slow: 0
+  slowMagnitude: 0
+  slowTime: 0
 --- !u!50 &7450294240916447710
 Rigidbody2D:
   serializedVersion: 5

@@ -46,6 +46,7 @@ public class Boss2Split : Enemy
     [SerializeField] float curDrippingCool;
     [SerializeField] float attackCool;
     [SerializeField] float curAttackCool;
+    public float slowRate = 1f;
 
     private void Awake()
     {
@@ -60,7 +61,7 @@ public class Boss2Split : Enemy
 
     public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
-        if (!gameObject.activeSelf || GameManager.Instance.StageManager.currentStage != stage) return;
+        if (!gameObject.activeSelf || GameManager.Instance.StageManager.currentStage != stage || GameManager.Instance.StageManager.bar.grabbedBeads.Count > 0) return;
         rigid.linearVelocity = rigid.linearVelocity.normalized * moveSpeed;
         Debug.Log(rigid.linearVelocity);
         if (rigid.linearVelocityX > 0) transform.localScale = new(-originalScale, originalScale, originalScale);

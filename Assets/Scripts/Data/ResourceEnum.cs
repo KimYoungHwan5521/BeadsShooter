@@ -10,7 +10,6 @@ namespace ResourceEnum
         ShieldBlock,
         CounterBlock,
         PentagonalBlock,
-        SpeedUpBlock,
         IllusionBlock,
         AttackerBlock,
         SplitterBlock,
@@ -48,6 +47,11 @@ namespace ResourceEnum
         ChilingAura,
         MultiLayer,
         FrostWide,
+        Fire,
+        QuickDraw,
+        HotterBall,
+        Explosion,
+        Burning,
     }
 
     public enum Material
