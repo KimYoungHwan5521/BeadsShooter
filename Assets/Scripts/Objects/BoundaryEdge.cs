@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BoundaryEdge : CustomObject
 {
-    // edgeType - 0: Bottom, 1: Top, 2: Left, 3: Right
+    [Tooltip("edgeType - 0: Bottom, 1: Top, 2: Left, 3: Right")]
     public int edgeType;
     private void OnTriggerEnter2D(Collider2D collision)
     {

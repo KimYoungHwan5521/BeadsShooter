@@ -30,19 +30,19 @@ public class Bead : CustomObject
         }
     }
     public float temporarySpeedMagnification = 1;
-    //List<Area> curInAreas = new();
+    List<Area> curInAreas = new();
     Vector2 lastDirection;
-    //public float SpeedMagnificationByArea
-    //{
-    //    get
-    //    {
-    //        if (curInAreas.Count > 0) return curInAreas[0].speedMagnification;
-    //        else return 1;
-    //    }
-    //}
+    public float SpeedMagnificationByArea
+    {
+        get
+        {
+            if (curInAreas.Count > 0) return curInAreas[0].speedMagnification;
+            else return 1;
+        }
+    }
     public float speedCorrection = 0;
-    //float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification * SpeedMagnificationByArea) + speedCorrection;
-    float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification) + speedCorrection;
+    float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification * SpeedMagnificationByArea) + speedCorrection;
+    //float CurrentSpeed => (defaultSpeed * speedMagnification * TotalTimeLimitedSpeedMagnification * temporarySpeedMagnification) + speedCorrection;
     public bool stop = false;
 
     Rigidbody2D rigidBody;
@@ -217,8 +217,8 @@ public class Bead : CustomObject
         }
         else if (collision.TryGetComponent(out Area area))
         {
-            //curInAreas.Add(area);
-            timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            else curInAreas.Add(area);
         }
     }
 
@@ -226,8 +226,8 @@ public class Bead : CustomObject
     {
         if (collision.TryGetComponent(out Area area))
         {
-            //curInAreas.Remove(area);
-            timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            else curInAreas.Remove(area);
         }
     }
 

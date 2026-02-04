@@ -94,7 +94,7 @@ public class Bar : CustomObject
         }
         else timeLimitedSpeedMagnification = 1f;
 
-        if(grabbedBeads != null)
+        if(grabbedBeads.Count == 0)
         {
             if(fireBallCool > 0)
             {

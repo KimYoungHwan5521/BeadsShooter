@@ -124,10 +124,16 @@ public class Boss1 : Enemy
 
     void Attack()
     {
-        int rand = Random.Range(-5, 6);
-        Vector3 spawnPos = new(transform.position.x + rand, transform.position.y);
-        Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, spawnPos).GetComponent<Projectile>();
-        projectile.SetDirection(Vector2.down);
+        //int rand = Random.Range(-5, 6);
+        //Vector3 spawnPos = new(transform.position.x + rand, transform.position.y);
+        //Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, spawnPos).GetComponent<Projectile>();
+        
+        for(int i=0; i<2; i++)
+        {
+            Projectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.NormalProjectile, transform.position).GetComponent<Projectile>();
+            Vector2 direction = new(Random.Range(-1f, 1f), -1);
+            projectile.SetDirection(direction);
+        }
         curAttackCool = 0;
     }
 }

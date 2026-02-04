@@ -216,4 +216,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0d63d26bcb63242ae9b5f31e457012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Area
+  sticky: 1
   speedMagnification: 0.3

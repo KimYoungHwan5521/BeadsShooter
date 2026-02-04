@@ -55,6 +55,9 @@ public class ResourcesPath
         "Sprites/Icons/HotterBall",
         "Sprites/Icons/Explosion",
         "Sprites/Icons/Burning",
+        "Sprites/Icons/Laser",
+        "Sprites/Icons/FrequentShot",
+        "Sprites/Icons/MultipleShot",
     };
 
     public static string[] MaterialPathArray =

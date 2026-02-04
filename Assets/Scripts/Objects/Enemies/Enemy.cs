@@ -5,7 +5,7 @@ public class Enemy : CustomObject
 {
     //Animator animator;
     [SerializeField] protected Image hpBar;
-    protected int stage;
+    [SerializeField] protected int stage;
     protected bool isDead;
     public bool IsDead
     {

@@ -15,7 +15,8 @@ public class DrippingBlock : MovableBlock
         if(curDrippingCool > drippingCool)
         {
             curDrippingCool = 0;
-            PoolManager.Spawn(dripping, transform.position);
+            GameObject area = PoolManager.Spawn(dripping, transform.position);
+            GameManager.Instance.StageManager.areas.Add(area);
         }
     }
 }

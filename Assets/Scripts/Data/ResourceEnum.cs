@@ -52,6 +52,9 @@ namespace ResourceEnum
         HotterBall,
         Explosion,
         Burning,
+        Laser,
+        FrequentShot,
+        MultipleShot,
     }
 
     public enum Material

@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Projectile : CustomObject
 {
-    Rigidbody2D rigid;
+    protected Rigidbody2D rigid;
     [Tooltip("lookAngle : Right = 0, Up = -90, Down = 90, Left = 180")]
-    [SerializeField] float lookAngle;
+    [SerializeField] protected float lookAngle;
     [SerializeField] protected float damage;
-    [SerializeField] float speed;
-    [SerializeField] Vector2 direction;
+    [SerializeField] protected float speed;
+    [SerializeField] protected Vector2 direction;
     [SerializeField] public float shotDelay;
-    float curShotDelay;
+    protected float curShotDelay;
 
     private void Awake()
     {
@@ -48,7 +48,7 @@ public class Projectile : CustomObject
         this.speed = speed;
     }
 
-    public void SetDirection(Vector2 wantDirection)
+    public virtual void SetDirection(Vector2 wantDirection)
     {
         direction = wantDirection;
     }

@@ -43,4 +43,9 @@ public class Block : Enemy
         spriteMask.backSortingOrder = layerNumber * 10;
         crackSprite.sortingOrder = layerNumber * 10 + 1;
     }
+
+    public void SetColor(Color color)
+    {
+        sprite.color = color;
+    }
 }

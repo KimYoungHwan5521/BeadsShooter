@@ -238,13 +238,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301d8edcc22a43b48a0727f6d08b7c6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AttackerBlock
+  hpBar: {fileID: 0}
+  stage: 0
   maxHP: 1
   curHP: 1
   isInvincible: 0
   crack: {fileID: 7803725675173644419}
   spriteMask: {fileID: 0}
   crackSprite: {fileID: 0}
-  attackCool: 3
+  attackCool: 5
 --- !u!1 &7163911096092563884
 GameObject:
   m_ObjectHideFlags: 0

@@ -49,10 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  defaultSpeed: 20
+  defaultSpeed: 15
   speedMagnification: 1
-  timeLimitedSpeedMagnification: 1
-  timeLimitedSpeedMagnificationTime: 0
   temporarySpeedMagnification: 1
   speedCorrection: 0
   stop: 0

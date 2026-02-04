@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2537882373423050008, guid: 74d8d0fcf0f19a24489b08ff3b0f3b5b, type: 3}
+  m_Sprite: {fileID: -7478566727754633405, guid: 1f2ff5b3649dc284e8b307e1f53a8f22, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -131,9 +131,9 @@ BoxCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.32, y: 0.32, z: 0.32, w: 0.32}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.61, y: 1.58}
+    oldSize: {x: 2.6, y: 1.57}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd1039f81a466d0488fd7826e3bfbcea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Block
+  hpBar: {fileID: 0}
   maxHP: 1
   curHP: 1
   isInvincible: 0
