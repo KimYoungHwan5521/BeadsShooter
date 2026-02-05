@@ -43,6 +43,7 @@ public class MovableBlock : Block
         if (IsDead) return;
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase) rigid.linearVelocity = Vector2.zero;
         else rigid.linearVelocity = curMoveDirection * moveSpeed;
+        if (rigid.linearVelocity.x > 0) transform.localScale = new(-1, 1, 1);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Enemy : CustomObject
 {
-    //Animator animator;
+    [SerializeField] Animator burnAnim;
     [SerializeField] protected Image hpBar;
     [SerializeField] protected int stage;
     protected bool isDead;
@@ -80,6 +80,8 @@ public class Enemy : CustomObject
             curBurnCool += deltaTime;
             if(curBurnCool >= 1)
             {
+                if (burnAnim != null) burnAnim.SetTrigger("Burn");
+                else Debug.LogWarning($"No burn animation : {gameObject.name}");
                 TakeDamage(burnDamage);
                 curBurnCool = 0;
             }

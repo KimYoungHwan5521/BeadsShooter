@@ -38,7 +38,7 @@ public class Block : Enemy
 
     public virtual void SetMaskLayer(int layerNumber)
     {
-        if (spriteMask == null) return;
+        if (crackSprite == null || spriteMask == null) return;
         spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
         spriteMask.backSortingOrder = layerNumber * 10;
         crackSprite.sortingOrder = layerNumber * 10 + 1;
