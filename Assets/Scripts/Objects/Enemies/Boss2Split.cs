@@ -55,15 +55,15 @@ public class Boss2Split : Enemy
 
     protected override void MyStart()
     {
-        rigid.linearVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        if(part != 0) rigid.linearVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
         originalScale = transform.localScale.x;
     }
 
     public override void MyUpdateOnlyCurrentStage(float deltaTime)
     {
         if (!gameObject.activeSelf || GameManager.Instance.StageManager.currentStage != stage || GameManager.Instance.StageManager.bar.grabbedBeads.Count > 0) return;
+        if (part == 0) return;
         rigid.linearVelocity = rigid.linearVelocity.normalized * moveSpeed;
-        Debug.Log(rigid.linearVelocity);
         if (rigid.linearVelocityX > 0) transform.localScale = new(-originalScale, originalScale, originalScale);
         else transform.localScale = new(originalScale, originalScale, originalScale);
 
@@ -71,7 +71,8 @@ public class Boss2Split : Enemy
         if (curDrippingCool > drippingCool)
         {
             curDrippingCool = 0;
-            PoolManager.Spawn(dripping, transform.position);
+            GameObject area = PoolManager.Spawn(dripping, transform.position);
+            if (!GameManager.Instance.StageManager.areas.Contains(area)) GameManager.Instance.StageManager.areas.Add(area);
         }
 
         if(part < 3)
@@ -90,6 +91,8 @@ public class Boss2Split : Enemy
         if(part == 0)
         {
             projectile = PoolManager.Spawn(ResourceEnum.Prefab.Boss2Attack1, transform.position).GetComponent<Projectile>();
+            Projectile projectile2 = PoolManager.Spawn(ResourceEnum.Prefab.Boss2Attack1, transform.position).GetComponent<Projectile>();
+            projectile2.SetDirection(GameManager.Instance.StageManager.bar.transform.position - transform.position);
         }
         else
         {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss2 : Enemy
@@ -92,5 +93,44 @@ public class Boss2 : Enemy
         GameManager.Instance.ObjectUpdate += quarterBody3.MyUpdateOnlyCurrentStage;
         GameManager.Instance.ObjectUpdate -= quarterBody4.MyUpdateOnlyCurrentStage;
         GameManager.Instance.ObjectUpdate += quarterBody4.MyUpdateOnlyCurrentStage;
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        TakeDamage(damage, null);
+    }
+
+    public override void TakeDamage(float damage, Bead attaker)
+    {
+        this.attaker = attaker;
+        if (!fullBody.IsDead)
+        {
+            fullBody.TakeDamage(damage, attaker);
+        }
+        else
+        {
+            List<Boss2Split> candidates = new();
+            if (!halfBody1.IsDead) candidates.Add(halfBody1);
+            if (!halfBody2.IsDead) candidates.Add(halfBody2);
+            if (!quarterBody1.IsDead) candidates.Add(quarterBody1);
+            if (!quarterBody2.IsDead) candidates.Add(quarterBody2);
+            if (!quarterBody3.IsDead) candidates.Add(quarterBody3);
+            if (!quarterBody4.IsDead) candidates.Add(quarterBody4);
+            
+            if (candidates.Count == 0)
+            {
+                targetPos = GameManager.Instance.StageManager.bar.transform.position;
+                return;
+            }
+            int target = Random.Range(0, candidates.Count);
+            candidates[target].TakeDamage(damage, attaker);
+            targetPos = candidates[target].transform.position;
+        }
+    }
+
+    Vector3 targetPos;
+    public Vector3 GetTargetPos()
+    {
+        return targetPos;
     }
 }

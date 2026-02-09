@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Bar : CustomObject
 {
@@ -58,6 +59,7 @@ public class Bar : CustomObject
     public Area chilingAura;
 
     [Header("Fire Ability")]
+    [SerializeField] ParticleSystem fireBallCharging;
     public float fireBallCool;
     float curFireBallCool;
     public float fireBallDamage;
@@ -99,9 +101,14 @@ public class Bar : CustomObject
             if(fireBallCool > 0)
             {
                 curFireBallCool += deltaTime;
-                if(curFireBallCool > fireBallCool)
+                if (fireBallCool - curFireBallCool < 3f && !fireBallCharging.isPlaying)
+                {
+                    fireBallCharging.Play();
+                }
+                if (curFireBallCool > fireBallCool)
                 {
                     curFireBallCool = 0;
+                    fireBallCharging.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                     AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
                     projectile.SetDirection(Vector2.up);
                     projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
@@ -127,9 +134,13 @@ public class Bar : CustomObject
                     firedLaserCount++;
                     int rand = Random.Range(0, GameManager.Instance.StageManager.currentStageEnemies.Count);
                     Enemy target = GameManager.Instance.StageManager.currentStageEnemies[rand];
-                    LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverLaser).GetComponent<LineRenderer>();
-                    line.SetPositions(new Vector3[] { GameManager.Instance.StageManager.bar.transform.position, target.transform.position });
                     target.TakeDamage(1);
+                    LineRenderer line = PoolManager.Spawn(ResourceEnum.Prefab.FeverLaser).GetComponent<LineRenderer>();
+                    Vector3 targetPos;
+                    if (target is SplitterBlock targetSplitter) targetPos = targetSplitter.GetTartgetPos();
+                    else if (target is Boss2 boss2) targetPos = boss2.GetTargetPos();
+                    else targetPos = target.transform.position;
+                    line.SetPositions(new Vector3[] { GameManager.Instance.StageManager.bar.transform.position, targetPos });
 
                     if(firedLaserCount == laserCount)
                     {
@@ -157,6 +168,8 @@ public class Bar : CustomObject
         {
             bead.transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
         }
+        if (timeLimitedSpeedMagnification < 1) barBody.GetComponent<SpriteRenderer>().color = Color.green;
+        else barBody.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public void ReleaseBeads(Vector3 wantPos)
@@ -182,6 +195,7 @@ public class Bar : CustomObject
         
         ActivedIceBlock = 0;
         chilingAura.gameObject.SetActive(false);
+        fireBallCharging.Stop();
         fireBallCool = -1;
         fireBallExplosion = false;
         fireBallBurn = false;

@@ -190,11 +190,11 @@ public class Bead : CustomObject
             enemy.TakeDamage(damage, this);
             if(enemy is DrippingBlock dripper)
             {
-                timeLimitedSpeedMagnifications.Add(new(dripper.slowRate, 3f));
+                timeLimitedSpeedMagnifications.Add(new(dripper.slowRate, 1f));
             }
             else if(enemy is Boss2Split boss2)
             {
-                timeLimitedSpeedMagnifications.Add(new(boss2.slowRate, 3f));
+                timeLimitedSpeedMagnifications.Add(new(boss2.slowRate, 1f));
             }
         }
         else
@@ -217,7 +217,7 @@ public class Bead : CustomObject
         }
         else if (collision.TryGetComponent(out Area area))
         {
-            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
             else curInAreas.Add(area);
         }
     }
@@ -226,7 +226,7 @@ public class Bead : CustomObject
     {
         if (collision.TryGetComponent(out Area area))
         {
-            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 3f));
+            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
             else curInAreas.Remove(area);
         }
     }

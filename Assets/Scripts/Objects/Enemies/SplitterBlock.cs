@@ -38,17 +38,26 @@ public class SplitterBlock : Block
 
     public override void SetMaskLayer(int layerNumber)
     {
-        fullBody.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
-        fullBody.spriteMask.backSortingOrder = layerNumber * 10;
-        fullBody.crackSprite.sortingOrder = layerNumber * 10 + 1;
+        if (fullBody.crackSprite != null)
+        {
+            fullBody.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
+            fullBody.spriteMask.backSortingOrder = layerNumber * 10;
+            fullBody.crackSprite.sortingOrder = layerNumber * 10 + 1;
+        }
 
-        halfBody1.spriteMask.frontSortingOrder = (layerNumber + 1) * 10 - 5;
-        halfBody1.spriteMask.backSortingOrder = layerNumber * 10;
-        halfBody1.crackSprite.sortingOrder = layerNumber * 10 + 1;
+        if(halfBody1.crackSprite != null)
+        {
+            halfBody1.spriteMask.frontSortingOrder = (layerNumber + 1) * 10 - 5;
+            halfBody1.spriteMask.backSortingOrder = layerNumber * 10;
+            halfBody1.crackSprite.sortingOrder = layerNumber * 10 + 1;
+        }
 
-        halfBody2.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
-        halfBody2.spriteMask.backSortingOrder = layerNumber * 10 + 5;
-        halfBody2.crackSprite.sortingOrder = layerNumber * 10 + 6;
+        if(halfBody2.crackSprite != null)
+        {
+            halfBody2.spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
+            halfBody2.spriteMask.backSortingOrder = layerNumber * 10 + 5;
+            halfBody2.crackSprite.sortingOrder = layerNumber * 10 + 6;
+        }
     }
 
     public override void SetInfo(int stage, float maxHP, bool isWall = false, bool isInvincible = false)
@@ -100,5 +109,22 @@ public class SplitterBlock : Block
         {
             halfBody2.TakeDamage(damage, attaker);
         }
+    }
+
+    public Vector3 GetTartgetPos()
+    {
+        if (!fullBody.IsDead)
+        {
+            return fullBody.transform.position;
+        }
+        else if (!halfBody1.IsDead)
+        {
+            return halfBody1.transform.position;
+        }
+        else if (!halfBody2.IsDead)
+        {
+            return halfBody2.transform.position;
+        }
+        return fullBody.transform.position;
     }
 }

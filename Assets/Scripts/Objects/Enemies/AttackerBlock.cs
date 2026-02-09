@@ -29,7 +29,7 @@ public class AttackerBlock : Block
         if (GameManager.Instance.StageManager.bar.grabbedBeads.Count > 0) return;
 
         curAttackCool += deltaTime;
-        if(attackCool - curAttackCool < 4f && !particle.isPlaying)
+        if(attackCool - curAttackCool < 3f && !particle.isPlaying)
         {
             particle.Play();
         }

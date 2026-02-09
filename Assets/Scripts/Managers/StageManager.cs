@@ -234,10 +234,10 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 2), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 3), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 4), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 10), (new(BlockType.Counter, new Vector2Int(2,2), 1), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 4), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
             //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -249,11 +249,17 @@ public class StageManager : MonoBehaviour
             // Stage 1
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(1, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 5), (new(BlockType.Normal, new Vector2Int(2, 2)), 5), (new(BlockType.MucusDripper, 2), 2)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 8), (new(BlockType.Shield, new Vector2Int(4, 2)), 8), (new(BlockType.MucusDripper, 2), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(4, 2)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 4), (new(BlockType.MucusDripper, 2), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 2)), 4), (new(BlockType.Shield, new Vector2Int(4, 2)), 8), (new(BlockType.Splitter, new Vector2Int(2,1)), 8), (new(BlockType.MucusDripper, 2), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.MucusDripper, 2), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.MucusDripper, 2), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 8), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 3), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 4), (new(BlockType.Splitter, new Vector2Int(2, 1)), 2)),
+
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 5), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 6), 3), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4), (new(BlockType.Counter, new Vector2Int(2, 2)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 6), 3), (new(BlockType.Normal, new Vector2Int(2, 1), 7), 3), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2, 2)), 3)),
             //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss2),
         };
@@ -278,7 +284,8 @@ public class StageManager : MonoBehaviour
                         bead.trail.SetPositions(points);
                     }
                 }
-                foreach(var area in areas)
+                areas.RemoveAll(a => !a.activeSelf);
+                foreach (var area in areas)
                 {
                     area.transform.position += Vector3.down * 0.2f;
                 }

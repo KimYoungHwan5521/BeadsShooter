@@ -5,6 +5,10 @@ public class AutoDespawn : MonoBehaviour
     [SerializeField] bool isUnscaled;
     [SerializeField] float despawnTime;
     [SerializeField] float curDespawnTime;
+    public float DespawnTime => despawnTime;
+    public float CurDespawnTime => curDespawnTime;
+    public delegate void DespawnAction();
+    public DespawnAction despawnAction;
 
     private void OnEnable()
     {
@@ -18,6 +22,7 @@ public class AutoDespawn : MonoBehaviour
         if(curDespawnTime > despawnTime)
         {
             PoolManager.Despawn(gameObject);
+            despawnAction?.Invoke();
         }
     }
 }
