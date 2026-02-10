@@ -179,6 +179,13 @@ public class Bead : CustomObject
         }
     }
 
+    void GiveDamage(Enemy target, float damage)
+    {
+        target.TakeDamage(damage, this);
+        List<Enemy> chains = new() { target };
+        target.ElectricChain(1, transform.position, 2, chains);
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -187,7 +194,7 @@ public class Bead : CustomObject
         Enemy enemy = collision.collider.GetComponentInParent<Enemy>();
         if(enemy != null)
         {
-            enemy.TakeDamage(damage, this);
+            GiveDamage(enemy, damage);
             if(enemy is DrippingBlock dripper)
             {
                 timeLimitedSpeedMagnifications.Add(new(dripper.slowRate, 1f));
@@ -213,7 +220,7 @@ public class Bead : CustomObject
     {
         if(collision.TryGetComponent(out SplitBlock split))
         {
-            split.TakeDamage(damage, this);
+            GiveDamage(split, damage);
         }
         else if (collision.TryGetComponent(out Area area))
         {

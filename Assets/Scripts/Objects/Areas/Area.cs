@@ -17,9 +17,12 @@ public class Area : CustomObject
 
     private void Start()
     {
-        void despawnAction() { GameManager.Instance.StageManager.areas.Remove(gameObject); }
-        autoDespawn.despawnAction -= despawnAction;
-        autoDespawn.despawnAction += despawnAction;
+        if (autoDespawn != null)
+        {
+            void despawnAction() { GameManager.Instance.StageManager.areas.Remove(gameObject); }
+            autoDespawn.despawnAction -= despawnAction;
+            autoDespawn.despawnAction += despawnAction;
+        }
     }
 
     public override void MyUpdate(float deltaTime)

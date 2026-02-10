@@ -224,8 +224,6 @@ public class StageManager : MonoBehaviour
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1), 10)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(4,2), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5)),
@@ -233,9 +231,10 @@ public class StageManager : MonoBehaviour
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
+            
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 2)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 4), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
             //GenerateShopStage(),
@@ -382,6 +381,7 @@ public class StageManager : MonoBehaviour
     public void Initiate(int currentStageIndex)
     {
         SetStages();
+        layerMaskIndex = 0;
         board.transform.position = Vector3.zero;
         wantDown = 0;
         selectedStageIndex = currentStageIndex;
@@ -394,10 +394,18 @@ public class StageManager : MonoBehaviour
         //GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
         ongoingQuests.Clear();
 
-        possibleToAppearAbilities = new();
-        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice));
-        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire));
-        possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser));
+        possibleToAppearAbilities = new()
+        {
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
+
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBallLV1),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBarLV1),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.WideBarLV1),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.MultipleBallLV1),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.BiggerBallLV1),
+        };
         //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
         //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
 
@@ -479,6 +487,7 @@ public class StageManager : MonoBehaviour
                 wall.GetComponent<BoxCollider2D>().size = new(2,1);
                 wall.GetComponent<SpriteRenderer>().size = new(2,1);
                 wall.SetInfo(currentStage, 3, true, currentStage > 0);
+                wall.SetMaskLayer(layerMaskIndex++);
                 if (clearBothStage) currentStageWalls.Add(wall.gameObject);
                 else nextStageWalls.Add(wall.gameObject);
             }
@@ -506,6 +515,7 @@ public class StageManager : MonoBehaviour
                     wall.GetComponent<BoxCollider2D>().size = new(2, 1);
                     wall.GetComponent<SpriteRenderer>().size = new(2, 1);
                     wall.SetInfo(currentStage + 1, 3, true, true);
+                    wall.SetMaskLayer(layerMaskIndex++);
                     nextStageWalls.Add(wall.gameObject);
                 }
             }
@@ -514,9 +524,9 @@ public class StageManager : MonoBehaviour
         wantDown = clearBothStage ? (row + 1) * 2 : row + 1;
     }
 
+    int layerMaskIndex;
     void SpawnBlocks(StageInfo nextStageInfo, int wantStage, bool clearBothStage, bool frontStage)
     {
-        int index = 0;
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block;
@@ -580,7 +590,7 @@ public class StageManager : MonoBehaviour
                 nextStageEnemies.Add(block);
             }
 
-            block.SetMaskLayer(index++);
+            block.SetMaskLayer(layerMaskIndex++);
         }
     }
 

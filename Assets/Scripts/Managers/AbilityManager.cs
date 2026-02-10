@@ -8,11 +8,15 @@ public class AbilityManager
         ChilingAuraLV1, ChilingAuraLV2, ChilingAuraLV3, MultiLayerLV1, MultiLayerLV2, MultiLayerLV3, FrostWideLV1, FrostWideLV2, FrostWideLV3, 
         Fire, QuickDrawLV1, QuickDrawLV2, QuickDrawLV3, HotterBallLV1, HotterBallLV2, HotterBallLV3, ExplosionLV1, ExplosionLV2, ExplosionLV3,
         BurningLV1, BurningLV2, BurningLV3, Laser, FrequentShotLV1, FrequentShotLV2, FrequentShotLV3, MultipleShotLV1, MultipleShotLV2,
-        MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, }
+        MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, FasterBarLV1, FasterBarLV2, FasterBarLV3,
+        FasterBallLV1, FasterBallLV2, FasterBallLV3, WideBarLV1, WideBarLV2, WideBarLV3, MultipleBallLV1, MultipleBallLV2, MultipleBallLV3,
+        BiggerBallLV1, BiggerBallLV2, BiggerBallLV3, 
+    }
     
     public class Ability
     {
         public AbilityName name;
+        public bool isPassive = false;
         public List<Ability> upperAbilities = new();
         public List<Ability> lowerAbilities = new();
         public string explain;
@@ -415,7 +419,157 @@ public class AbilityManager
             explain = "Throw the ball towards the block"
         };
         abilities.Add(ability);
+        #region Passives
+        ability = new()
+        {
+            name = AbilityName.FasterBarLV1,
+            isPassive = true,
+            explain = "Increase bar moving speed"
+        };
+        abilities.Add(ability);
 
+        ability = new()
+        {
+            name = AbilityName.FasterBarLV2,
+            isPassive = true,
+            explain = "Increase bar moving speed"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FasterBarLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterBarLV3,
+            isPassive = true,
+            explain = "Increase bar moving speed"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FasterBarLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterBallLV1,
+            isPassive = true,
+            explain = "Increase balls moving speed"
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterBallLV2,
+            isPassive = true,
+            explain = "Increase balls moving speed"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FasterBallLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterBallLV3,
+            isPassive = true,
+            explain = "Increase balls moving speed"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FasterBallLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.WideBarLV1,
+            isPassive = true,
+            explain = "Increase bar length"
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.WideBarLV2,
+            isPassive = true,
+            explain = "Increase bar length"
+        };
+        root = abilities.Find(x => x.name == AbilityName.WideBarLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.WideBarLV3,
+            isPassive = true,
+            explain = "Increase bar length"
+        };
+        root = abilities.Find(x => x.name == AbilityName.WideBarLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleBallLV1,
+            isPassive = true,
+            explain = "Throw more balls at one shot"
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleBallLV2,
+            isPassive = true,
+            explain = "Throw more balls at one shot"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleBallLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleBallLV3,
+            isPassive = true,
+            explain = "Throw more balls at one shot"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleBallLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.BiggerBallLV1,
+            isPassive = true,
+            explain = "Ball size +, Ball damage +"
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.BiggerBallLV2,
+            isPassive = true,
+            explain = "Ball size +, Ball damage +"
+        };
+        root = abilities.Find(x => x.name == AbilityName.BiggerBallLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.BiggerBallLV3,
+            isPassive = true,
+            explain = "Ball size +, Ball damage +"
+        };
+        root = abilities.Find(x => x.name == AbilityName.BiggerBallLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+        #endregion
 
         yield return null;
     }

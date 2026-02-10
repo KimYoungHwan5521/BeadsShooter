@@ -37,6 +37,7 @@ public class ResourcesPath
 
         "Prefabs/ETC/ShopStage",
         "Prefabs/ETC/Explosion",
+        "Prefabs/ETC/Electric",
     };
 
 

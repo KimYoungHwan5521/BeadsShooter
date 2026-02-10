@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8833998619225961740}
   - component: {fileID: 8790361147045722144}
   m_Layer: 0
-  m_Name: FeverLaser
+  m_Name: Electric
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,8 +104,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.5764706, g: 0.03529412, b: 0.87843144, a: 1}
-      key1: {r: 0.6627451, g: 0.30980393, b: 0.8705883, a: 1}
+      key0: {r: 0.97368693, g: 1, b: 0, a: 1}
+      key1: {r: 0.9725491, g: 1, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -156,5 +156,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoDespawn
   isUnscaled: 1
-  despawnTime: 0.08
+  despawnTime: 0.2
   curDespawnTime: 0
