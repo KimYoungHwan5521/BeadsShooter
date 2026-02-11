@@ -129,15 +129,25 @@ public class ReadyPhaseUI : MonoBehaviour
         //}
         int a, b, c;
         a = b = c = 0;
-        a = UnityEngine.Random.Range(0, GameManager.Instance.StageManager.possibleToAppearAbilities.Count);
+
+        bool isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+        List<AbilityManager.Ability> pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+        AbilityManager.Ability ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+        a = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
         for(int i = 0; i < 1000; i++)
         {
-            b = UnityEngine.Random.Range(0, GameManager.Instance.StageManager.possibleToAppearAbilities.Count);
+            isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+            ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+            b = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
             if (b != a) break;
         }
         for (int i = 0; i < 1000; i++)
         {
-            c = UnityEngine.Random.Range(0, GameManager.Instance.StageManager.possibleToAppearAbilities.Count);
+            isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+            ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+            c = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
             if (c != a && c != b) break;
         }
 

@@ -10,7 +10,9 @@ public class AbilityManager
         BurningLV1, BurningLV2, BurningLV3, Laser, FrequentShotLV1, FrequentShotLV2, FrequentShotLV3, MultipleShotLV1, MultipleShotLV2,
         MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, FasterBarLV1, FasterBarLV2, FasterBarLV3,
         FasterBallLV1, FasterBallLV2, FasterBallLV3, WideBarLV1, WideBarLV2, WideBarLV3, MultipleBallLV1, MultipleBallLV2, MultipleBallLV3,
-        BiggerBallLV1, BiggerBallLV2, BiggerBallLV3, 
+        BiggerBallLV1, BiggerBallLV2, BiggerBallLV3, Electric, HireVoltageLV1, HireVoltageLV2, HireVoltageLV3, MoreChainsLV1, MoreChainsLV2,
+        MoreChainsLV3, MultipleDischargeLV1, MultipleDischargeLV2, MultipleDischargeLV3, ElectrostaticInductionLV1, ElectrostaticInductionLV2,
+        ElectrostaticInductionLV3,
     }
     
     public class Ability
@@ -33,14 +35,14 @@ public class AbilityManager
         Ability ability = new()
         {
             name = AbilityName.Ice,
-            explain = "Ice blocks appear on either side of the bar, allowing you to bounce the ball once. (Respawns after 10 seconds)"
+            explain = "Ice cubes that bounce the ball appear on either side of the bar."
         };
         abilities.Add(ability);
 
         ability = new()
         {
             name = AbilityName.FastFreezeLV1,
-            explain = "Reduced ice regeneration cooldown (8 seconds)"
+            explain = "Reduced ice regeneration cooldown (10 ¡æ 8 seconds)"
         };
         Ability root = abilities.Find(x => x.name == AbilityName.Ice);
         ability.upperAbilities.Add(root);
@@ -50,7 +52,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FastFreezeLV2,
-            explain = "Reduced ice regeneration cooldown (6 seconds)"
+            explain = "Reduced ice regeneration cooldown (8 ¡æ 6 seconds)"
         };
         root = abilities.Find(x => x.name == AbilityName.FastFreezeLV1);
         ability.upperAbilities.Add(root);
@@ -60,7 +62,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.FastFreezeLV3,
-            explain = "Reduced ice regeneration cooldown (4 seconds)"
+            explain = "Reduced ice regeneration cooldown (6 ¡æ 4 seconds)"
         };
         root = abilities.Find(x => x.name == AbilityName.FastFreezeLV2);
         ability.upperAbilities.Add(root);
@@ -80,7 +82,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.IcicleBurstLV2,
-            explain = "When the ice breaks, it fire two icicles"
+            explain = "Fire more icicles (1 ¡æ 2)"
         };
         root = abilities.Find(x => x.name == AbilityName.IcicleBurstLV1);
         ability.upperAbilities.Add(root);
@@ -90,7 +92,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.IcicleBurstLV3,
-            explain = "When the ice breaks, it fire three icicles"
+            explain = "Fire more icicles (2 ¡æ 3)"
         };
         root = abilities.Find(x => x.name == AbilityName.IcicleBurstLV2);
         ability.upperAbilities.Add(root);
@@ -100,7 +102,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ChilingAuraLV1,
-            explain = "Ball speed near the bar reduced by 20%"
+            explain = "Slows down the ball speed around the bar."
         };
         root = abilities.Find(x => x.name == AbilityName.Ice);
         ability.upperAbilities.Add(root);
@@ -110,7 +112,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ChilingAuraLV2,
-            explain = "Ball speed near the bar reduced by 40%"
+            explain = "Increased deceleration rate (20% ¡æ 40%)"
         };
         root = abilities.Find(x => x.name == AbilityName.ChilingAuraLV1);
         ability.upperAbilities.Add(root);
@@ -120,7 +122,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ChilingAuraLV3,
-            explain = "Ball speed near the bar reduced by 60%"
+            explain = "Increased deceleration rate (40% ¡æ 60%)"
         };
         root = abilities.Find(x => x.name == AbilityName.ChilingAuraLV2);
         ability.upperAbilities.Add(root);
@@ -412,6 +414,155 @@ public class AbilityManager
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
         abilities.Add(ability);
+        #endregion
+        #region Electric
+        ability = new()
+        {
+            name = AbilityName.Electric,
+            explain = "Charges electricity into the ball and discharges it during the next attack."
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.HireVoltageLV1,
+            isPassive = true,
+            explain = "Increase discharge damage (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Electric);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.HireVoltageLV2,
+            isPassive = true,
+            explain = "Increase discharge damage (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.HireVoltageLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.HireVoltageLV3,
+            isPassive = true,
+            explain = "Increase discharge damage (3 ¡æ 4)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.HireVoltageLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreChainsLV1,
+            isPassive = true,
+            explain = "Increase maximum chains (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Electric);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreChainsLV2,
+            isPassive = true,
+            explain = "Increase maximum chains (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MoreChainsLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreChainsLV3,
+            isPassive = true,
+            explain = "Increase maximum chains (3 ¡æ 4)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MoreChainsLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleDischargeLV1,
+            isPassive = true,
+            explain = "Multiple discharge on each charge (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Electric);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleDischargeLV2,
+            isPassive = true,
+            explain = "Multiple discharge on each charge (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleDischargeLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MultipleDischargeLV3,
+            isPassive = true,
+            explain = "Multiple discharge on each charge (3 ¡æ 4)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.MultipleDischargeLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.ElectrostaticInductionLV1,
+            isPassive = true,
+            explain = "Enemies that have been damaged by discharge will re-discharge after a short while."
+        };
+        root = abilities.Find(x => x.name == AbilityName.Electric);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.ElectrostaticInductionLV2,
+            isPassive = true,
+            explain = "Increase re-discharge damage (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.ElectrostaticInductionLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.ElectrostaticInductionLV3,
+            isPassive = true,
+            explain = "Increase re-discharge damage (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.ElectrostaticInductionLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
         #endregion
         ability = new()
         {

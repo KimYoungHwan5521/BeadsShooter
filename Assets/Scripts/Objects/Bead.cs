@@ -80,6 +80,22 @@ public class Bead : CustomObject
         }
     }
 
+    [Header("Electric Ability")]
+    [SerializeField] ParticleSystem electricChargeParticle;
+    [SerializeField] bool electricCharged;
+    public bool ElectricCharged
+    {
+        get => electricCharged;
+        set
+        {
+            electricCharged = value;
+            if (value) electricChargeParticle.Play();
+            else electricChargeParticle.Stop();
+        }
+    }
+    float electricChargeCool = 10f;
+    float curElectricCharge;
+    
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -153,6 +169,16 @@ public class Bead : CustomObject
                 rigidBody.linearVelocity = dir * speed;
                 lastDirection = rigidBody.linearVelocity;
             }
+
+            if(GameManager.Instance.StageManager.bar.gotElectricAbility && !electricCharged)
+            {
+                curElectricCharge += deltaTime;
+                if(curElectricCharge > electricChargeCool)
+                {
+                    curElectricCharge = 0;
+                    ElectricCharged = true;
+                }
+            }
         }
         else
         {
@@ -182,8 +208,12 @@ public class Bead : CustomObject
     void GiveDamage(Enemy target, float damage)
     {
         target.TakeDamage(damage, this);
-        List<Enemy> chains = new() { target };
-        target.ElectricChain(1, transform.position, 2, chains);
+        if(electricCharged)
+        {
+            List<Enemy> chains = new() { target };
+            target.ElectricChain(GameManager.Instance.StageManager.bar.electricDamage, transform.position, GameManager.Instance.StageManager.bar.electricChainsCount, chains);
+            ElectricCharged = false;
+        }
     }
 
 

@@ -399,6 +399,7 @@ public class StageManager : MonoBehaviour
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
 
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBallLV1),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBarLV1),
@@ -870,6 +871,8 @@ public class StageManager : MonoBehaviour
         Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(0, 0.51f, 0)).GetComponent<Bead>();
         newBead.Initialize(1, 15, 0, 0, new());
         newBead.activated = false;
+        if(bar.gotElectricAbility) newBead.ElectricCharged = true;
+
         beads.Add(newBead);
         bar.grabbedBeads.Add(newBead);
     }
@@ -1138,6 +1141,50 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.MultipleShotLV6:
                 bar.laserCount = 10;
+                break;
+            case AbilityManager.AbilityName.Electric:
+                bar.gotElectricAbility = true;
+                bar.electricDamage = 1f;
+                bar.electricChainsCount = 1;
+                bar.electricDischargeCount = 1;
+                foreach(var bead in beads) bead.ElectricCharged = true;
+                break;
+            case AbilityManager.AbilityName.HireVoltageLV1:
+                bar.electricDamage = 2f;
+                break;
+            case AbilityManager.AbilityName.HireVoltageLV2:
+                bar.electricDamage = 3f;
+                break;
+            case AbilityManager.AbilityName.HireVoltageLV3:
+                bar.electricDamage = 4f;
+                break;
+            case AbilityManager.AbilityName.MoreChainsLV1:
+                bar.electricChainsCount = 2;
+                break;
+            case AbilityManager.AbilityName.MoreChainsLV2:
+                bar.electricChainsCount = 3;
+                break;
+            case AbilityManager.AbilityName.MoreChainsLV3:
+                bar.electricChainsCount = 4;
+                break;
+            case AbilityManager.AbilityName.MultipleDischargeLV1:
+                bar.electricDischargeCount = 2;
+                break;
+            case AbilityManager.AbilityName.MultipleDischargeLV2:
+                bar.electricDischargeCount = 3;
+                break;
+            case AbilityManager.AbilityName.MultipleDischargeLV3:
+                bar.electricDischargeCount = 4;
+                break;
+            case AbilityManager.AbilityName.ElectrostaticInductionLV1:
+                bar.gotElectrostaticInduction = true;
+                bar.electrostaticInductionDamage = 1;
+                break;
+            case AbilityManager.AbilityName.ElectrostaticInductionLV2:
+                bar.electrostaticInductionDamage = 2;
+                break;
+            case AbilityManager.AbilityName.ElectrostaticInductionLV3:
+                bar.electrostaticInductionDamage = 3;
                 break;
         }
     }

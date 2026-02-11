@@ -77,6 +77,14 @@ public class Bar : CustomObject
     float curLaserDelay;
     bool laserFire;
 
+    [Header("Electric Ability")]
+    public bool gotElectricAbility;
+    public float electricDamage;
+    public int electricChainsCount;
+    public int electricDischargeCount;
+    public bool gotElectrostaticInduction;
+    public float electrostaticInductionDamage;
+
     protected virtual void Start()
     {
         yPos = GameManager.Instance.barYPos;
@@ -200,6 +208,8 @@ public class Bar : CustomObject
         fireBallExplosion = false;
         fireBallBurn = false;
         laserCount = 0;
+        gotElectricAbility = false;
+        gotElectrostaticInduction = false;
     }
 
     public void RoundReset()
