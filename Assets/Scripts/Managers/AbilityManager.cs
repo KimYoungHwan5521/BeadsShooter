@@ -16,9 +16,12 @@ public class AbilityManager
         StrongerTelekinesisLV2, StrongerTelekinesisLV3, GuidedBallsLV1, GuidedBallsLV2, GuidedBallsLV3, GuidedFireBall, GuidedIcicles,
     }
     
+    public enum Rarity { Rare, Epic, Legend }
+
     public class Ability
     {
         public AbilityName name;
+        public Rarity rarity;
         public bool isPassive = false;
         public List<Ability> upperAbilities = new();
         public List<Ability> lowerAbilities = new();
@@ -322,6 +325,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.Laser,
+            rarity = Rarity.Epic,
             explain = "Shot a laser once every 6 seconds."
         };
         abilities.Add(ability);
@@ -563,6 +567,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.Telekinesis,
+            rarity = Rarity.Legend,
             explain = "Throw the ball towards the enemy"
         };
         abilities.Add(ability);
@@ -777,6 +782,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleBallLV1,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Throw more balls at one shot"
         };
@@ -788,6 +794,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleBallLV2,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Throw more balls at one shot"
         };
@@ -802,6 +809,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleBallLV3,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Throw more balls at one shot"
         };
@@ -816,6 +824,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BiggerBallLV1,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Ball size +, Ball damage +"
         };
@@ -824,6 +833,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BiggerBallLV2,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Ball size +, Ball damage +"
         };
@@ -835,6 +845,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.BiggerBallLV3,
+            rarity = Rarity.Epic,
             isPassive = true,
             explain = "Ball size +, Ball damage +"
         };

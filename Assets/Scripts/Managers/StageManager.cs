@@ -396,8 +396,8 @@ public class StageManager : MonoBehaviour
 
         possibleToAppearAbilities = new()
         {
-            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
-            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis),

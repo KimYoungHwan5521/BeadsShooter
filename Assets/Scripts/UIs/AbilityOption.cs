@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class AbilityOption : MonoBehaviour
 {
+    [SerializeField] Image cardBody;
+    [SerializeField] Sprite[] cardBodyByRarity;
     [SerializeField] TextMeshProUGUI abilityName;
     [SerializeField] Image abilityIcon;
     AspectRatioFitter fitter;
@@ -19,6 +21,7 @@ public class AbilityOption : MonoBehaviour
     public void SetOption(AbilityManager.Ability ability)
     {
         linkedAbility = ability;
+        cardBody.sprite = cardBodyByRarity[(int)ability.rarity];
         abilityName.text = ability.name.ToString();
         Sprite sprite;
         if (Enum.TryParse(ability.name.ToString().Split("LV")[0], out ResourceEnum.Sprite spriteEnum))

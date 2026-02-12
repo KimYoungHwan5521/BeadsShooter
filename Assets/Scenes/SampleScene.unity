@@ -20653,6 +20653,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499e362fafb50334c87c0ae79a4884b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityOption
+  cardBody: {fileID: 644881828}
+  cardBodyByRarity:
+  - {fileID: 6873709926976877470, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -2181171261223738701, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -4330502354337936099, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
   abilityName: {fileID: 1050398547}
   abilityIcon: {fileID: 1263825907}
   abilityExplain: {fileID: 71538198}
@@ -24170,6 +24175,12 @@ MonoBehaviour:
   electricDischargeCount: 0
   gotElectrostaticInduction: 0
   electrostaticInductionDamage: 0
+  gotTelekinesisAbility: 0
+  telekinesisCool: 0
+  telekinesisAdditionalDamage: 0
+  controllableBallsCount: 0
+  controllableFireball: 0
+  controllableIcicles: 0
 --- !u!1 &758097636
 GameObject:
   m_ObjectHideFlags: 0
@@ -44296,6 +44307,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499e362fafb50334c87c0ae79a4884b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityOption
+  cardBody: {fileID: 1563037730}
+  cardBodyByRarity:
+  - {fileID: 6873709926976877470, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -2181171261223738701, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -4330502354337936099, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
   abilityName: {fileID: 170201200}
   abilityIcon: {fileID: 1277115098}
   abilityExplain: {fileID: 465260993}
@@ -57302,6 +57318,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 499e362fafb50334c87c0ae79a4884b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityOption
+  cardBody: {fileID: 2093541214}
+  cardBodyByRarity:
+  - {fileID: 6873709926976877470, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -2181171261223738701, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
+  - {fileID: -4330502354337936099, guid: 4b13c41a950efb84ea8f366deeab6e3e, type: 3}
   abilityName: {fileID: 1279839744}
   abilityIcon: {fileID: 1496993558}
   abilityExplain: {fileID: 1534233616}

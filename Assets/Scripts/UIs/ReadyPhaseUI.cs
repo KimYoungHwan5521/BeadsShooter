@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class ReadyPhaseUI : MonoBehaviour
 {
-    const float passiveAppearRate = 0f;
+    const float legendAppearRate = 0.03f;
+    const float epicAppearRate = 0.15f;
+    const float passiveAppearRate = 0.3f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]
@@ -51,14 +53,18 @@ public class ReadyPhaseUI : MonoBehaviour
         int a, b, c;
         a = b = c = 0;
 
+        float rand = UnityEngine.Random.Range(0, 1f);
+        int rarity = 0;
+        if (rand < legendAppearRate) rarity = 2;
+        else if(rand < epicAppearRate + legendAppearRate) rarity = 1;
         bool isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
-        List<AbilityManager.Ability> pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+        List<AbilityManager.Ability> pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => (int)x.rarity == rarity && x.isPassive == isPassive);
         AbilityManager.Ability ability = pool[UnityEngine.Random.Range(0, pool.Count)];
         a = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
         for(int i = 0; i < 1000; i++)
         {
             isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
-            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => (int)x.rarity == rarity && x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
             b = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
             if (b != a) break;
