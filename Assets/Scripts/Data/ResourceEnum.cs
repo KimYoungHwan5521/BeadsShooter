@@ -56,6 +56,17 @@ namespace ResourceEnum
         Laser,
         FrequentShot,
         MultipleShot,
+        Electric,
+        HigherVoltage,
+        MoreChains,
+        MultipleDischarge,
+        ElectrostaticInduction,
+        Telekinesis,
+        FrequentTelekinesis,
+        StrongerTelekinesis,
+        GuidedBalls,
+        GuidedFireBall,
+        GuidedIcicles,
     }
 
     public enum Material

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 public class Bar : CustomObject
 {
@@ -85,6 +84,15 @@ public class Bar : CustomObject
     public bool gotElectrostaticInduction;
     public float electrostaticInductionDamage;
 
+    [Header("Telekinesis Ability")]
+    public bool gotTelekinesisAbility;
+    public float telekinesisCool;
+    float curTelekinesisCool;
+    public float telekinesisAdditionalDamage;
+    public int controllableBallsCount;
+    public bool controllableFireball;
+    public bool controllableIcicles;
+
     protected virtual void Start()
     {
         yPos = GameManager.Instance.barYPos;
@@ -117,9 +125,19 @@ public class Bar : CustomObject
                 {
                     curFireBallCool = 0;
                     fireBallCharging.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                    AllianceProjectile projectile = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
-                    projectile.SetDirection(Vector2.up);
-                    projectile.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
+                    AllianceProjectile fireBall = PoolManager.Spawn(ResourceEnum.Prefab.FireBall, transform.position).GetComponent<AllianceProjectile>();
+                    if (controllableFireball)
+                    {
+                        List<Enemy> enemies = GameManager.Instance.StageManager.currentStageEnemies;
+                        if (enemies.Count > 0)
+                        {
+                            Enemy target = enemies[Random.Range(0, enemies.Count)];
+                            fireBall.SetDirection(target.ColliderCenter - (Vector2)fireBall.transform.position);
+                        }
+                        else fireBall.SetDirection(Vector2.up);
+                    }
+                    else fireBall.SetDirection(Vector2.up);
+                    fireBall.SetProjectile(fireBallDamage, 20f, fireBallExplosion, fireBallExplosionRange, fireBallBurn, fireBallBurnDamage);
                 }
             }
 
@@ -157,12 +175,41 @@ public class Bar : CustomObject
                     }
                 }
             }
+
+            if (gotTelekinesisAbility)
+            {
+                curTelekinesisCool += deltaTime;
+                if (curTelekinesisCool > telekinesisCool)
+                {
+                    curTelekinesisCool = 0;
+                    List<Bead> beads = GameManager.Instance.StageManager.beads;
+                    if (beads.Count > 0)
+                    {
+                        for(int i=0; i<controllableBallsCount; i++)
+                        {
+                            if (i > beads.Count) break;
+                            Bead targetBead = beads[i];
+                            List<Enemy> enemies = GameManager.Instance.StageManager.currentStageEnemies;
+                            if(enemies.Count > 0)
+                            {
+                                targetBead.temporaryDamageCorrection += telekinesisAdditionalDamage;
+                                targetBead.temporarySpeedMagnification *= 1.3f;
+                                targetBead.trail.startColor = new Color(0.6f, 0.2f, 0.8f);
+                                targetBead.trail.endColor = new Color(0.6f, 0.2f, 0.8f);
+                                Enemy target = enemies[Random.Range(0, enemies.Count)];
+                                targetBead.SetDirection(target.ColliderCenter - (Vector2)targetBead.transform.position);
+                                Debug.Log($"target colider center : {target.ColliderCenter}");
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
     public void MoveBar(float xPos)
     {
-        if (Mathf.Abs(xPos - transform.position.x) < 0.3f) return;
+        if (Mathf.Abs(xPos - transform.position.x) < 0.5f) return;
         //if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
         //{
         //    anim.SetFloat("MoveSpeed", 0);
@@ -210,6 +257,9 @@ public class Bar : CustomObject
         laserCount = 0;
         gotElectricAbility = false;
         gotElectrostaticInduction = false;
+        gotTelekinesisAbility = false;
+        controllableFireball = false;
+        controllableIcicles = false;
     }
 
     public void RoundReset()

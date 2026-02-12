@@ -5,7 +5,10 @@ public class Bead : CustomObject
 {
     const float horizontalMinimumAngle = 20f;
 
-    [SerializeField] float damage;
+    [SerializeField] float defaultDamage;
+    public float damageMagnification = 1f;
+    public float temporaryDamageCorrection = 0;
+    public float Damage => (defaultDamage * damageMagnification) + temporaryDamageCorrection;
     [SerializeField] float defaultSpeed;
     public float speedMagnification = 1;
     public class TimeLimitedSpeedMagnification
@@ -89,12 +92,17 @@ public class Bead : CustomObject
         set
         {
             electricCharged = value;
-            if (value) electricChargeParticle.Play();
+            if (value)
+            {
+                electricChargeParticle.Play();
+                electricChainsLeft = GameManager.Instance.StageManager.bar.electricChainsCount;
+            }
             else electricChargeParticle.Stop();
         }
     }
     float electricChargeCool = 10f;
     float curElectricCharge;
+    int electricChainsLeft;
     
     private void Awake()
     {
@@ -105,7 +113,7 @@ public class Bead : CustomObject
 
     public void Initialize(float damage, float speed, int penetrationNumber, float criticalRate, Vector2 direction)
     {
-        this.damage = damage;
+        defaultDamage = damage;
         defaultSpeed = speed;
         this.penetrationNumber = penetrationNumber;
         this.criticalRate = criticalRate;
@@ -118,11 +126,14 @@ public class Bead : CustomObject
     protected override void OnEnable()
     {
         base.OnEnable();
+        damageMagnification = 1f;
+        temporaryDamageCorrection = 0;
         speedMagnification = 1f;
         timeLimitedSpeedMagnifications.Clear();
         temporarySpeedMagnification = 1f;
         //curInAreas = new();
         speedCorrection = 0f;
+        ElectricCharged = GameManager.Instance.StageManager.bar.gotElectricAbility;
     }
 
     public override void MyUpdate(float deltaTime)
@@ -190,19 +201,14 @@ public class Bead : CustomObject
         {
             tlsm.time -= deltaTime;
             if(tlsm.time < 0) toBeDeleted.Add(tlsm);
+            if(toBeDeleted.Count == timeLimitedSpeedMagnifications.Count)
+            {
+                trail.startColor = Color.white;
+                trail.endColor = Color.white;
+            }
         }
         foreach (var tlsm in toBeDeleted) timeLimitedSpeedMagnifications.Remove(tlsm);
         
-        if(timeLimitedSpeedMagnifications.Count > 0)
-        {
-            trail.startColor = Color.green;
-            trail.endColor = Color.green;
-        }
-        else
-        {
-            trail.startColor = Color.white;
-            trail.endColor = Color.white;
-        }
     }
 
     void GiveDamage(Enemy target, float damage)
@@ -212,7 +218,9 @@ public class Bead : CustomObject
         {
             List<Enemy> chains = new() { target };
             target.ElectricChain(GameManager.Instance.StageManager.bar.electricDamage, transform.position, GameManager.Instance.StageManager.bar.electricChainsCount, chains);
-            ElectricCharged = false;
+            if (GameManager.Instance.StageManager.bar.gotElectrostaticInduction) target.redischargeReserved = true;
+            electricChainsLeft--;
+            if(electricChainsLeft == 0) ElectricCharged = false;
         }
     }
 
@@ -220,18 +228,31 @@ public class Bead : CustomObject
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
-        if (collision.collider.CompareTag("Wall")) return;
+        if (collision.collider.CompareTag("Wall"))
+        {
+            temporaryDamageCorrection = 0;
+            trail.startColor = Color.white;
+            trail.endColor= Color.white;
+            return;
+        }
         Enemy enemy = collision.collider.GetComponentInParent<Enemy>();
         if(enemy != null)
         {
-            GiveDamage(enemy, damage);
-            if(enemy is DrippingBlock dripper)
+            GiveDamage(enemy, Damage);
+            temporaryDamageCorrection = 0;
+            trail.startColor = Color.white;
+            trail.endColor = Color.white;
+            if (enemy is DrippingBlock dripper)
             {
                 timeLimitedSpeedMagnifications.Add(new(dripper.slowRate, 1f));
+                trail.startColor = Color.green;
+                trail.endColor = Color.green;
             }
             else if(enemy is Boss2Split boss2)
             {
                 timeLimitedSpeedMagnifications.Add(new(boss2.slowRate, 1f));
+                trail.startColor = Color.green;
+                trail.endColor = Color.green;
             }
         }
         else
@@ -250,11 +271,16 @@ public class Bead : CustomObject
     {
         if(collision.TryGetComponent(out SplitBlock split))
         {
-            GiveDamage(split, damage);
+            GiveDamage(split, Damage);
         }
         else if (collision.TryGetComponent(out Area area))
         {
-            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
+            if(area.sticky)
+            {
+                timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
+                trail.startColor = Color.green;
+                trail.endColor = Color.green;
+            }
             else curInAreas.Add(area);
         }
     }
@@ -263,7 +289,12 @@ public class Bead : CustomObject
     {
         if (collision.TryGetComponent(out Area area))
         {
-            if(area.sticky) timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
+            if(area.sticky)
+            {
+                timeLimitedSpeedMagnifications.Add(new(area.speedMagnification, 1f));
+                trail.startColor = Color.green;
+                trail.endColor = Color.green;
+            }
             else curInAreas.Remove(area);
         }
     }
@@ -281,7 +312,7 @@ public class Bead : CustomObject
     public Bead DuplicateFakeBead(Vector2 direction)
     {
         Bead duplicated = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, transform.position).GetComponent<Bead>();
-        duplicated.Initialize(damage, defaultSpeed, penetrationNumber, criticalRate, direction);
+        duplicated.Initialize(defaultDamage, defaultSpeed, penetrationNumber, criticalRate, direction);
         duplicated.IsFake = true;
         GameManager.Instance.StageManager.beads.Add(duplicated);
 

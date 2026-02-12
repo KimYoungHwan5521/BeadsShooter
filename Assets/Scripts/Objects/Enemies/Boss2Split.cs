@@ -48,8 +48,9 @@ public class Boss2Split : Enemy
     [SerializeField] float curAttackCool;
     public float slowRate = 1f;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rigid = GetComponent<Rigidbody2D>();
     }
 

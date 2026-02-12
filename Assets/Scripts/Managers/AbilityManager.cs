@@ -10,9 +10,10 @@ public class AbilityManager
         BurningLV1, BurningLV2, BurningLV3, Laser, FrequentShotLV1, FrequentShotLV2, FrequentShotLV3, MultipleShotLV1, MultipleShotLV2,
         MultipleShotLV3, MultipleShotLV4, MultipleShotLV5, MultipleShotLV6, Telekinesis, FasterBarLV1, FasterBarLV2, FasterBarLV3,
         FasterBallLV1, FasterBallLV2, FasterBallLV3, WideBarLV1, WideBarLV2, WideBarLV3, MultipleBallLV1, MultipleBallLV2, MultipleBallLV3,
-        BiggerBallLV1, BiggerBallLV2, BiggerBallLV3, Electric, HireVoltageLV1, HireVoltageLV2, HireVoltageLV3, MoreChainsLV1, MoreChainsLV2,
+        BiggerBallLV1, BiggerBallLV2, BiggerBallLV3, Electric, HigherVoltageLV1, HigherVoltageLV2, HigherVoltageLV3, MoreChainsLV1, MoreChainsLV2,
         MoreChainsLV3, MultipleDischargeLV1, MultipleDischargeLV2, MultipleDischargeLV3, ElectrostaticInductionLV1, ElectrostaticInductionLV2,
-        ElectrostaticInductionLV3,
+        ElectrostaticInductionLV3, FrequentTelekinesisLV1, FrequentTelekinesisLV2, FrequentTelekinesisLV3, StrongerTelekinesisLV1,
+        StrongerTelekinesisLV2, StrongerTelekinesisLV3, GuidedBallsLV1, GuidedBallsLV2, GuidedBallsLV3, GuidedFireBall, GuidedIcicles,
     }
     
     public class Ability
@@ -425,8 +426,7 @@ public class AbilityManager
 
         ability = new()
         {
-            name = AbilityName.HireVoltageLV1,
-            isPassive = true,
+            name = AbilityName.HigherVoltageLV1,
             explain = "Increase discharge damage (1 ¡æ 2)"
         };
         root = abilities.Find(x => x.name == AbilityName.Electric);
@@ -437,11 +437,10 @@ public class AbilityManager
 
         ability = new()
         {
-            name = AbilityName.HireVoltageLV2,
-            isPassive = true,
+            name = AbilityName.HigherVoltageLV2,
             explain = "Increase discharge damage (2 ¡æ 3)"
         };
-        root = abilities.Find(x => x.name == AbilityName.HireVoltageLV1);
+        root = abilities.Find(x => x.name == AbilityName.HigherVoltageLV1);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
 
@@ -449,11 +448,10 @@ public class AbilityManager
 
         ability = new()
         {
-            name = AbilityName.HireVoltageLV3,
-            isPassive = true,
+            name = AbilityName.HigherVoltageLV3,
             explain = "Increase discharge damage (3 ¡æ 4)"
         };
-        root = abilities.Find(x => x.name == AbilityName.HireVoltageLV2);
+        root = abilities.Find(x => x.name == AbilityName.HigherVoltageLV2);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
         abilities.Add(ability);
@@ -461,7 +459,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MoreChainsLV1,
-            isPassive = true,
             explain = "Increase maximum chains (1 ¡æ 2)"
         };
         root = abilities.Find(x => x.name == AbilityName.Electric);
@@ -473,7 +470,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MoreChainsLV2,
-            isPassive = true,
             explain = "Increase maximum chains (2 ¡æ 3)"
         };
         root = abilities.Find(x => x.name == AbilityName.MoreChainsLV1);
@@ -485,7 +481,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MoreChainsLV3,
-            isPassive = true,
             explain = "Increase maximum chains (3 ¡æ 4)"
         };
         root = abilities.Find(x => x.name == AbilityName.MoreChainsLV2);
@@ -496,7 +491,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleDischargeLV1,
-            isPassive = true,
             explain = "Multiple discharge on each charge (1 ¡æ 2)"
         };
         root = abilities.Find(x => x.name == AbilityName.Electric);
@@ -508,7 +502,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleDischargeLV2,
-            isPassive = true,
             explain = "Multiple discharge on each charge (2 ¡æ 3)"
         };
         root = abilities.Find(x => x.name == AbilityName.MultipleDischargeLV1);
@@ -520,7 +513,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.MultipleDischargeLV3,
-            isPassive = true,
             explain = "Multiple discharge on each charge (3 ¡æ 4)"
         };
         root = abilities.Find(x => x.name == AbilityName.MultipleDischargeLV2);
@@ -531,7 +523,6 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ElectrostaticInductionLV1,
-            isPassive = true,
             explain = "Enemies that have been damaged by discharge will re-discharge after a short while."
         };
         root = abilities.Find(x => x.name == AbilityName.Electric);
@@ -543,10 +534,12 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ElectrostaticInductionLV2,
-            isPassive = true,
             explain = "Increase re-discharge damage (1 ¡æ 2)"
         };
         root = abilities.Find(x => x.name == AbilityName.ElectrostaticInductionLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        root = abilities.Find(x => x.name == AbilityName.HigherVoltageLV1);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
 
@@ -555,21 +548,141 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.ElectrostaticInductionLV3,
-            isPassive = true,
             explain = "Increase re-discharge damage (2 ¡æ 3)"
         };
         root = abilities.Find(x => x.name == AbilityName.ElectrostaticInductionLV2);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
+        root = abilities.Find(x => x.name == AbilityName.HigherVoltageLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
         abilities.Add(ability);
 
         #endregion
+        #region Telekinesis
         ability = new()
         {
             name = AbilityName.Telekinesis,
-            explain = "Throw the ball towards the block"
+            explain = "Throw the ball towards the enemy"
         };
         abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FrequentTelekinesisLV1,
+            explain = "Telekinesis cool down (15s ¡æ 13s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Telekinesis);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FrequentTelekinesisLV2,
+            explain = "Telekinesis cool down (13s ¡æ 11s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FrequentTelekinesisLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FrequentTelekinesisLV3,
+            explain = "Telekinesis cool down (11s ¡æ 9s)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.FrequentTelekinesisLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.StrongerTelekinesisLV1,
+            explain = "Guided balls give additional damage"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Telekinesis);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.StrongerTelekinesisLV2,
+            explain = "Increase guided balls' additional damage (3 ¡æ 6)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.StrongerTelekinesisLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.StrongerTelekinesisLV3,
+            explain = "Increase guided balls' additional damage (6 ¡æ 9)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.StrongerTelekinesisLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.GuidedBallsLV1,
+            explain = "Control more balls at the same time. (1 ¡æ 2)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Telekinesis);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.GuidedBallsLV2,
+            explain = "Control more balls at the same time. (2 ¡æ 3)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.GuidedBallsLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.GuidedBallsLV3,
+            explain = "Control all balls at the same time."
+        };
+        root = abilities.Find(x => x.name == AbilityName.GuidedBallsLV2);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.GuidedFireBall,
+            explain = "Throw the fire ball toward the enemy"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Telekinesis);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        root = abilities.Find(x => x.name == AbilityName.Fire);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.GuidedIcicles,
+            explain = "Throw the icicles toward the enemy"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Telekinesis);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        root = abilities.Find(x => x.name == AbilityName.IcicleBurstLV1);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+        #endregion
         #region Passives
         ability = new()
         {
@@ -667,6 +780,9 @@ public class AbilityManager
             isPassive = true,
             explain = "Throw more balls at one shot"
         };
+        Ability leaf = abilities.Find(x => x.name == AbilityName.GuidedBallsLV1);
+        ability.lowerAbilities.Add(leaf);
+        leaf.upperAbilities.Add(ability);
         abilities.Add(ability);
 
         ability = new()
@@ -678,6 +794,9 @@ public class AbilityManager
         root = abilities.Find(x => x.name == AbilityName.MultipleBallLV1);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
+        leaf = abilities.Find(x => x.name == AbilityName.GuidedBallsLV2);
+        ability.lowerAbilities.Add(leaf);
+        leaf.upperAbilities.Add(ability);
         abilities.Add(ability);
 
         ability = new()
@@ -689,6 +808,9 @@ public class AbilityManager
         root = abilities.Find(x => x.name == AbilityName.MultipleBallLV2);
         ability.upperAbilities.Add(root);
         root.lowerAbilities.Add(ability);
+        leaf = abilities.Find(x => x.name == AbilityName.GuidedBallsLV2);
+        ability.lowerAbilities.Add(leaf);
+        leaf.upperAbilities.Add(ability);
         abilities.Add(ability);
 
         ability = new()

@@ -34,8 +34,9 @@ public class Boss1 : Enemy
         }
     }
 
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         col = GetComponentInChildren<Collider2D>(true);
         spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
     }

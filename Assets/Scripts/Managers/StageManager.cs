@@ -396,10 +396,11 @@ public class StageManager : MonoBehaviour
 
         possibleToAppearAbilities = new()
         {
-            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
-            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
+            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
+            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis),
 
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBallLV1),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBarLV1),
@@ -407,8 +408,6 @@ public class StageManager : MonoBehaviour
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.MultipleBallLV1),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.BiggerBallLV1),
         };
-        //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis));
-        //possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Steel));
 
         selectedAbilities = new();
 
@@ -1015,6 +1014,7 @@ public class StageManager : MonoBehaviour
     {
         switch(ability.name)
         {
+            // Ice
             case AbilityManager.AbilityName.Ice:
                 bar.ActivedIceBlock = 4;
                 foreach (var iceBlock in bar.iceBlocks)
@@ -1069,6 +1069,7 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.FrostWideLV3:
                 bar.ActivedIceBlock = 12;
                 break;
+            // Fire
             case AbilityManager.AbilityName.Fire:
                 bar.fireBallCool = 6f;
                 bar.fireBallDamage = 2f;
@@ -1111,6 +1112,7 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.BurningLV3:
                 bar.fireBallBurnDamage = 1.2f;
                 break;
+            // Laser
             case AbilityManager.AbilityName.Laser:
                 bar.laserCount = 1;
                 bar.laserCool = 6f;
@@ -1142,6 +1144,7 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.MultipleShotLV6:
                 bar.laserCount = 10;
                 break;
+            // Electric
             case AbilityManager.AbilityName.Electric:
                 bar.gotElectricAbility = true;
                 bar.electricDamage = 1f;
@@ -1149,13 +1152,13 @@ public class StageManager : MonoBehaviour
                 bar.electricDischargeCount = 1;
                 foreach(var bead in beads) bead.ElectricCharged = true;
                 break;
-            case AbilityManager.AbilityName.HireVoltageLV1:
+            case AbilityManager.AbilityName.HigherVoltageLV1:
                 bar.electricDamage = 2f;
                 break;
-            case AbilityManager.AbilityName.HireVoltageLV2:
+            case AbilityManager.AbilityName.HigherVoltageLV2:
                 bar.electricDamage = 3f;
                 break;
-            case AbilityManager.AbilityName.HireVoltageLV3:
+            case AbilityManager.AbilityName.HigherVoltageLV3:
                 bar.electricDamage = 4f;
                 break;
             case AbilityManager.AbilityName.MoreChainsLV1:
@@ -1185,6 +1188,46 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.ElectrostaticInductionLV3:
                 bar.electrostaticInductionDamage = 3;
+                break;
+            // Telekinesis
+            case AbilityManager.AbilityName.Telekinesis:
+                bar.gotTelekinesisAbility = true;
+                bar.telekinesisCool = 15f;
+                bar.telekinesisAdditionalDamage = 0;
+                bar.controllableBallsCount = 1;
+                break;
+            case AbilityManager.AbilityName.FrequentTelekinesisLV1:
+                bar.telekinesisCool = 13f;
+                break;
+            case AbilityManager.AbilityName.FrequentTelekinesisLV2:
+                bar.telekinesisCool = 11f;
+                break;
+            case AbilityManager.AbilityName.FrequentTelekinesisLV3:
+                bar.telekinesisCool = 9f;
+                break;
+            case AbilityManager.AbilityName.StrongerTelekinesisLV1:
+                bar.telekinesisAdditionalDamage = 3;
+                break;
+            case AbilityManager.AbilityName.StrongerTelekinesisLV2:
+                bar.telekinesisAdditionalDamage = 6;
+                break;
+            case AbilityManager.AbilityName.StrongerTelekinesisLV3:
+                bar.telekinesisAdditionalDamage = 9;
+                break;
+            case AbilityManager.AbilityName.GuidedBallsLV1:
+                bar.controllableBallsCount = 2;
+                break;
+            case AbilityManager.AbilityName.GuidedBallsLV2:
+                bar.controllableBallsCount = 3;
+                break;
+            case AbilityManager.AbilityName.GuidedBallsLV3:
+                bar.controllableBallsCount = 99;
+                break;
+            case AbilityManager.AbilityName.GuidedFireBall:
+                bar.controllableFireball = true;
+                break;
+            case AbilityManager.AbilityName.GuidedIcicles:
+                bar.controllableIcicles = true;
                 break;
         }
     }

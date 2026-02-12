@@ -4,7 +4,9 @@ using UnityEngine.UI;
 
 public class Enemy : CustomObject
 {
+    public SpriteMask spriteMask;
     [SerializeField] Animator burnAnim;
+    public Vector2 ColliderCenter => GetComponentInChildren<Collider2D>().bounds.center;
     [SerializeField] protected Image hpBar;
     [SerializeField] protected int stage;
     protected bool isDead;
@@ -60,11 +62,13 @@ public class Enemy : CustomObject
     Vector3 electricFrom;
     int leftChain;
     List<Enemy> alreadyChained = new();
+    public bool redischargeReserved;
+    float redischargeCool = 3f;
+    float curRedischargeCool;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
-        //animator = GetComponent<Animator>();
-        //animator.SetFloat("moveSpeed", moveSpeed);
+        spriteMask = GetComponent<SpriteMask>();
     }
 
     protected override void OnEnable()
@@ -82,6 +86,7 @@ public class Enemy : CustomObject
 
     public override void MyUpdate(float deltaTime)
     {
+        if(IsDead) return;
         if(burnLeft > 0)
         {
             burnLeft -= deltaTime;
@@ -105,6 +110,27 @@ public class Enemy : CustomObject
                 curElectricChainTerm = 0;
             }
         }
+
+        if(redischargeReserved)
+        {
+            curRedischargeCool += deltaTime;
+            if(curRedischargeCool > redischargeCool)
+            {
+                Debug.Log("Redischare!");
+                curRedischargeCool = 0;
+                redischargeReserved = false;
+                List<Enemy> chains = new() { this };
+                ElectricChain(GameManager.Instance.StageManager.bar.electrostaticInductionDamage, ColliderCenter, GameManager.Instance.StageManager.bar.electricChainsCount, chains);
+            }
+        }
+    }
+
+    public virtual void SetMaskLayer(int layerNumber)
+    {
+        if (spriteMask == null) return;
+        spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
+        spriteMask.backSortingOrder = layerNumber * 10;
+        if (burnAnim != null) burnAnim.GetComponent<SpriteRenderer>().sortingOrder = layerNumber + 1;
     }
 
     public virtual void SetInfo(int stage, float maxHP, bool isWall = false, bool isInvincible = false)
@@ -145,7 +171,7 @@ public class Enemy : CustomObject
     public virtual void ElectricChain(float damage, Vector3 from, int leftChain, List<Enemy> alreadyChained)
     {
         LineRenderer electric = PoolManager.Spawn(ResourceEnum.Prefab.Electric, transform.position).GetComponent<LineRenderer>();
-        electric.SetPositions(new Vector3[] { from, GetComponent<Collider2D>().bounds.center });
+        electric.SetPositions(new Vector3[] { from, ColliderCenter });
         electric.startWidth = 0.1f * (leftChain + 1);
         electric.endWidth = 0.1f * leftChain;
         TakeDamage(damage);
@@ -161,13 +187,13 @@ public class Enemy : CustomObject
                 }
                 targets.Add(target);
             }
-            foreach(var target in targets) target.ReserveElectricChain(damage * 0.5f, GetComponentInChildren<Collider2D>().bounds.center, leftChain - 1, alreadyChained);
+            foreach(var target in targets) target.ReserveElectricChain(damage * 0.5f, ColliderCenter, leftChain - 1, alreadyChained);
         }
     }
 
     protected virtual Enemy FindElectricChainTarget(Vector3 from, ref List<Enemy> alreadyChained)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(GetComponentInChildren<Collider2D>().bounds.center, 1.5f);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(ColliderCenter, 1.5f);
         List<Enemy> candidates = new();
         foreach(var hit in hits)
         {
@@ -180,10 +206,10 @@ public class Enemy : CustomObject
         if (candidates.Count > 0)
         {
             Enemy nearest = candidates[0];
-            float minDistance = Vector2.Distance(from, GetComponentInChildren<Collider2D>().bounds.center);
+            float minDistance = Vector2.Distance(from, ColliderCenter);
             foreach(var candidate in candidates)
             {
-                float distance = Vector2.Distance(from, candidate.GetComponentInChildren<Collider2D>().bounds.center);
+                float distance = Vector2.Distance(from, candidate.ColliderCenter);
                 if (distance < minDistance)
                 {
                     nearest = candidate;

@@ -6,93 +6,14 @@ using UnityEngine.UI;
 
 public class ReadyPhaseUI : MonoBehaviour
 {
+    const float passiveAppearRate = 0f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]
-    //[SerializeField] GameObject rewardOptionsBoxOuter;
-    //[SerializeField] GameObject rewardOptionsBox;
-    //[SerializeField] GameObject hideOrShow;
-    //[SerializeField] RewardOption[] rewardOptions;
-    //int selectedOption = -1;
     [SerializeField] AbilityOption[] abilityOptions;
 
-    //[Header("Place Material")]
-    //int currentMaterialInt;
-    //RewardFormat currentMaterialReward;
-    //[SerializeField] GameObject currentMaterial;
-    //const int maxStoreCapacity = 3;
-    //int storeCapacity;
-    //public int StoreCapacity
-    //{
-    //    get => storeCapacity;
-    //    set
-    //    {
-    //        storeCapacity = Math.Clamp(value, 0, maxStoreCapacity);
-    //    }
-    //}
-    //[SerializeField] GameObject storeButton;
-    //[SerializeField] GameObject[] storedMaterials;
-    //int[] storedMaterialsInfo = new int[maxStoreCapacity];
-    //[SerializeField] GameObject[] placedMaterialsObject;
-    //[SerializeField] int[,] placedMaterials = new int[Blueprint.ColumnCount, Blueprint.RowCount];
-    //int selectedGrid = -1;
-    //[SerializeField] GameObject placeButton;
-    //[SerializeField] GameObject discardButton;
-    //[SerializeField] BlueprintDrawer[] blueprints;
-
-    //[Header("Build")]
-    //[SerializeField] GameObject currentBuild;
-    //[SerializeField] Button leftArrow;
-    //[SerializeField] Button rightArrow;
-    //[SerializeField] BlueprintDrawer currentBuildBlueprint;
-
     bool isShop;
-    bool isDisplace;
     public bool IsShop => isShop;
-
-    //public void SetReadyPhase()
-    //{
-    //    startNextStage.SetActive(false);
-    //    selectedOption = -1;
-    //    selectedGrid = -1;
-    //    rewardOptionsBoxOuter.SetActive(true);
-    //    hideOrShow.SetActive(true);
-    //    currentMaterial.SetActive(false);
-    //    storeButton.SetActive(false);
-    //    for (int i = 0; i < storedMaterials.Length; i++)
-    //    {
-    //        storedMaterials[i].SetActive(i < StoreCapacity);
-    //        storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[storedMaterialsInfo[i]];
-    //    }
-    //    currentBuild.SetActive(false);
-
-    //    for(int i=0; i< Blueprint.RowCount; i++)
-    //    {
-    //        for(int j=0; j< Blueprint.ColumnCount; j++)
-    //        {
-    //            if (placedMaterials[i, j] == -1) placedMaterialsObject[Blueprint.RowCount * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
-    //            else placedMaterialsObject[Blueprint.RowCount * i + j].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[placedMaterials[i, j]];
-    //            placedMaterialsObject[Blueprint.RowCount * i+j].GetComponent<Button>().interactable = placedMaterials[i, j] == 0;
-    //        }
-    //    }
-    //    placeButton.SetActive(false);
-    //    discardButton.SetActive(false);
-
-    //    List<Blueprint> blueprintsData = GameManager.Instance.StageManager.bar.blueprints;
-    //    for (int i = 0; i<blueprints.Length; i++)
-    //    {
-    //        if (i < blueprintsData.Count)
-    //        {
-    //            blueprints[i].gameObject.SetActive(true);
-    //            blueprints[i].SetBlueprint(blueprintsData[i]);
-    //        }
-    //        else
-    //        {
-    //            blueprints[i].gameObject.SetActive(false);
-    //        }
-    //    }
-    //    SetOptions();
-    //}
 
     private void Start()
     {
@@ -130,13 +51,13 @@ public class ReadyPhaseUI : MonoBehaviour
         int a, b, c;
         a = b = c = 0;
 
-        bool isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+        bool isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
         List<AbilityManager.Ability> pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
         AbilityManager.Ability ability = pool[UnityEngine.Random.Range(0, pool.Count)];
         a = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
         for(int i = 0; i < 1000; i++)
         {
-            isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+            isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
             pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
             b = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
@@ -144,7 +65,7 @@ public class ReadyPhaseUI : MonoBehaviour
         }
         for (int i = 0; i < 1000; i++)
         {
-            isPassive = UnityEngine.Random.Range(0, 1f) < 0.3f;
+            isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
             pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
             c = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);

@@ -4,13 +4,12 @@ public class Block : Enemy
 {
     SpriteRenderer sprite;
     [SerializeField] protected Transform crack;
-    public SpriteMask spriteMask;
     public SpriteRenderer crackSprite;
 
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         sprite = GetComponent<SpriteRenderer>();
-        spriteMask = GetComponent<SpriteMask>();
         
         if(crack != null) crackSprite = crack.GetComponent<SpriteRenderer>();
     }
@@ -36,12 +35,11 @@ public class Block : Enemy
         }
     }
 
-    public virtual void SetMaskLayer(int layerNumber)
+    public override void SetMaskLayer(int layerNumber)
     {
-        if (crackSprite == null || spriteMask == null) return;
-        spriteMask.frontSortingOrder = (layerNumber + 1) * 10;
-        spriteMask.backSortingOrder = layerNumber * 10;
-        crackSprite.sortingOrder = layerNumber * 10 + 1;
+        base.SetMaskLayer(layerNumber);
+        if (crackSprite == null) return;
+        crackSprite.sortingOrder = layerNumber * 10 + 2;
     }
 
     public void SetColor(Color color)

@@ -59,6 +59,17 @@ public class ResourcesPath
         "Sprites/Icons/Laser",
         "Sprites/Icons/FrequentShot",
         "Sprites/Icons/MultipleShot",
+        "Sprites/Icons/Electric",
+        "Sprites/Icons/HigherVoltage",
+        "Sprites/Icons/MoreChains",
+        "Sprites/Icons/MultipleDischarge",
+        "Sprites/Icons/ElectrostaticInduction",
+        "Sprites/Icons/Telekinesis",
+        "Sprites/Icons/FrequentTelekinesis",
+        "Sprites/Icons/StrongerTelekinesis",
+        "Sprites/Icons/GuidedBalls",
+        "Sprites/Icons/GuidedFireBall",
+        "Sprites/Icons/GuidedIcicles",
     };
 
     public static string[] MaterialPathArray =

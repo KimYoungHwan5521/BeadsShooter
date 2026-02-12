@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class IceBlock : CustomObject
@@ -44,7 +45,17 @@ public class IceBlock : CustomObject
                     return;
                 }
                 Projectile icicle = PoolManager.Spawn(ResourceEnum.Prefab.Icicle, transform.position).GetComponent<Projectile>();
-                icicle.SetDirection(Vector2.up);
+                if (GameManager.Instance.StageManager.bar.controllableIcicles)
+                {
+                    List<Enemy> enemies = GameManager.Instance.StageManager.currentStageEnemies;
+                    if (enemies.Count > 0)
+                    {
+                        Enemy target = enemies[Random.Range(0, enemies.Count)];
+                        icicle.SetDirection(target.ColliderCenter - (Vector2)icicle.transform.position);
+                    }
+                    else icicle.SetDirection(Vector2.up);
+                }
+                else icicle.SetDirection(Vector2.up);
             }
         }
 
