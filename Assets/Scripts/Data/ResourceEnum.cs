@@ -36,6 +36,7 @@ namespace ResourceEnum
         ShopStage,
         Explosion,
         Electric,
+        Redischarge,
     }
 
     public enum Sprite

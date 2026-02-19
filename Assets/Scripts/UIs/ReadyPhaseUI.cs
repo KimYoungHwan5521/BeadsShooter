@@ -8,7 +8,7 @@ public class ReadyPhaseUI : MonoBehaviour
 {
     const float legendAppearRate = 0.03f;
     const float epicAppearRate = 0.15f;
-    const float passiveAppearRate = 0.3f;
+    const float passiveAppearRate = 0f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]

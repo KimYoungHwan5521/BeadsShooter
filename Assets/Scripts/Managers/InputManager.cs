@@ -6,15 +6,14 @@ public class InputManager : MonoBehaviour
     [SerializeField] Bar bar;
     bool touch;
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
         if (touch)
         {
             if (bar.grabbedBeads.Count == 0)
             {
-                float xPos = Mathf.Clamp(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, -8.82f, 8.82f);
-                bar.MoveBar(xPos);
+                bar.MoveBar(Camera.main.ScreenToWorldPoint(Input.mousePosition).x);
             }
             else bar.DrawPredictionLine(Camera.main.ScreenToWorldPoint(Input.mousePosition));
         }

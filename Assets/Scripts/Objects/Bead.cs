@@ -85,6 +85,7 @@ public class Bead : CustomObject
 
     [Header("Electric Ability")]
     [SerializeField] ParticleSystem electricChargeParticle;
+    [SerializeField] GameObject electirChargedAnim;
     [SerializeField] bool electricCharged;
     public bool ElectricCharged
     {
@@ -92,16 +93,22 @@ public class Bead : CustomObject
         set
         {
             electricCharged = value;
+            electirChargedAnim.SetActive(value);
             if (value)
             {
-                electricChargeParticle.Play();
+                //electricChargeParticle.Play();
                 electricChainsLeft = GameManager.Instance.StageManager.bar.electricChainsCount;
+                trail.startColor = Color.blue;
+                trail.endColor = Color.blue;
             }
-            else electricChargeParticle.Stop();
+            else
+            {
+                //electricChargeParticle.Stop();
+                trail.startColor = Color.white;
+                trail.endColor = Color.white;
+            }
         }
     }
-    float electricChargeCool = 10f;
-    float curElectricCharge;
     int electricChainsLeft;
     
     private void Awake()
@@ -133,7 +140,7 @@ public class Bead : CustomObject
         temporarySpeedMagnification = 1f;
         //curInAreas = new();
         speedCorrection = 0f;
-        ElectricCharged = GameManager.Instance.StageManager.bar.gotElectricAbility;
+        ElectricCharged = false;
     }
 
     public override void MyUpdate(float deltaTime)
@@ -181,15 +188,6 @@ public class Bead : CustomObject
                 lastDirection = rigidBody.linearVelocity;
             }
 
-            if(GameManager.Instance.StageManager.bar.gotElectricAbility && !electricCharged)
-            {
-                curElectricCharge += deltaTime;
-                if(curElectricCharge > electricChargeCool)
-                {
-                    curElectricCharge = 0;
-                    ElectricCharged = true;
-                }
-            }
         }
         else
         {
@@ -220,6 +218,7 @@ public class Bead : CustomObject
             target.ElectricChain(GameManager.Instance.StageManager.bar.electricDamage, transform.position, GameManager.Instance.StageManager.bar.electricChainsCount, chains);
             if (GameManager.Instance.StageManager.bar.gotElectrostaticInduction) target.redischargeReserved = true;
             electricChainsLeft--;
+            Debug.Log($"electric chains left : {electricChainsLeft}");
             if(electricChainsLeft == 0) ElectricCharged = false;
         }
     }
@@ -263,6 +262,12 @@ public class Bead : CustomObject
                 temporarySpeedMagnification = 1;
                 SetDirection(transform.position - bar.transform.position);
                 Strike = 0;
+
+                if (bar.ElectricCharged)
+                {
+                    ElectricCharged = true;
+                    bar.ElectricCharged = false;
+                }
             }
         }
     }

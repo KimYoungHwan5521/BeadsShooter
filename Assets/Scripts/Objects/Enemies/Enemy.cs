@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -116,10 +117,10 @@ public class Enemy : CustomObject
             curRedischargeCool += deltaTime;
             if(curRedischargeCool > redischargeCool)
             {
-                Debug.Log("Redischare!");
                 curRedischargeCool = 0;
                 redischargeReserved = false;
                 List<Enemy> chains = new() { this };
+                PoolManager.Spawn(ResourceEnum.Prefab.Redischarge, transform.position).GetComponent<Animator>().SetTrigger("Trigger");
                 ElectricChain(GameManager.Instance.StageManager.bar.electrostaticInductionDamage, ColliderCenter, GameManager.Instance.StageManager.bar.electricChainsCount, chains);
             }
         }
@@ -170,10 +171,28 @@ public class Enemy : CustomObject
 
     public virtual void ElectricChain(float damage, Vector3 from, int leftChain, List<Enemy> alreadyChained)
     {
-        LineRenderer electric = PoolManager.Spawn(ResourceEnum.Prefab.Electric, transform.position).GetComponent<LineRenderer>();
-        electric.SetPositions(new Vector3[] { from, ColliderCenter });
-        electric.startWidth = 0.1f * (leftChain + 1);
-        electric.endWidth = 0.1f * leftChain;
+        //LineRenderer electric = PoolManager.Spawn(ResourceEnum.Prefab.Electric, transform.position).GetComponent<LineRenderer>();
+        //electric.SetPositions(new Vector3[] { from, ColliderCenter });
+        //electric.startWidth = 0.1f * (leftChain + 1);
+        //electric.endWidth = 0.1f * leftChain;
+        GameObject electric = PoolManager.Spawn(ResourceEnum.Prefab.Electric, transform.position);
+        Vector2 start = from;
+        Vector2 end = transform.position;
+        Vector2 dir = end - start;
+
+        // 위치
+        electric.transform.position = (start + end) * 0.5f;
+
+        // 회전
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        electric.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+        // 길이 (X축이 길이 방향일 경우)
+        Vector3 scale = electric.transform.localScale;
+        scale.x = dir.magnitude;
+        electric.transform.localScale = scale;
+        electric.GetComponent<Animator>().SetTrigger("Trigger");
+
         TakeDamage(damage);
         if(leftChain > 0)
         {

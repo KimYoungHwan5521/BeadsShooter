@@ -396,8 +396,8 @@ public class StageManager : MonoBehaviour
 
         possibleToAppearAbilities = new()
         {
-            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
-            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
+            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
+            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis),
@@ -1150,7 +1150,7 @@ public class StageManager : MonoBehaviour
                 bar.electricDamage = 1f;
                 bar.electricChainsCount = 1;
                 bar.electricDischargeCount = 1;
-                foreach(var bead in beads) bead.ElectricCharged = true;
+                bar.ElectricCharged = true;
                 break;
             case AbilityManager.AbilityName.HigherVoltageLV1:
                 bar.electricDamage = 2f;

@@ -38,6 +38,7 @@ public class ResourcesPath
         "Prefabs/ETC/ShopStage",
         "Prefabs/ETC/Explosion",
         "Prefabs/ETC/Electric",
+        "Prefabs/ETC/Redischarge",
     };
 
 

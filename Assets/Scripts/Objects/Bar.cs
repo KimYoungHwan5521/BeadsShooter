@@ -12,6 +12,7 @@ public class Bar : CustomObject
     public FeverAction fever;
     public int feverLevel = 0;
 
+    const float barMoveLimit = 11.1f;
     const float originalLength = 4;
     const float barMinLength = 0.3f;
     public float BarMinLength => barMinLength;
@@ -24,6 +25,7 @@ public class Bar : CustomObject
             barLength = Mathf.Max(barMinLength, value);
             barBody.GetComponent<SpriteRenderer>().size = new(originalLength * barLength, 1f);
             barBody.GetComponent<BoxCollider2D>().size = new(originalLength * barLength, 1f);
+            electricChargedAnim.GetComponent<SpriteRenderer>().size = new(originalLength * barLength, 1f);
             for(int i = 0; i < iceBlocks.Length; i++)
             {
                 iceBlocks[i].transform.localPosition = new(i % 2 == 0 ? - originalLength * barLength / 2 - 0.5f - i / 2 : originalLength * barLength / 2 + 0.5f + i / 2, 0, 0);
@@ -77,12 +79,25 @@ public class Bar : CustomObject
     bool laserFire;
 
     [Header("Electric Ability")]
+    [SerializeField] GameObject electricChargedAnim;
     public bool gotElectricAbility;
     public float electricDamage;
     public int electricChainsCount;
     public int electricDischargeCount;
     public bool gotElectrostaticInduction;
     public float electrostaticInductionDamage;
+    bool electricCharged;
+    public bool ElectricCharged
+    {
+        get => electricCharged;
+        set
+        {
+            electricCharged = value;
+            electricChargedAnim.SetActive(value);
+        }
+    }
+    float electricChargeCool = 10f;
+    float curElectricCharge;
 
     [Header("Telekinesis Ability")]
     public bool gotTelekinesisAbility;
@@ -176,6 +191,16 @@ public class Bar : CustomObject
                 }
             }
 
+            if(gotElectricAbility)
+            {
+                curElectricCharge += deltaTime;
+                if (curElectricCharge > electricChargeCool)
+                {
+                    curElectricCharge = 0;
+                    ElectricCharged = true;
+                }
+            }
+
             if (gotTelekinesisAbility)
             {
                 curTelekinesisCool += deltaTime;
@@ -209,14 +234,15 @@ public class Bar : CustomObject
 
     public void MoveBar(float xPos)
     {
-        if (Mathf.Abs(xPos - transform.position.x) < 0.5f) return;
+        float offset = Mathf.Clamp(xPos, - barMoveLimit + originalLength * barLength * 0.5f - 0.5f, barMoveLimit - originalLength *  barLength * 0.5f + 0.5f);
+        if (Mathf.Abs(offset - transform.position.x) < 0.5f) return;
         //if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
         //{
         //    anim.SetFloat("MoveSpeed", 0);
         //    return;
         //}
         //anim.SetFloat("MoveSpeed", moveSpeed);
-        Vector2 direction = new Vector2(xPos - transform.position.x, 0).normalized;
+        Vector2 direction = new Vector2(offset - transform.position.x, 0).normalized;
         character.transform.localScale = new(-direction.x, 1);
         transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
         foreach(var bead in grabbedBeads)
@@ -234,7 +260,9 @@ public class Bar : CustomObject
         {
             bead.SetDirection(wantPos - bead.transform.position);
             bead.activated = true;
+            if (ElectricCharged) bead.ElectricCharged = true;
         }
+        ElectricCharged = false;
         grabbedBeads.Clear();
         lineRenderer.enabled = false;
     }
@@ -258,6 +286,7 @@ public class Bar : CustomObject
         gotElectricAbility = false;
         gotElectrostaticInduction = false;
         gotTelekinesisAbility = false;
+        ElectricCharged = false;
         controllableFireball = false;
         controllableIcicles = false;
     }
