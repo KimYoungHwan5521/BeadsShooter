@@ -21,7 +21,7 @@ public class AbilityOption : MonoBehaviour
     public void SetOption(AbilityManager.Ability ability)
     {
         linkedAbility = ability;
-        cardBody.sprite = cardBodyByRarity[(int)ability.rarity];
+        cardBody.sprite = cardBodyByRarity[(int)ability.cardType];
         abilityName.text = ability.name.ToString();
         Sprite sprite;
         if (Enum.TryParse(ability.name.ToString().Split("LV")[0], out ResourceEnum.Sprite spriteEnum))

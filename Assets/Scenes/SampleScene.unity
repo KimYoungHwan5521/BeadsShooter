@@ -24259,7 +24259,7 @@ MonoBehaviour:
   character: {fileID: 1998926038}
   feverLevel: 0
   grabbedBeads: []
-  moveSpeed: 20
+  moveSpeed: 30
   timeLimitedSpeedMagnification: 1
   timeLimitedSpeedMagnificationTime: 0
   feverColor: {r: 0, g: 0, b: 0, a: 0}

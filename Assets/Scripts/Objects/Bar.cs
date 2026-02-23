@@ -234,7 +234,7 @@ public class Bar : CustomObject
 
     public void MoveBar(float xPos)
     {
-        float offset = Mathf.Clamp(xPos, - barMoveLimit + originalLength * barLength * 0.5f - 0.5f, barMoveLimit - originalLength *  barLength * 0.5f + 0.5f);
+        float offset = Mathf.Clamp(xPos, - barMoveLimit + originalLength * barLength * 0.5f - 0.5f, barMoveLimit - originalLength * barLength * 0.5f + 0.5f);
         if (Mathf.Abs(offset - transform.position.x) < 0.5f) return;
         //if (Mathf.Abs(xPos - transform.position.x) < 0.1f)
         //{
@@ -242,9 +242,10 @@ public class Bar : CustomObject
         //    return;
         //}
         //anim.SetFloat("MoveSpeed", moveSpeed);
+        //character.transform.localScale = new(-direction.x, 1);
         Vector2 direction = new Vector2(offset - transform.position.x, 0).normalized;
-        character.transform.localScale = new(-direction.x, 1);
         transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
+        transform.position = new(Mathf.Clamp(transform.position.x + direction.x * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime, -barMoveLimit + originalLength * barLength * 0.5f, barMoveLimit - originalLength * barLength * 0.5f), transform.position.y);
         foreach(var bead in grabbedBeads)
         {
             bead.transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
@@ -261,8 +262,8 @@ public class Bar : CustomObject
             bead.SetDirection(wantPos - bead.transform.position);
             bead.activated = true;
             if (ElectricCharged) bead.ElectricCharged = true;
+            ElectricCharged = false;
         }
-        ElectricCharged = false;
         grabbedBeads.Clear();
         lineRenderer.enabled = false;
     }

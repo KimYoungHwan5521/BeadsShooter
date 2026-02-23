@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] Bar bar;
     bool touch;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!Camera.main.pixelRect.Contains(Input.mousePosition)) return;
         if (touch)

@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class ReadyPhaseUI : MonoBehaviour
 {
-    const float legendAppearRate = 0.03f;
-    const float epicAppearRate = 0.15f;
-    const float passiveAppearRate = 0f;
+    //const float promotionAppearRate = 0.15f;
+    const float epicAppearRate = 0.1f;
+    const float passiveAppearRate = 0.03f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]
@@ -46,6 +46,7 @@ public class ReadyPhaseUI : MonoBehaviour
 
     void SetOptions()
     {
+        StageManager stageManager = GameManager.Instance.StageManager;
         //foreach(RewardOption rewardOption in rewardOptions)
         //{
         //    rewardOption.SetOption("", UnityEngine.Random.Range(1, 5), GameManager.Instance.StageManager.GetRandomeReward());
@@ -54,33 +55,46 @@ public class ReadyPhaseUI : MonoBehaviour
         a = b = c = 0;
 
         float rand = UnityEngine.Random.Range(0, 1f);
-        int rarity = 0;
-        if (rand < legendAppearRate) rarity = 2;
-        else if(rand < epicAppearRate + legendAppearRate) rarity = 1;
+        // cardType : 0 = Rare, 1 = Epic, 2 = Promotion
+        int cardType = 0;
+        if (rand < epicAppearRate) cardType = 1;
+        //else if (rand < epicAppearRate + promotionAppearRate) cardType = 2;
         bool isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
-        List<AbilityManager.Ability> pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => (int)x.rarity == rarity && x.isPassive == isPassive);
+
+        List<AbilityManager.Ability> pool = new();
+        // 진급가능한 카드 있으면 무조건 진급하나 포함
+        pool = stageManager.possibleToAppearAbilities.FindAll(x => x.cardType == AbilityManager.CardType.Promotion);
+        if (pool.Count == 0)
+        {
+            // 획득한 어빌리티가 세종류 이상이라면 한장은 기존에 가지고 있는 어빌리티중 확정
+            if(stageManager.selectedRootAbilities.Count >= 3) pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive && stageManager.selectedRootAbilities.Find(y => y.abilityName == x.rootAbility) != null);
+            else pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive);
+        }
         AbilityManager.Ability ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-        a = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
-        for(int i = 0; i < 1000; i++)
+        a = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+
+        for (int i = 0; i < 1000; i++)
         {
             isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
-            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => (int)x.rarity == rarity && x.isPassive == isPassive);
+            pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-            b = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+            b = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+
             if (b != a) break;
         }
         for (int i = 0; i < 1000; i++)
         {
             isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
-            pool = GameManager.Instance.StageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
+            pool = stageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-            c = GameManager.Instance.StageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+            c = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+
             if (c != a && c != b) break;
         }
 
-        abilityOptions[0].SetOption(GameManager.Instance.StageManager.possibleToAppearAbilities[a]);
-        abilityOptions[1].SetOption(GameManager.Instance.StageManager.possibleToAppearAbilities[b]);
-        abilityOptions[2].SetOption(GameManager.Instance.StageManager.possibleToAppearAbilities[c]);
+        abilityOptions[0].SetOption(stageManager.possibleToAppearAbilities[a]);
+        abilityOptions[1].SetOption(stageManager.possibleToAppearAbilities[b]);
+        abilityOptions[2].SetOption(stageManager.possibleToAppearAbilities[c]);
     }
 
     public void SelectAbility(int index)
@@ -90,397 +104,4 @@ public class ReadyPhaseUI : MonoBehaviour
         StartNextStage();
     }
 
-    //public void FocusOption(int index)
-    //{
-    //    selectedOption = index;
-    //}
-
-    //public void SelectOption()
-    //{
-    //    if (selectedOption == -1) return;
-    //    rewardOptionsBoxOuter.SetActive(false);
-    //    hideOrShow.SetActive(true);
-    //    store = true;
-    //    storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
-    //    storeButton.SetActive(true);
-    //    currentMaterialInt = rewardOptions[selectedOption].materialType;
-    //    currentMaterial.SetActive(true);
-    //    currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //    placeButton.SetActive(true);
-    //    placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
-    //    discardButton.SetActive(true);
-    //    isShop = false;
-    //    isDisplace = false;
-    //}
-
-    //public void SetPurchasedMaterial(ShopManager.MerchandiseInfo merchandise)
-    //{
-    //    startNextStage.SetActive(false);
-    //    rewardOptionsBoxOuter.SetActive(false);
-    //    store = true;
-    //    storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
-    //    storeButton.SetActive(true);
-    //    for (int i = 0; i < storedMaterials.Length; i++)
-    //    {
-    //        storedMaterials[i].SetActive(i < StoreCapacity);
-    //        storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[storedMaterialsInfo[i]];
-    //    }
-    //    currentMaterialInt = merchandise.materialType;
-    //    currentMaterialReward = merchandise.reward;
-    //    currentMaterial.SetActive(true);
-    //    currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //    placeButton.SetActive(true);
-    //    placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Place";
-    //    discardButton.SetActive(true);
-    //    isShop = true;
-    //    isDisplace = false;
-    //}
-
-    //public void SetDisplace()
-    //{
-    //    startNextStage.SetActive(true);
-    //    rewardOptionsBoxOuter.SetActive(false);
-    //    currentMaterial.SetActive(false);
-    //    placeButton.SetActive(true);
-    //    placeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Displace";
-    //    discardButton.SetActive(false);
-    //    isShop = false;
-    //    isDisplace = true;
-    //}
-
-    //public void FocusGrid(int index)
-    //{
-    //    selectedGrid = index;
-    //}
-
-    //public void Place()
-    //{
-    //    if(selectedGrid == -1) return;
-    //    if (isDisplace)
-    //    {
-    //        if(placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] != 0)
-    //        {
-    //            placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = 0;
-    //            placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
-    //            storeButton.SetActive(storedMaterialsInfo[0] != 0);
-    //            storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Take Out";
-    //            placeButton.SetActive(false);
-    //            startNextStage.SetActive(true);
-    //            startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] == 0)
-    //        {
-    //            placedMaterials[selectedGrid / Blueprint.RowCount, selectedGrid % Blueprint.RowCount] = currentMaterialInt;
-    //            placedMaterialsObject[selectedGrid].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //            currentMaterialInt = 0;
-    //            currentMaterial.SetActive(false);
-    //            storeButton.SetActive(storedMaterialsInfo[0] != 0);
-    //            storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Take Out";
-    //            placeButton.SetActive(false);
-    //            discardButton.SetActive(false);
-    //            startNextStage.SetActive(true);
-    //            startNextStage.GetComponentInChildren<TextMeshProUGUI>().text = isShop ? "Return to shop" : "Start next stage";
-    //            if(currentMaterialReward != null) GameManager.Instance.StageManager.ApplyReward(currentMaterialReward);
-    //            CheckBuildable();
-    //        }
-    //    }
-    //}
-
-    //public void Discard()
-    //{
-    //    currentMaterial.SetActive(false);
-    //    storeButton.SetActive(false);
-    //    placeButton.SetActive(false);
-    //    discardButton.SetActive(false);
-    //    startNextStage.SetActive(true);
-    //}
-
-    //bool store;
-    //public void Store()
-    //{
-    //    if(store)
-    //    {
-    //        bool noStorageSpace = true;
-    //        for(int i = 0; i < storeCapacity; i++)
-    //        {
-    //            if (storedMaterialsInfo[i] == 0)
-    //            {
-    //                storedMaterialsInfo[i] = currentMaterialInt;
-    //                storedMaterials[i].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //                noStorageSpace = false;
-    //                break;
-    //            }
-    //        }
-    //        if(noStorageSpace)
-    //        {
-    //            int temp = storedMaterialsInfo[storeCapacity - 1];
-    //            storedMaterialsInfo[storeCapacity - 1] = currentMaterialInt;
-    //            storedMaterials[storeCapacity - 1].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //            currentMaterialInt = temp;
-    //            currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[temp];
-    //        }
-    //        currentMaterial.SetActive(noStorageSpace);
-    //        store = noStorageSpace;
-    //        storeButton.GetComponentInChildren<TextMeshProUGUI>().text = noStorageSpace ? "Store" : "Take Out";
-    //        placeButton.SetActive(noStorageSpace);
-    //        discardButton.SetActive(noStorageSpace);
-    //        startNextStage.SetActive(!noStorageSpace);
-    //    }
-    //    else
-    //    {
-    //        currentMaterialInt = storedMaterialsInfo[0];
-    //        currentMaterial.SetActive(true);
-    //        currentMaterial.GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[currentMaterialInt];
-    //        store = true;
-    //        storeButton.GetComponentInChildren<TextMeshProUGUI>().text = "Store";
-    //        placeButton.SetActive(true);
-    //        discardButton.SetActive(true);
-    //        for(int i=0; i<StoreCapacity; i++)
-    //        {
-    //            storedMaterials[i].GetComponentsInChildren<Image>()[1].color = i == StoreCapacity - 1 ? MaterialsColor.colors[0] : MaterialsColor.colors[storedMaterialsInfo[i + 1]];
-    //            storedMaterialsInfo[i] = i == StoreCapacity - 1 ? 0 : storedMaterialsInfo[i + 1];
-    //        }
-    //        startNextStage.SetActive(false);
-    //    }
-    //}
-
-
-    //class Buildable
-    //{
-    //    public Blueprint blueprint;
-    //    public List<Vector2Int> cordinates;
-
-    //    public Buildable(Blueprint blueprint, List<Vector2Int> cordinates)
-    //    {
-    //        this.blueprint = blueprint;
-    //        this.cordinates = cordinates;
-    //    }
-    //}
-
-    //List<Buildable> buildables;
-    //int currentBuildableIndex;
-    //void CheckBuildable()
-    //{
-    //    buildables = new();
-    //    Buildable buildable;
-    //    List<Vector2Int> cordinates;
-    //    foreach(Blueprint blueprint in GameManager.Instance.StageManager.bar.blueprints)
-    //    {
-    //        bool check = false;
-    //        for(int i=0; i<blueprint.blueprint.GetLength(0); i++)
-    //        {
-    //            if (check) break;
-    //            if (blueprint.blueprint[0, i] == 0) continue;
-    //            check = true;
-    //            for(int y=0; y< Blueprint.RowCount; y++)
-    //            {
-    //                for (int x=0; x< Blueprint.ColumnCount; x++)
-    //                {
-    //                    if (placedMaterials[y, x] == blueprint.blueprint[0, i])
-    //                    {
-    //                        bool descrimination = true;
-    //                        cordinates = new() { new(y,x) };
-    //                        // 정방향
-    //                        for(int row = 0; row < blueprint.blueprint.GetLength(0); row++)
-    //                        {
-    //                            for(int column = 0; column < blueprint.blueprint.GetLength(1); column++)
-    //                            {
-    //                                // y, x : 판별 시작 그리드
-    //                                // row, column : 설계도 상대 그리드
-    //                                if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-    //                                if (x + column - i >= Blueprint.ColumnCount || x + column - i < 0 || y + row >= Blueprint.RowCount)
-    //                                {
-    //                                    descrimination = false;
-    //                                    break;
-    //                                }
-    //                                else
-    //                                {
-    //                                    if (placedMaterials[y + row, x + column - i] == blueprint.blueprint[row, column])
-    //                                    {
-    //                                        cordinates.Add(new(y + row, x + column - i));
-    //                                        continue;
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        descrimination = false;
-    //                                        break;
-    //                                    }
-    //                                }
-    //                            }
-    //                            if (!descrimination) break;
-    //                        }
-    //                        if(descrimination)
-    //                        {
-    //                            buildable = new(blueprint, cordinates);
-    //                            buildables.Add(buildable);
-    //                        }
-    //                        // 90도 회전
-    //                        descrimination = true;
-    //                        cordinates = new() { new(y, x) };
-    //                        for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
-    //                        {
-    //                            for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
-    //                            {
-    //                                if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-    //                                if (y + column - i >= Blueprint.RowCount || y + column - i < 0 || x - row < 0)
-    //                                {
-    //                                    descrimination = false;
-    //                                    break;
-    //                                }
-    //                                else
-    //                                {
-    //                                    if (placedMaterials[y + column - i, x - row] == blueprint.blueprint[row, column])
-    //                                    {
-    //                                        cordinates.Add(new(y + column - i, x - row));
-    //                                        continue;
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        descrimination = false;
-    //                                        break;
-    //                                    }
-    //                                }
-    //                            }
-    //                            if (!descrimination) break;
-    //                        }
-    //                        if (descrimination)
-    //                        {
-    //                            buildable = new(blueprint, cordinates);
-    //                            buildables.Add(buildable);
-    //                        }
-    //                        // 180도
-    //                        descrimination = true;
-    //                        cordinates = new() { new(y, x) };
-    //                        for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
-    //                        {
-    //                            for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
-    //                            {
-    //                                // y, x : 판별 시작 그리드
-    //                                // row, column : 설계도 상대 그리드
-    //                                if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-    //                                if (x - column - i >= Blueprint.ColumnCount || x - column - i < 0 || y - row < 0)
-    //                                {
-    //                                    descrimination = false;
-    //                                    break;
-    //                                }
-    //                                else
-    //                                {
-    //                                    if (placedMaterials[y - row, x - column - i] == blueprint.blueprint[row, column])
-    //                                    {
-    //                                        cordinates.Add(new(y - row, x - column - i));
-    //                                        continue;
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        descrimination = false;
-    //                                        break;
-    //                                    }
-    //                                }
-    //                            }
-    //                            if (!descrimination) break;
-    //                        }
-    //                        if (descrimination)
-    //                        {
-    //                            buildable = new(blueprint, cordinates);
-    //                            buildables.Add(buildable);
-    //                        }
-    //                        // 270도
-    //                        descrimination = true;
-    //                        cordinates = new() { new(y, x) };
-    //                        for (int row = 0; row < blueprint.blueprint.GetLength(0); row++)
-    //                        {
-    //                            for (int column = 0; column < blueprint.blueprint.GetLength(1); column++)
-    //                            {
-    //                                if (row == 0 && column <= i || blueprint.blueprint[row, column] == 0) continue;
-    //                                if (y - column - i >= Blueprint.RowCount || y - column - i < 0 || x + row >= Blueprint.ColumnCount)
-    //                                {
-    //                                    descrimination = false;
-    //                                    break;
-    //                                }
-    //                                else
-    //                                {
-    //                                    if (placedMaterials[y - column - i, x + row] == blueprint.blueprint[row, column])
-    //                                    {
-    //                                        cordinates.Add(new(y - column - i, x + row));
-    //                                        continue;
-    //                                    }
-    //                                    else
-    //                                    {
-    //                                        descrimination = false;
-    //                                        break;
-    //                                    }
-    //                                }
-    //                            }
-    //                            if (!descrimination) break;
-    //                        }
-    //                        if (descrimination)
-    //                        {
-    //                            buildable = new(blueprint, cordinates);
-    //                            buildables.Add(buildable);
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-
-    //    currentBuild.SetActive(buildables.Count > 0);
-    //    if(buildables.Count > 0)
-    //    {
-    //        SetCurrentBuildBlueprint(0);
-    //    }
-    //    else
-    //    {
-    //        foreach (GameObject grid in placedMaterialsObject)
-    //        {
-    //            grid.GetComponent<Button>().interactable = true;
-    //        }
-    //    }
-    //}
-
-    //public void SetCurrentBuildBlueprint(int indexChange)
-    //{
-    //    if (indexChange == 0) currentBuildableIndex = 0;
-    //    else currentBuildableIndex += indexChange;
-
-    //    foreach(GameObject grid in placedMaterialsObject)
-    //    {
-    //        grid.GetComponent<Button>().interactable = false;
-    //    }
-    //    currentBuildBlueprint.SetBlueprint(buildables[currentBuildableIndex].blueprint);
-
-    //    foreach(Vector2Int cordinate in buildables[currentBuildableIndex].cordinates)
-    //    {
-    //        // 좌표를 (y, x)로 썼는데 Vecter2Int는 호출할 떄 (x, y)로 저장되어있어서 반대로
-    //        placedMaterialsObject[cordinate.x * Blueprint.RowCount + cordinate.y].GetComponent<Button>().interactable = true;
-    //    }
-
-    //    leftArrow.interactable = currentBuildableIndex != 0;
-    //    rightArrow.interactable = buildables.Count > 0 && currentBuildableIndex != buildables.Count - 1;
-    //}
-
-    //public void Build()
-    //{
-    //    Vector2Int check = new(selectedGrid / Blueprint.ColumnCount, selectedGrid % Blueprint.ColumnCount);
-    //    int index = buildables[currentBuildableIndex].cordinates.FindIndex(x => x == check);
-    //    if (index < 0) return;
-    //    for(int i = 0; i < buildables[currentBuildableIndex].cordinates.Count; i++)
-    //    {
-    //        if(i == index)
-    //        {
-    //            placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * Blueprint.ColumnCount + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[7];
-    //            placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = -1;
-    //        }
-    //        else
-    //        {
-    //            placedMaterialsObject[buildables[currentBuildableIndex].cordinates[i].x * Blueprint.ColumnCount + buildables[currentBuildableIndex].cordinates[i].y].GetComponentsInChildren<Image>()[1].color = MaterialsColor.colors[0];
-    //            placedMaterials[buildables[currentBuildableIndex].cordinates[i].x, buildables[currentBuildableIndex].cordinates[i].y] = 0;
-    //        }
-    //    }
-    //    GameManager.Instance.StageManager.ApplyReward(buildables[currentBuildableIndex].blueprint.reward);
-    //    CheckBuildable();
-    //}
 }

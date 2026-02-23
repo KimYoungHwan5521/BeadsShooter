@@ -93,6 +93,19 @@ public class StageManager : MonoBehaviour
     [Header("Ability")]
     public List<AbilityManager.Ability> possibleToAppearAbilities;
     public List<AbilityManager.Ability> selectedAbilities;
+    public class RootAbility
+    {
+        public AbilityManager.AbilityName abilityName;
+        public int selectedAbility;
+
+        public RootAbility(AbilityManager.AbilityName ability)
+        {
+            abilityName = ability;
+            selectedAbility = 0;
+        }
+    }
+    public List<RootAbility> selectedRootAbilities;
+    const int promotionNeeds = 4;
 
     [SerializeField] GameObject pauseUI;
 
@@ -219,11 +232,11 @@ public class StageManager : MonoBehaviour
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5)),
@@ -396,8 +409,8 @@ public class StageManager : MonoBehaviour
 
         possibleToAppearAbilities = new()
         {
-            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
-            //AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Ice),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Fire),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis),
@@ -410,6 +423,7 @@ public class StageManager : MonoBehaviour
         };
 
         selectedAbilities = new();
+        selectedRootAbilities = new();
 
         foreach (var area in areas) PoolManager.Despawn(area);
         areas.Clear();
@@ -993,19 +1007,53 @@ public class StageManager : MonoBehaviour
 
     public void GetAbility(AbilityManager.Ability selectedAbility)
     {
-        GameManager.Instance.StageManager.selectedAbilities.Add(selectedAbility);
-        GameManager.Instance.StageManager.possibleToAppearAbilities.Remove(selectedAbility);
+        selectedAbilities.Add(selectedAbility);
+        if(!selectedAbility.isPassive)
+        {
+            RootAbility rootAbility = selectedRootAbilities.Find(x => x.abilityName == selectedAbility.rootAbility);
+            if (rootAbility != null)
+            {
+                rootAbility.selectedAbility++;
+                if(rootAbility.selectedAbility >= promotionNeeds)
+                {
+                    possibleToAppearAbilities.RemoveAll(x => x.rootAbility == rootAbility.abilityName);
+                    if(selectedAbility.cardType != AbilityManager.CardType.Promotion)
+                    {
+                        switch(rootAbility.abilityName)
+                        {
+                            case AbilityManager.AbilityName.Ice:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempIcePromotion));
+                                break;
+                            case AbilityManager.AbilityName.Fire:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempFirePromotion));
+                                break;
+                            case AbilityManager.AbilityName.Laser:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempLaserPromotion));
+                                break;
+                            case AbilityManager.AbilityName.Electric:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempElectricPromotion));
+                                break;
+                            case AbilityManager.AbilityName.Telekinesis:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempTelekinesisPromotion));
+                                break;
+                        }
+                    }
+                }
+            }
+            else selectedRootAbilities.Add(new(selectedAbility.rootAbility));
+        }
+        possibleToAppearAbilities.Remove(selectedAbility);
         foreach (var ability in AbilityManager.Abilities.Find(x => x == selectedAbility).lowerAbilities)
         {
             bool unlock = true;
             foreach (var need in ability.upperAbilities)
             {
-                if (!GameManager.Instance.StageManager.selectedAbilities.Contains(need))
+                if (!selectedAbilities.Contains(need))
                 {
                     unlock = false; break;
                 }
             }
-            if (unlock) GameManager.Instance.StageManager.possibleToAppearAbilities.Add(ability);
+            if (unlock) possibleToAppearAbilities.Add(ability);
         }
         ApplyAbility(selectedAbility);
     }
@@ -1069,6 +1117,8 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.FrostWideLV3:
                 bar.ActivedIceBlock = 12;
                 break;
+            case AbilityManager.AbilityName.TempIcePromotion:
+                break;
             // Fire
             case AbilityManager.AbilityName.Fire:
                 bar.fireBallCool = 6f;
@@ -1112,6 +1162,8 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.BurningLV3:
                 bar.fireBallBurnDamage = 1.2f;
                 break;
+            case AbilityManager.AbilityName.TempFirePromotion:
+                break;
             // Laser
             case AbilityManager.AbilityName.Laser:
                 bar.laserCount = 1;
@@ -1143,6 +1195,8 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.MultipleShotLV6:
                 bar.laserCount = 10;
+                break;
+            case AbilityManager.AbilityName.TempLaserPromotion:
                 break;
             // Electric
             case AbilityManager.AbilityName.Electric:
@@ -1189,6 +1243,8 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.ElectrostaticInductionLV3:
                 bar.electrostaticInductionDamage = 3;
                 break;
+            case AbilityManager.AbilityName.TempElectricPromotion:
+                break;
             // Telekinesis
             case AbilityManager.AbilityName.Telekinesis:
                 bar.gotTelekinesisAbility = true;
@@ -1228,6 +1284,8 @@ public class StageManager : MonoBehaviour
                 break;
             case AbilityManager.AbilityName.GuidedIcicles:
                 bar.controllableIcicles = true;
+                break;
+            case AbilityManager.AbilityName.TempTelekinesisPromotion:
                 break;
         }
     }
