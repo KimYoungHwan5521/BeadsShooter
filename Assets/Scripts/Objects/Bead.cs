@@ -9,7 +9,7 @@ public class Bead : CustomObject
     public float damageMagnification = 1f;
     public float temporaryDamageCorrection = 0;
     public float Damage => (defaultDamage * damageMagnification) + temporaryDamageCorrection;
-    [SerializeField] float defaultSpeed;
+    public float defaultSpeed;
     public float speedMagnification = 1;
     public class TimeLimitedSpeedMagnification
     {
@@ -126,6 +126,7 @@ public class Bead : CustomObject
         this.criticalRate = criticalRate;
         SetDirection(direction);
         trail.Clear();
+        trail.emitting = true;
         IsFake = false;
         activated = true;
     }
@@ -147,51 +148,35 @@ public class Bead : CustomObject
     {
         trail.enabled = activated;
         //rigidBody.bodyType = activated ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
-        if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase) return;
-        if (!stop)
-        {
-            // 수평 최소각
-            //if(Vector2.Angle(Vector2.right, rigidBody.linearVelocity) < horizontalMinimumAngle)
-            //{
-            //    if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) < horizontalMinimumAngle) SetDirection(new(1, Mathf.Atan2(horizontalMinimumAngle, 1)));
-            //    else if (Vector2.SignedAngle(Vector2.right, rigidBody.linearVelocity) > -horizontalMinimumAngle) SetDirection(new(1, -Mathf.Atan2(horizontalMinimumAngle, 1)));
-            //}
-            //else if (Vector2.Angle(Vector2.left, rigidBody.linearVelocity) < horizontalMinimumAngle)
-            //{
-            //    if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) < horizontalMinimumAngle) SetDirection(new(-1, Mathf.Atan2(horizontalMinimumAngle, 1)));
-            //    else if (Vector2.SignedAngle(Vector2.left, rigidBody.linearVelocity) > -horizontalMinimumAngle) SetDirection(new(-1, -Mathf.Atan2(horizontalMinimumAngle, 1)));
-            //}
-            //rigidBody.linearVelocity = rigidBody.linearVelocity.normalized * CurrentSpeed;
-            //lastDirection = rigidBody.linearVelocity;
-            Vector2 v = rigidBody.linearVelocity;
-            float speed = CurrentSpeed;
-
-            if (v.sqrMagnitude > 0.0001f)
-            {
-                float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;   // -180~180
-                float min = horizontalMinimumAngle;                  // deg
-
-                // 오른쪽(ang≈0) / 왼쪽(ang≈180 or -180) 각각에서 "수평에 너무 가까우면" 보정
-                if (Mathf.Abs(ang) < min) // right side near 0 deg
-                {
-                    ang = Mathf.Sign(ang == 0 ? v.y : ang) * min; // 0일 때는 기존 y부호로 위/아래 결정
-                }
-                else if (Mathf.Abs(Mathf.DeltaAngle(ang, 180f)) < min) // left side near 180 deg
-                {
-                    float sign = Mathf.Sign(Mathf.DeltaAngle(ang, 180f)); // 180 기준 위/아래
-                    if (sign == 0) sign = Mathf.Sign(v.y);
-                    ang = 180f + sign * min;
-                }
-
-                Vector2 dir = new Vector2(Mathf.Cos(ang * Mathf.Deg2Rad), Mathf.Sin(ang * Mathf.Deg2Rad));
-                rigidBody.linearVelocity = dir * speed;
-                lastDirection = rigidBody.linearVelocity;
-            }
-
-        }
-        else
+        if (!activated || GameManager.Instance.phase != GameManager.Phase.BattlePhase || stop)
         {
             rigidBody.linearVelocity = Vector2.zero;
+            return;
+        }
+        // 수평 최소각
+        Vector2 v = rigidBody.linearVelocity;
+        float speed = CurrentSpeed;
+
+        if (v.sqrMagnitude > 0.0001f)
+        {
+            float ang = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;   // -180~180
+            float min = horizontalMinimumAngle;                  // deg
+
+            // 오른쪽(ang≈0) / 왼쪽(ang≈180 or -180) 각각에서 "수평에 너무 가까우면" 보정
+            if (Mathf.Abs(ang) < min) // right side near 0 deg
+            {
+                ang = Mathf.Sign(ang == 0 ? v.y : ang) * min; // 0일 때는 기존 y부호로 위/아래 결정
+            }
+            else if (Mathf.Abs(Mathf.DeltaAngle(ang, 180f)) < min) // left side near 180 deg
+            {
+                float sign = Mathf.Sign(Mathf.DeltaAngle(ang, 180f)); // 180 기준 위/아래
+                if (sign == 0) sign = Mathf.Sign(v.y);
+                ang = 180f + sign * min;
+            }
+
+            Vector2 dir = new Vector2(Mathf.Cos(ang * Mathf.Deg2Rad), Mathf.Sin(ang * Mathf.Deg2Rad));
+            rigidBody.linearVelocity = dir * speed;
+            lastDirection = rigidBody.linearVelocity;
         }
 
         List<TimeLimitedSpeedMagnification> toBeDeleted = new();
@@ -230,8 +215,11 @@ public class Bead : CustomObject
         if (collision.collider.CompareTag("Wall"))
         {
             temporaryDamageCorrection = 0;
-            trail.startColor = Color.white;
-            trail.endColor= Color.white;
+            if(!ElectricCharged)
+            {
+                trail.startColor = Color.white;
+                trail.endColor= Color.white;
+            }
             return;
         }
         Enemy enemy = collision.collider.GetComponentInParent<Enemy>();

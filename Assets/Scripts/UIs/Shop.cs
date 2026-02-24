@@ -46,6 +46,6 @@ public class Shop : MonoBehaviour
             PoolManager.Despawn(shop.gameObject);
         }
         GameManager.Instance.StageManager.currentStageEnemies.Clear();
-        GameManager.Instance.ReadyPhase();
+        GameManager.Instance.ReadyPhase(1);
     }
 }

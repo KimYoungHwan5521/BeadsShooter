@@ -68,6 +68,9 @@ namespace ResourceEnum
         GuidedBalls,
         GuidedFireBall,
         GuidedIcicles,
+        FasterBar,
+        WideBar,
+        MultipleBall,
     }
 
     public enum Material

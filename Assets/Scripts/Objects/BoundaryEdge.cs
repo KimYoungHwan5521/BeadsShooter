@@ -13,9 +13,11 @@ public class BoundaryEdge : CustomObject
                 bead.activated = false;
                 GameManager.Instance.StageManager.beads.Remove(bead);
                 PoolManager.Despawn(bead.gameObject);
-                if (!bead.IsFake)
+                if (GameManager.Instance.StageManager.beads.Count == 0)
                 {
                     GameManager.Instance.StageManager.Life--;
+                    // if(GameManager.Instance.StageManager.Life == 0) GameManager.Instance.StageManager.GameOver();
+                    // else
                     GameManager.Instance.StageManager.beadRefill = true;
                 }
                 return;

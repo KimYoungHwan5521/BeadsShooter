@@ -71,6 +71,9 @@ public class ResourcesPath
         "Sprites/Icons/GuidedBalls",
         "Sprites/Icons/GuidedFireBall",
         "Sprites/Icons/GuidedIcicles",
+        "Sprites/Icons/FasterBar",
+        "Sprites/Icons/WideBar",
+        "Sprites/Icons/MultipleBall",
     };
 
     public static string[] MaterialPathArray =

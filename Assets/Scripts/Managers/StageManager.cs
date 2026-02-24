@@ -60,6 +60,8 @@ public class StageManager : MonoBehaviour
     public List<GameObject> nextStageWalls;
     public Bar bar;
     public List<Bead> beads;
+    float beadsSpeed = 15f;
+    int beadsCount = 1;
     public List<Coin> coins = new();
     public List<Projectile> projectiles = new();
     public List<GameObject> areas = new();
@@ -121,6 +123,7 @@ public class StageManager : MonoBehaviour
     float curBeadRefillTime;
 
     bool stageClear;
+    bool clearBoth;
 
     #region Stage Info
     public enum BlockType 
@@ -373,13 +376,12 @@ public class StageManager : MonoBehaviour
                     GameManager.Instance.StageClear();
                     stageClear = false;
                 }
-                else GameManager.Instance.ReadyPhase();
+                else GameManager.Instance.ReadyPhase(clearBoth ? 2 : 1);
                 readyToReadyPhase = false;
                 curReadyToReadyPhaseTime = 0;
             }
         }
-
-        if(beadRefill)
+        else if(beadRefill)
         {
             curBeadRefillTime += Time.deltaTime;
             if(curBeadRefillTime > beadRefillTime)
@@ -404,8 +406,13 @@ public class StageManager : MonoBehaviour
         Coin = 0;
         shopRerollStack = 0;
         ShopFreeReroll = 0;
+        readyToReadyPhase = false; 
+        curReadyToReadyPhaseTime = 0;
         //GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
         ongoingQuests.Clear();
+        bar.moveSpeed = 30f;
+        beadsSpeed = 15f;
+        beadsCount = 1;
 
         possibleToAppearAbilities = new()
         {
@@ -502,7 +509,11 @@ public class StageManager : MonoBehaviour
                 wall.GetComponent<SpriteRenderer>().size = new(2,1);
                 wall.SetInfo(currentStage, 3, true, currentStage > 0);
                 wall.SetMaskLayer(layerMaskIndex++);
-                if (clearBothStage) currentStageWalls.Add(wall.gameObject);
+                if (clearBothStage)
+                {
+                    currentStageWalls.Add(wall.gameObject);
+                    wall.isInvincible = false;
+                }
                 else nextStageWalls.Add(wall.gameObject);
             }
         }
@@ -530,6 +541,7 @@ public class StageManager : MonoBehaviour
                     wall.GetComponent<SpriteRenderer>().size = new(2, 1);
                     wall.SetInfo(currentStage + 1, 3, true, true);
                     wall.SetMaskLayer(layerMaskIndex++);
+                    wall.isInvincible = true;
                     nextStageWalls.Add(wall.gameObject);
                 }
             }
@@ -660,6 +672,7 @@ public class StageManager : MonoBehaviour
         {
             readyToReadyPhase = true;
             Time.timeScale = 0f;
+            clearBoth = nextStageEnemies.Count == 0;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
@@ -881,13 +894,19 @@ public class StageManager : MonoBehaviour
 
     void BeadRefill()
     {
-        Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, GameManager.Instance.StageManager.bar.transform.position + new Vector3(0, 0.51f, 0)).GetComponent<Bead>();
-        newBead.Initialize(1, 15, 0, 0, new());
-        newBead.activated = false;
-        if(bar.gotElectricAbility) newBead.ElectricCharged = true;
+        for (int i = 0; i < beadsCount; i++)
+        {
+            int reverse = i % 2 == 0 ? 1 : -1;
+            Vector2 destination = new(bar.barBody.transform.position.x + reverse * ((i + 1) / 2), bar.barBody.transform.position.y + 0.51f);
+            Bead newBead = PoolManager.Spawn(ResourceEnum.Prefab.NormalBead, destination).GetComponent<Bead>();
+            newBead.Initialize(1, beadsSpeed, 0, 0, new());
+            newBead.activated = false;
+            newBead.Strike = 0;
+            if(bar.gotElectricAbility) newBead.ElectricCharged = true;
 
-        beads.Add(newBead);
-        bar.grabbedBeads.Add(newBead);
+            beads.Add(newBead);
+            bar.grabbedBeads.Add(newBead);
+        }
     }
 
     public RewardFormat GetRandomeReward()
@@ -964,8 +983,12 @@ public class StageManager : MonoBehaviour
 
     public void Pause()
     {
-        Time.timeScale = 0;
-        pauseUI.SetActive(!pauseUI.activeSelf);
+        if (!pauseUI.activeSelf)
+        {
+            Time.timeScale = 0;
+            pauseUI.SetActive(true);
+        }
+        else Resume();
     }
 
     public void Resume()
@@ -1286,6 +1309,50 @@ public class StageManager : MonoBehaviour
                 bar.controllableIcicles = true;
                 break;
             case AbilityManager.AbilityName.TempTelekinesisPromotion:
+                break;
+            // Passives
+            case AbilityManager.AbilityName.FasterBarLV1:
+                bar.moveSpeed = 60;
+                break;
+            case AbilityManager.AbilityName.FasterBarLV2:
+                bar.moveSpeed = 120;
+                break;
+            case AbilityManager.AbilityName.FasterBarLV3:
+                bar.moveSpeed = 240;
+                break;
+            case AbilityManager.AbilityName.FasterBallLV1:
+                beadsSpeed = 25f;
+                foreach(var bead in beads) bead.defaultSpeed = beadsSpeed;
+                break;
+            case AbilityManager.AbilityName.FasterBallLV2:
+                beadsSpeed = 50f;
+                foreach(var bead in beads) bead.defaultSpeed = beadsSpeed;
+                break;
+            case AbilityManager.AbilityName.FasterBallLV3:
+                beadsSpeed = 100f;
+                foreach(var bead in beads) bead.defaultSpeed = beadsSpeed;
+                break;
+            case AbilityManager.AbilityName.WideBarLV1:
+                bar.BarLength += 0.5f;
+                break;
+            case AbilityManager.AbilityName.WideBarLV2:
+                bar.BarLength += 0.5f;
+                break;
+            case AbilityManager.AbilityName.WideBarLV3:
+                bar.BarLength += 1;
+                break;
+            case AbilityManager.AbilityName.MultipleBallLV1:
+                beadsCount = 2;
+                break;
+            case AbilityManager.AbilityName.MultipleBallLV2:
+                beadsCount = 3;
+                break;
+            case AbilityManager.AbilityName.MultipleBallLV3:
+                beadsCount = 5;
+                break;
+            case AbilityManager.AbilityName.BiggerBallLV1:
+            case AbilityManager.AbilityName.BiggerBallLV2:
+            case AbilityManager.AbilityName.BiggerBallLV3:
                 break;
         }
     }

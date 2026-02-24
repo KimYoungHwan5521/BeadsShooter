@@ -34,7 +34,7 @@ public class Bar : CustomObject
     }
     public List<Bead> grabbedBeads;
     float yPos = -17.5f;
-    [SerializeField] float moveSpeed = 1;
+    public float moveSpeed = 30;
     public float timeLimitedSpeedMagnification = 1;
     public float timeLimitedSpeedMagnificationTime;
 
@@ -256,7 +256,7 @@ public class Bar : CustomObject
 
     public void ReleaseBeads(Vector3 wantPos)
     {
-        if (wantPos.y < transform.position.y + 1) wantPos = new(wantPos.x, transform.position.y + 1);
+        if (wantPos.y < transform.position.y + 1) wantPos = new(wantPos.x, transform.position.y + 10);
         foreach(var bead in grabbedBeads)
         {
             bead.SetDirection(wantPos - bead.transform.position);
@@ -307,7 +307,7 @@ public class Bar : CustomObject
 
     public void DrawPredictionLine(Vector3 shotPosition)
     {
-        if (shotPosition.y < transform.position.y + 1) shotPosition = new(shotPosition.x, transform.position.y + 1);
+        if (shotPosition.y < transform.position.y + 1) shotPosition = new(shotPosition.x, transform.position.y + 10);
         RaycastHit2D[] hits = Physics2D.RaycastAll(grabbedBeads[0].transform.position, shotPosition - grabbedBeads[0].transform.position, 50, LayerMask.GetMask("Border"));
         if(Vector2.Distance(grabbedBeads[0].transform.position, hits[0].point) > 20)
         {

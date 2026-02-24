@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ReadyPhaseUI : MonoBehaviour
 {
     //const float promotionAppearRate = 0.15f;
     const float epicAppearRate = 0.1f;
-    const float passiveAppearRate = 0.03f;
+    const float passiveAppearRate = 0.3f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]
     [SerializeField] AbilityOption[] abilityOptions;
+    int choiceCount;
 
     bool isShop;
     public bool IsShop => isShop;
@@ -22,8 +21,9 @@ public class ReadyPhaseUI : MonoBehaviour
         GameManager.Instance.ManagerStart += () => {  };
     }
 
-    public void SetReadyPhase()
+    public void SetReadyPhase(int choiceCount)
     {
+        this.choiceCount = choiceCount;
         SetOptions();
     }
 
@@ -101,7 +101,9 @@ public class ReadyPhaseUI : MonoBehaviour
     {
         AbilityManager.Ability selectedAbility = abilityOptions[index].linkedAbility;
         GameManager.Instance.StageManager.GetAbility(selectedAbility);
-        StartNextStage();
+        choiceCount--;
+        if (choiceCount == 0) StartNextStage();
+        else SetOptions();
     }
 
 }

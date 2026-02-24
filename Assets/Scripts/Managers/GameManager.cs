@@ -211,9 +211,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ReadyPhase()
+    public void ReadyPhase(int choiceCount)
     {
-        readyPhaseUI.SetReadyPhase();
+        readyPhaseUI.SetReadyPhase(choiceCount);
         readyPhaseWindow.SetActive(true);
         //readyPhaseWindow.GetComponentInChildren<Animator>().SetTrigger("Appear");
         phase = Phase.ReadyPhase;
