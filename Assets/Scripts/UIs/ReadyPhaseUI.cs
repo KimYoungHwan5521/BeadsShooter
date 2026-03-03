@@ -5,8 +5,8 @@ using UnityEngine;
 public class ReadyPhaseUI : MonoBehaviour
 {
     //const float promotionAppearRate = 0.15f;
-    const float epicAppearRate = 0.1f;
-    const float passiveAppearRate = 0.3f;
+    public const float epicAppearRate = 0.1f;
+    public const float passiveAppearRate = 0.3f;
     [SerializeField] GameObject startNextStage;
 
     [Header("Select Options")]
@@ -75,6 +75,7 @@ public class ReadyPhaseUI : MonoBehaviour
 
         for (int i = 0; i < 1000; i++)
         {
+            cardType = UnityEngine.Random.Range(0, 1f) < epicAppearRate ? 1 : 0;
             isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
             pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
@@ -84,6 +85,7 @@ public class ReadyPhaseUI : MonoBehaviour
         }
         for (int i = 0; i < 1000; i++)
         {
+            cardType = UnityEngine.Random.Range(0, 1f) < epicAppearRate ? 1 : 0;
             isPassive = UnityEngine.Random.Range(0, 1f) < passiveAppearRate;
             pool = stageManager.possibleToAppearAbilities.FindAll(x => x.isPassive == isPassive);
             ability = pool[UnityEngine.Random.Range(0, pool.Count)];
@@ -102,8 +104,18 @@ public class ReadyPhaseUI : MonoBehaviour
         AbilityManager.Ability selectedAbility = abilityOptions[index].linkedAbility;
         GameManager.Instance.StageManager.GetAbility(selectedAbility);
         choiceCount--;
-        if (choiceCount == 0) StartNextStage();
+        if (choiceCount == 0)
+        {
+            if (GameManager.Instance.StageManager.currentStage % 5 == 0) OpenShop();
+            else StartNextStage();
+        }
         else SetOptions();
     }
 
+    void OpenShop()
+    {
+        GameManager.Instance.readyPhaseWindow.SetActive(false);
+        GameManager.Instance.shopCanvas.SetActive(true);
+        GameManager.Instance.Shop.SetShop();
+    }
 }

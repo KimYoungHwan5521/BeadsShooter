@@ -83,10 +83,10 @@ public class StageManager : MonoBehaviour
         set
         {
             shopFreeReroll = Mathf.Max(value, 0);
-            shopFreeRerollText.text = $"Free Reroll x {shopFreeReroll}";
-            if (Coin < RerollCost) shopRerollCostText.color = Color.red;
-            else shopRerollCostText.color = RerollCost > 0 ? Color.black : Color.green;
-            shopRerollCostText.text = $"{RerollCost}";
+            //shopFreeRerollText.text = $"Free Reroll x {shopFreeReroll}";
+            //if (Coin < RerollCost) shopRerollCostText.color = Color.red;
+            //else shopRerollCostText.color = RerollCost > 0 ? Color.black : Color.green;
+            //shopRerollCostText.text = $"{RerollCost}";
         }
     }
 
@@ -235,11 +235,11 @@ public class StageManager : MonoBehaviour
         StageInfo[] stageInfos = new[]
         {
             // Stage 0
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
+            //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5)),

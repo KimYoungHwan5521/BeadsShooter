@@ -1,65 +1,45 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MerchandiseOption : MonoBehaviour
 {
     [SerializeField] Shop shop;
-    [SerializeField] TextMeshProUGUI nameText;
-    [SerializeField] TextMeshProUGUI typeText;
-    [SerializeField] Image image;
-    [SerializeField] TextMeshProUGUI detailText;
+    [SerializeField] AbilityOption abilityOption;
     [SerializeField] TextMeshProUGUI priceText;
-    [SerializeField] GameObject soldOutUI;
+    int price;
+    [SerializeField] GameObject soldOutObject;
     bool soldOut;
-    public bool Soldout
+    public bool SoldOut
     {
         get => soldOut;
         set
         {
             soldOut = value;
-            soldOutUI.SetActive(value);
+            soldOutObject.SetActive(value);
         }
     }
-    ShopManager.MerchandiseInfo merchandiseInfo;
 
-    public void SetOption(ShopManager.MerchandiseInfo merchandiseInfo)
+    public void SetOption(AbilityManager.Ability ability, int price)
     {
-        this.merchandiseInfo = merchandiseInfo;
-        nameText.text = merchandiseInfo.name;
-        typeText.text = merchandiseInfo.type.ToString();
-        switch (merchandiseInfo.type)
+        if(ability == null)
         {
-            case ShopManager.MerchandiseType.Material:
-            case ShopManager.MerchandiseType.Consumable:
-                detailText.text = merchandiseInfo.reward.Explain;
-                break;
-            case ShopManager.MerchandiseType.Blueprint:
-                detailText.text = merchandiseInfo.blueprint.reward.Explain;
-                break;
+            gameObject.SetActive(false);
+            return;
         }
-        priceText.text = merchandiseInfo.price.ToString();
-        priceText.color = GameManager.Instance.StageManager.Coin < merchandiseInfo.price ? Color.red : Color.black;
+        abilityOption.SetOption(ability);
+        priceText.text = price.ToString();
+        this.price = price;
+        priceText.color = GameManager.Instance.StageManager.Coin < this.price ? Color.red : Color.black;
     }
 
     public void Buy()
     {
-        if (GameManager.Instance.StageManager.Coin < merchandiseInfo.price) return;
-        GameManager.Instance.StageManager.Coin -= merchandiseInfo.price;
+        if (GameManager.Instance.StageManager.Coin < price) return;
+        GameManager.Instance.StageManager.Coin -= price;
         foreach(MerchandiseOption merchandise in shop.merchandiseOptions)
         {
-            merchandise.priceText.color = GameManager.Instance.StageManager.Coin < merchandiseInfo.price ? Color.red : Color.black;
+            merchandise.priceText.color = GameManager.Instance.StageManager.Coin < merchandise.price ? Color.red : Color.black;
         }
-        switch(merchandiseInfo.type)
-        {
-            case ShopManager.MerchandiseType.Material:
-                //GameManager.Instance.readyPhaseUI.SetPurchasedMaterial(merchandiseInfo);
-                GameManager.Instance.readyPhaseWindow.SetActive(true);
-                break;
-            case ShopManager.MerchandiseType.Blueprint:
-                GameManager.Instance.StageManager.bar.blueprints.Add(merchandiseInfo.blueprint);
-                break;
-        }
-        Soldout = true;
+        SoldOut = true;
     }
 }

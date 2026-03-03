@@ -59,8 +59,8 @@ public class RandomEvents : MonoBehaviour
     void SetRandomMerchandise()
     {
         ShopManager.MerchandiseInfo merchandise = GameManager.Instance.ShopManager.rareMerchandises[Random.Range(0, GameManager.Instance.ShopManager.rareMerchandises.Count)];
-        merchandiseOption.SetOption(merchandise);
-        merchandiseOption.Soldout = false;
+        //merchandiseOption.SetOption(merchandise);
+        //merchandiseOption.Soldout = false;
     }
 
     void SetRandomRewards()
