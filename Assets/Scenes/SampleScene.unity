@@ -47866,7 +47866,7 @@ MonoBehaviour:
   - {fileID: 1354450484}
   - {fileID: 660142902}
   - {fileID: 264934319}
-  barYPos: -14.5
+  barYPos: -11.5
   phase: 0
   readyPhaseUI: {fileID: 579070715}
   readyPhaseWindow: {fileID: 579070710}
@@ -47955,9 +47955,6 @@ MonoBehaviour:
   stageStartCountText: {fileID: 802914565}
   currentStage: 0
   currentStageEnemies: []
-  nextStageEnemies: []
-  currentStageWalls: []
-  nextStageWalls: []
   bar: {fileID: 753466822}
   beads: []
   coins: []

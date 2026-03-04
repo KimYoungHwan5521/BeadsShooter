@@ -11,7 +11,6 @@ public class ReadyPhaseUI : MonoBehaviour
 
     [Header("Select Options")]
     [SerializeField] AbilityOption[] abilityOptions;
-    int choiceCount;
 
     bool isShop;
     public bool IsShop => isShop;
@@ -21,9 +20,8 @@ public class ReadyPhaseUI : MonoBehaviour
         GameManager.Instance.ManagerStart += () => {  };
     }
 
-    public void SetReadyPhase(int choiceCount)
+    public void SetReadyPhase()
     {
-        this.choiceCount = choiceCount;
         SetOptions();
     }
 
@@ -103,13 +101,8 @@ public class ReadyPhaseUI : MonoBehaviour
     {
         AbilityManager.Ability selectedAbility = abilityOptions[index].linkedAbility;
         GameManager.Instance.StageManager.GetAbility(selectedAbility);
-        choiceCount--;
-        if (choiceCount == 0)
-        {
-            if (GameManager.Instance.StageManager.currentStage % 5 == 0) OpenShop();
-            else StartNextStage();
-        }
-        else SetOptions();
+        if (GameManager.Instance.StageManager.currentStage % 5 == 0) OpenShop();
+        else StartNextStage();
     }
 
     void OpenShop()

@@ -24,7 +24,7 @@ public class PentagonalBlock : Block
             caughted.spriteRenderer.enabled = false;
 
             if (GameManager.Instance.StageManager.currentStageEnemies.Contains(this)) GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
-            else if (GameManager.Instance.StageManager.nextStageEnemies.Contains(this)) GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
+            //else if (GameManager.Instance.StageManager.nextStageEnemies.Contains(this)) GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
             GameManager.Instance.StageManager.StageClearCheck();
         }
     }

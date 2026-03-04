@@ -20,8 +20,8 @@ public class Enemy : CustomObject
             if(value && isDead != value)
             {
                 GameManager.Instance.StageManager.currentStageEnemies.Remove(this);
-                GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
-                GameManager.Instance.StageManager.currentStageWalls.Remove(gameObject);
+                //GameManager.Instance.StageManager.nextStageEnemies.Remove(this);
+                //GameManager.Instance.StageManager.currentStageWalls.Remove(gameObject);
                 if (attaker != null) attaker.Strike++;
                 PoolManager.Despawn(gameObject);
                 GameManager.Instance.StageManager.StageClearCheck();

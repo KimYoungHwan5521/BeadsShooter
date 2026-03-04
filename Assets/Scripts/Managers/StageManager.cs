@@ -7,10 +7,14 @@ using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
-    const int row = 14;
+    const int row = 21;
     const int column = 22;
-    const int term = 6;
-    protected static Color[] blockColors = { new(0, 0, 0), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1) };
+    const int term = 13;
+    protected static Color[] blockColors = { new(0, 0, 0), new(0.5f, 0, 0), new(0, 0.5f, 0), new(0, 0, 0.5f), new(0.5f, 0.5f, 0), new(0.5f, 0, 0.5f), 
+        new(0, 0.5f, 0.5f), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1),
+        new(1, 0.5f, 0), new(1, 0, 0.5f), new(0.5f, 1, 0), new(0, 1, 0.5f), new(0.5f, 0, 1), new(0, 0.5f, 1), new(1, 0.5f, 0.5f), new(0.5f, 1, 0.5f), new(0.5f, 0.5f, 1),
+        new(1, 1, 0.5f), new(1, 0.5f, 1), new(0.5f, 1, 1),
+    };
 
     [Header("Header UI")]
     [SerializeField] TextMeshProUGUI currentStageText;
@@ -55,9 +59,6 @@ public class StageManager : MonoBehaviour
     int selectedStageIndex;
     public int currentStage = 0;
     public List<Enemy> currentStageEnemies;
-    public List<Enemy> nextStageEnemies;
-    public List<GameObject> currentStageWalls;
-    public List<GameObject> nextStageWalls;
     public Bar bar;
     public List<Bead> beads;
     float beadsSpeed = 15f;
@@ -123,7 +124,6 @@ public class StageManager : MonoBehaviour
     float curBeadRefillTime;
 
     bool stageClear;
-    bool clearBoth;
 
     #region Stage Info
     public enum BlockType 
@@ -208,7 +208,7 @@ public class StageManager : MonoBehaviour
     public class StageInfo
     {
         public List<EnemyArrangementInfo> enemyArrangementInfo;
-        // Stage type : 0 - normal, 1 - shop, 2 - boss
+        // Stage type : 0 - normal, 1(Legacy) - shop, 2 - boss
         public int stageType;
 
         public StageInfo(EnemyArrangementInfo[] enemyArrangementInfo, int stageType = 0)
@@ -286,26 +286,26 @@ public class StageManager : MonoBehaviour
         if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
-            if (selectedStageInfos[currentStage].stageType == 0)
-            {
-                foreach(var bead in beads)
-                {
-                    if (bead.transform.position.y > bar.barBody.transform.position.y + 3)
-                    {
-                        bead.transform.position += Vector3.down * 0.2f;
-                        Vector3[] points = new Vector3[bead.trail.positionCount];
-                        bead.trail.GetPositions(points);
-                        for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
-                        bead.trail.SetPositions(points);
-                    }
-                }
-                areas.RemoveAll(a => !a.activeSelf);
-                foreach (var area in areas)
-                {
-                    area.transform.position += Vector3.down * 0.2f;
-                }
-            }
-            else
+            //if (selectedStageInfos[currentStage].stageType == 0)
+            //{
+            //    foreach(var bead in beads)
+            //    {
+            //        if (bead.transform.position.y > bar.barBody.transform.position.y + 3)
+            //        {
+            //            bead.transform.position += Vector3.down * 0.2f;
+            //            Vector3[] points = new Vector3[bead.trail.positionCount];
+            //            bead.trail.GetPositions(points);
+            //            for(int i=0; i<points.Length; i++) points[i] += Vector3.down * 0.2f;
+            //            bead.trail.SetPositions(points);
+            //        }
+            //    }
+            //    areas.RemoveAll(a => !a.activeSelf);
+            //    foreach (var area in areas)
+            //    {
+            //        area.transform.position += Vector3.down * 0.2f;
+            //    }
+            //}
+            //else
             {
                 // 공 회수
                 for (int i = 0; i < beads.Count; i++)
@@ -326,7 +326,7 @@ public class StageManager : MonoBehaviour
                 {
                     curStageStartCount = stageStartCount;
                     stageStartCountText.gameObject.SetActive(true);
-                    if (selectedStageInfos[currentStage].stageType > 0)
+                    //if (selectedStageInfos[currentStage].stageType > 0)
                     {
                         foreach(Bead bead in beads)
                         {
@@ -334,6 +334,7 @@ public class StageManager : MonoBehaviour
                             bead.SetDirection(Vector2.zero);
                             bead.activated = false;
                         }
+                        BeadsRefill();
                     }
                 }
                 else
@@ -376,7 +377,7 @@ public class StageManager : MonoBehaviour
                     GameManager.Instance.StageClear();
                     stageClear = false;
                 }
-                else GameManager.Instance.ReadyPhase(clearBoth ? 2 : 1);
+                else GameManager.Instance.ReadyPhase();
                 readyToReadyPhase = false;
                 curReadyToReadyPhaseTime = 0;
             }
@@ -386,7 +387,7 @@ public class StageManager : MonoBehaviour
             curBeadRefillTime += Time.deltaTime;
             if(curBeadRefillTime > beadRefillTime)
             {
-                BeadRefill();
+                BeadsRefill();
                 curBeadRefillTime = 0;
                 beadRefill = false;
             }
@@ -438,163 +439,80 @@ public class StageManager : MonoBehaviour
 
     public void StageSetting()
     {
-        bool clearBothStage = nextStageEnemies.Count == 0;
-        if (!clearBothStage)
-        {
-            currentStageEnemies = nextStageEnemies.ToList();
-            nextStageEnemies = new();
-        }
-
         StageInfo nextStageInfo;
         int wantStage;
-        if (clearBothStage)
-        {
-            if (currentStage > 0)
-            {
-                currentStage++;
-            }
-            wantStage = currentStage;
-        }
-        else
-        {
-            wantStage = currentStage + 1;
-        }
+        wantStage = currentStage;
         nextStageInfo = null;
         if (wantStage < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[wantStage];
 
         if(nextStageInfo != null)
         {
-            if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, true);
-            else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
+            if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage);
+            //else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, true);
             else SpawnBoss(nextStageInfo, wantStage);
         }
 
-        foreach (GameObject wall in currentStageWalls)
-        {
-            PoolManager.Despawn(wall);
-        }
-
         currentStageText.text = $"Stage {selectedStageIndex} - {currentStage + 1}";
-        if(!clearBothStage)
-        {
-            currentStageWalls = nextStageWalls.ToList();
-            if(selectedStageInfos.Length > currentStage + 1 && selectedStageInfos[currentStage + 1].stageType == 0)
-            {
-                foreach(GameObject wall in currentStageWalls)
-                {
-                    wall.GetComponent<Block>().isInvincible = false;
-                }
-            }
-        }
-        else
-        {
-            currentStageWalls.Clear();
-            foreach (GameObject wall in nextStageWalls)
-            {
-                PoolManager.Despawn(wall);
-            }
-        }
-        nextStageWalls.Clear();
-        if (selectedStageInfos.Length > currentStage + 1 && selectedStageInfos[currentStage + 1].stageType < 2)
-        {
-            for(int i=-5; i<=5; i++)
-            {
-                Block wall = PoolManager.Spawn(ResourceEnum.Prefab.Wall).GetComponent<Block>();
-                if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
-                if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
-                if (currentStage == 0) wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
-                else wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row);
-                wall.transform.SetParent(board, true);
-                wall.GetComponent<BoxCollider2D>().size = new(2,1);
-                wall.GetComponent<SpriteRenderer>().size = new(2,1);
-                wall.SetInfo(currentStage, 3, true, currentStage > 0);
-                wall.SetMaskLayer(layerMaskIndex++);
-                if (clearBothStage)
-                {
-                    currentStageWalls.Add(wall.gameObject);
-                    wall.isInvincible = false;
-                }
-                else nextStageWalls.Add(wall.gameObject);
-            }
-        }
-        // 2스테이지 동시에 깬 경우 다다음 스테이지
-        if(clearBothStage)
-        {
-            Debug.Log("Clear both stage");
-            nextStageInfo = null;
-            if (currentStage + 1 < selectedStageInfos.Length) nextStageInfo = selectedStageInfos[currentStage + 1];
 
-            if (nextStageInfo != null)
-            {
-                if (nextStageInfo.stageType == 0) SpawnBlocks(nextStageInfo, wantStage, clearBothStage, false);
-                else if (nextStageInfo.stageType == 1) SpawnShop(clearBothStage, false);
-                else SpawnBoss(nextStageInfo, wantStage);
-
-                for (int i = -5; i <= 5; i++)
-                {
-                    Block wall = PoolManager.Spawn(ResourceEnum.Prefab.Wall).GetComponent<Block>();
-                    wall.transform.position = new(i * 2, -0.25f + row + 1 + term + row + 1 + row);
-                    if (currentStageEnemies.Contains(wall)) currentStageEnemies.Remove(wall);
-                    if (nextStageEnemies.Contains(wall)) nextStageEnemies.Remove(wall);
-                    wall.transform.SetParent(board, true);
-                    wall.GetComponent<BoxCollider2D>().size = new(2, 1);
-                    wall.GetComponent<SpriteRenderer>().size = new(2, 1);
-                    wall.SetInfo(currentStage + 1, 3, true, true);
-                    wall.SetMaskLayer(layerMaskIndex++);
-                    wall.isInvincible = true;
-                    nextStageWalls.Add(wall.gameObject);
-                }
-            }
-        }
-
-        wantDown = clearBothStage ? (row + 1) * 2 : row + 1;
+        wantDown = row + 1;
     }
 
     int layerMaskIndex;
-    void SpawnBlocks(StageInfo nextStageInfo, int wantStage, bool clearBothStage, bool frontStage)
+    void SpawnBlocks(StageInfo nextStageInfo, int wantStage)
     {
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block;
-            if(enemyArrangementInfo.blockType == BlockType.Shield)
+            switch (enemyArrangementInfo.blockType)
             {
-                block = PoolManager.Spawn(ResourceEnum.Prefab.ShieldBlock).GetComponent<ShieldBlock>();
-                bool leftShield = false;
-                bool rightShield = false;
-                bool downShield = false;
-                bool upShield = false;
-                if (enemyArrangementInfo.shieldPosition == 0) downShield = true;
-                else if (enemyArrangementInfo.shieldPosition == 1) leftShield = true;
-                else if (enemyArrangementInfo.shieldPosition == 2) rightShield = true;
-                else if (enemyArrangementInfo.shieldPosition == 3) upShield = true;
-                ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
-            }
-            else if (enemyArrangementInfo.blockType == BlockType.Counter) block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.PentagonalBlock) block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.Illusion) block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.Attacker) block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.Splitter) block = PoolManager.Spawn(ResourceEnum.Prefab.SplitterBlock).GetComponent<SplitterBlock>();
-            else if (enemyArrangementInfo.blockType == BlockType.MucusDripper)
-            {
-                block = PoolManager.Spawn(ResourceEnum.Prefab.MucusDrippingBlock).GetComponent<DrippingBlock>();
-                ((MovableBlock)block).movePattern = (MovableBlock.MovePattern)enemyArrangementInfo.shieldPosition;
-            }
-            else
-            {
-                block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                int colorIndex = (int)enemyArrangementInfo.maxHP < blockColors.Length ? (int)enemyArrangementInfo.maxHP : blockColors.Length - 1;
-                block.SetColor(blockColors[colorIndex]);
+                case BlockType.Shield:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.ShieldBlock).GetComponent<ShieldBlock>();
+
+                    bool leftShield = false;
+                    bool rightShield = false;
+                    bool downShield = false;
+                    bool upShield = false;
+
+                    switch (enemyArrangementInfo.shieldPosition)
+                    {
+                        case 0: downShield = true; break;
+                        case 1: leftShield = true; break;
+                        case 2: rightShield = true; break;
+                        case 3: upShield = true; break;
+                    }
+
+                    ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
+                    break;
+                case BlockType.Counter:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
+                    break;
+                case BlockType.PentagonalBlock:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.PentagonalBlock).GetComponent<PentagonalBlock>();
+                    break;
+                case BlockType.Illusion:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.IllusionBlock).GetComponent<IllusionBlock>();
+                    break;
+                case BlockType.Attacker:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.AttackerBlock).GetComponent<AttackerBlock>();
+                    break;
+                case BlockType.Splitter:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.SplitterBlock).GetComponent<SplitterBlock>();
+                    break;
+                case BlockType.MucusDripper:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.MucusDrippingBlock).GetComponent<DrippingBlock>();
+                    ((MovableBlock)block).movePattern = (MovableBlock.MovePattern)enemyArrangementInfo.shieldPosition;
+                    break;
+                default:
+                    block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
+                    int colorIndex = (int)enemyArrangementInfo.maxHP < blockColors.Length
+                        ? (int)enemyArrangementInfo.maxHP
+                        : blockColors.Length - 1;
+                    block.SetColor(blockColors[colorIndex]);
+                    break;
             }
 
-            if (frontStage)
-            {
-                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term);
-            }
-            else
-            {
-                block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term + row + 1);
-            }
-
+            block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term - 14);
+            
             if(block.TryGetComponent(out BoxCollider2D _) && enemyArrangementInfo.blockType != BlockType.Shield)
             {
                 foreach(var boxCollider in block.GetComponentsInChildren<BoxCollider2D>())
@@ -604,40 +522,20 @@ public class StageManager : MonoBehaviour
                 block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
             }
             block.transform.SetParent(board, true);
-            if(frontStage)
-            {
-                block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
-                if (clearBothStage) currentStageEnemies.Add(block);
-                else nextStageEnemies.Add(block);
-            }
-            else
-            {
-                block.SetInfo(currentStage + 1, enemyArrangementInfo.maxHP);
-                nextStageEnemies.Add(block);
-            }
-
+            block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
+            
             block.SetMaskLayer(layerMaskIndex++);
+            currentStageEnemies.Add(block);
         }
     }
 
-    void SpawnShop(bool clearBothStage, bool frontStage)
+    void SpawnShop(bool clearBothStage)
     {
         Enemy shopStage = PoolManager.Spawn(ResourceEnum.Prefab.ShopStage).GetComponent<Enemy>();
         shopStage.transform.SetParent(board, true);
 
-        if (frontStage)
-        {
-            shopStage.transform.position = new(0, - 0.75f + 10 + row + 1 + term);
-            shopStage.SetInfo(currentStage, 1, false, true);
-            if (clearBothStage) currentStageEnemies.Add(shopStage);
-            else nextStageEnemies.Add(shopStage);
-        }
-        else
-        {
-            shopStage.transform.position = new(0, - 0.75f + 10 + row + 1 + term + row + 1);
-            shopStage.SetInfo(currentStage + 1, 1, false, true);
-            nextStageEnemies.Add(shopStage);
-        }
+        shopStage.transform.position = new(0, - 0.75f + 10 + row + 1 + term);
+        shopStage.SetInfo(currentStage, 1, false, true);
     }
 
     void SpawnBoss(StageInfo stageInfo, int wantStage)
@@ -661,7 +559,7 @@ public class StageManager : MonoBehaviour
         }
         if(boss != null)
         {
-            nextStageEnemies.Add(boss);
+            currentStageEnemies.Add(boss);
             boss.transform.SetParent(board, true);
         }
     }
@@ -672,7 +570,6 @@ public class StageManager : MonoBehaviour
         {
             readyToReadyPhase = true;
             Time.timeScale = 0f;
-            clearBoth = nextStageEnemies.Count == 0;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
@@ -687,13 +584,7 @@ public class StageManager : MonoBehaviour
         foreach (var bead in beads) PoolManager.Despawn(bead.gameObject);
         beads.Clear();
         foreach (var enemy in currentStageEnemies) PoolManager.Despawn(enemy.gameObject);
-        foreach (var enemy in nextStageEnemies) PoolManager.Despawn(enemy.gameObject);
         currentStageEnemies.Clear();
-        nextStageEnemies.Clear();
-        foreach(var wall in currentStageWalls) PoolManager.Despawn(wall);
-        foreach(var wall in nextStageWalls) PoolManager.Despawn(wall);
-        currentStageWalls.Clear();
-        nextStageWalls.Clear();
         foreach (var projectile in projectiles) PoolManager.Despawn(projectile.gameObject);
         projectiles.Clear();
         foreach(var coin in coins) PoolManager.Despawn(coin.gameObject);
@@ -892,9 +783,9 @@ public class StageManager : MonoBehaviour
         bar.Fever();
     }
 
-    void BeadRefill()
+    void BeadsRefill()
     {
-        for (int i = 0; i < beadsCount; i++)
+        for (int i = beads.Count; i < beadsCount; i++)
         {
             int reverse = i % 2 == 0 ? 1 : -1;
             Vector2 destination = new(bar.barBody.transform.position.x + reverse * ((i + 1) / 2), bar.barBody.transform.position.y + 0.51f);

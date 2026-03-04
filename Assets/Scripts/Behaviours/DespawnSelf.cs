@@ -20,7 +20,7 @@ public class DespawnSelf : StateMachineBehaviour
         if(animator.TryGetComponent(out Enemy enemy))
         {
             if (GameManager.Instance.StageManager.currentStageEnemies.Contains(enemy)) GameManager.Instance.StageManager.currentStageEnemies.Remove(enemy);
-            else if (GameManager.Instance.StageManager.nextStageEnemies.Contains(enemy)) GameManager.Instance.StageManager.nextStageEnemies.Remove(enemy);
+            //else if (GameManager.Instance.StageManager.nextStageEnemies.Contains(enemy)) GameManager.Instance.StageManager.nextStageEnemies.Remove(enemy);
             GameManager.Instance.StageManager.StageClearCheck();
         }
         PoolManager.Despawn(animator.gameObject);

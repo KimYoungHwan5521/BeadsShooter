@@ -14,12 +14,12 @@ public class Shop : MonoBehaviour
         }
 
         List<int> checkDup = new();
-        int merchant0;
-        int merchant1;
-        int merchant2;
-        int merchant3;
-        int merchant4;
-        int merchant5;
+        int merchant0 = -1;
+        int merchant1 = -1;
+        int merchant2 = -1;
+        int merchant3 = -1;
+        int merchant4 = -1;
+        int merchant5 = -1;
         float rand = UnityEngine.Random.Range(0, 1f);
         // cardType : 0 = Rare, 1 = Epic, 2 = Promotion
         int cardType = 2;
@@ -51,29 +51,48 @@ public class Shop : MonoBehaviour
             cardType = UnityEngine.Random.Range(0, 1f) < ReadyPhaseUI.epicAppearRate ? 1 : 0;
             isPassive = UnityEngine.Random.Range(0, 1f) < ReadyPhaseUI.passiveAppearRate;
             pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive && x.rootAbility != x.name);
-            ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-            merchant1 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
-            if (merchant1 == -1 || checkDup.Contains(merchant1)) continue;
+            if (pool.Count == 0) continue;
             else
             {
-                merchandiseOptions[1].SetOption(ability, cardType == 0 ? 100 : 200);
-                checkDup.Add(merchant1);
+                ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+                merchant1 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+                if (checkDup.Contains(merchant1))
+                {
+                    merchant1 = -1;
+                    continue;
+                }
+                else
+                {
+                    merchandiseOptions[1].SetOption(ability, cardType == 0 ? 100 : 200);
+                    checkDup.Add(merchant1);
+                    break;
+                }
             }
         }
-        for (int i = 0; i < 1000; i++)
+        if(merchant1 == -1) merchandiseOptions[1].SetOption(null, 0);
+        for (int i = 0; i < 1000; i++) 
         {
             cardType = UnityEngine.Random.Range(0, 1f) < ReadyPhaseUI.epicAppearRate ? 1 : 0;
             isPassive = UnityEngine.Random.Range(0, 1f) < ReadyPhaseUI.passiveAppearRate;
             pool = stageManager.possibleToAppearAbilities.FindAll(x => (int)x.cardType == cardType && x.isPassive == isPassive && x.rootAbility != x.name);
-            ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-            merchant2 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
-            if (merchant2 == -1 || checkDup.Contains(merchant2)) continue;
+            if (pool.Count == 0) continue;
             else
             {
-                merchandiseOptions[2].SetOption(ability, cardType == 0 ? 100 : 200);
-                checkDup.Add(merchant2);
+                ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+                merchant2 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
+                if (checkDup.Contains(merchant2)) 
+                {
+                    merchant2 = -1;
+                    continue; 
+                }
+                else
+                {
+                    merchandiseOptions[2].SetOption(ability, cardType == 0 ? 100 : 200);
+                    checkDup.Add(merchant2);
+                }
             }
         }
+        if (merchant2 == -1) merchandiseOptions[2].SetOption(null, 0);
         // merchant3, 4, 5 : 새 어빌리티, 3=에픽/4,5=레어
         pool = stageManager.possibleToAppearAbilities.FindAll(x => x.cardType == AbilityManager.CardType.Epic && x.isPassive == false && x.rootAbility == x.name);
         if(pool.Count == 0) merchandiseOptions[3].SetOption(null, 0);
@@ -86,11 +105,11 @@ public class Shop : MonoBehaviour
         }
 
         pool = stageManager.possibleToAppearAbilities.FindAll(x => x.cardType == AbilityManager.CardType.Rare && x.isPassive == false && x.rootAbility == x.name);
-        ability = pool[UnityEngine.Random.Range(0, pool.Count)];
-        merchant4 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
-        if (merchant4 == -1) merchandiseOptions[4].SetOption(null, 0);
+        if (pool.Count == 0) merchandiseOptions[4].SetOption(null, 0);
         else
         {
+            ability = pool[UnityEngine.Random.Range(0, pool.Count)];
+            merchant4 = stageManager.possibleToAppearAbilities.FindIndex(x => x.name == ability.name);
             merchandiseOptions[4].SetOption(ability, 100);
             checkDup.Add(merchant4);
         }

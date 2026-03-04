@@ -125,6 +125,9 @@ public class GameManager : MonoBehaviour
     public void Test()
     {
         stageManager.Coin += 1000;
+        stageManager.GetAbility(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser));
+        stageManager.GetAbility(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FrequentShotLV3));
+        stageManager.GetAbility(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.MultipleShotLV6));
     }
 
     public enum Phase { None, BattlePhase, ReadyPhase };
@@ -211,9 +214,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void ReadyPhase(int choiceCount)
+    public void ReadyPhase()
     {
-        readyPhaseUI.SetReadyPhase(choiceCount);
+        readyPhaseUI.SetReadyPhase();
         readyPhaseWindow.SetActive(true);
         //readyPhaseWindow.GetComponentInChildren<Animator>().SetTrigger("Appear");
         phase = Phase.ReadyPhase;
