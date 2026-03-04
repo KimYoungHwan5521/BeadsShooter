@@ -214,6 +214,11 @@ public class Bead : CustomObject
         if (GameManager.Instance.phase != GameManager.Phase.BattlePhase || !activated) return;
         if (collision.collider.CompareTag("Wall"))
         {
+            ShieldBlock shieldBlock = collision.collider.GetComponentInParent<ShieldBlock>();
+            if (shieldBlock != null)
+            {
+                shieldBlock.ShieldDamage(Damage);
+            }
             temporaryDamageCorrection = 0;
             if(!ElectricCharged)
             {

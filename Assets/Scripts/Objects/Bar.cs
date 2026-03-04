@@ -244,11 +244,11 @@ public class Bar : CustomObject
         //anim.SetFloat("MoveSpeed", moveSpeed);
         //character.transform.localScale = new(-direction.x, 1);
         Vector2 direction = new Vector2(offset - transform.position.x, 0).normalized;
-        transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
-        transform.position = new(Mathf.Clamp(transform.position.x + direction.x * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime, -barMoveLimit + originalLength * barLength * 0.5f, barMoveLimit - originalLength * barLength * 0.5f), transform.position.y);
+        transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.deltaTime;
+        transform.position = new(Mathf.Clamp(transform.position.x + direction.x * moveSpeed * timeLimitedSpeedMagnification * Time.deltaTime, -barMoveLimit + originalLength * barLength * 0.5f, barMoveLimit - originalLength * barLength * 0.5f), transform.position.y);
         foreach(var bead in grabbedBeads)
         {
-            bead.transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.unscaledDeltaTime;
+            bead.transform.position += (Vector3)direction * moveSpeed * timeLimitedSpeedMagnification * Time.deltaTime;
         }
         if (timeLimitedSpeedMagnification < 1) barBody.GetComponent<SpriteRenderer>().color = Color.green;
         else barBody.GetComponent<SpriteRenderer>().color = Color.white;

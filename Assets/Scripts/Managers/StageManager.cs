@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,10 +11,10 @@ public class StageManager : MonoBehaviour
     const int row = 21;
     const int column = 22;
     const int term = 13;
-    protected static Color[] blockColors = { new(0, 0, 0), new(0.5f, 0, 0), new(0, 0.5f, 0), new(0, 0, 0.5f), new(0.5f, 0.5f, 0), new(0.5f, 0, 0.5f), 
-        new(0, 0.5f, 0.5f), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1),
-        new(1, 0.5f, 0), new(1, 0, 0.5f), new(0.5f, 1, 0), new(0, 1, 0.5f), new(0.5f, 0, 1), new(0, 0.5f, 1), new(1, 0.5f, 0.5f), new(0.5f, 1, 0.5f), new(0.5f, 0.5f, 1),
-        new(1, 1, 0.5f), new(1, 0.5f, 1), new(0.5f, 1, 1),
+    protected static Color[] blockColors = { new(0, 0, 0), new(1, 0, 0), new(0, 1, 0), new(0, 0, 1), new(1, 1, 0), new(1, 0, 1), new(0, 1, 1),
+        new(1, 0.5f, 0), new(1, 0, 0.5f), new(0.5f, 1, 0), new(0, 1, 0.5f), new(0.5f, 0, 1), new(0, 0.5f, 1), new(1, 0.5f, 0.5f), 
+        new(0.5f, 1, 0.5f), new(0.5f, 0.5f, 1), new(1, 1, 0.5f), new(1, 0.5f, 1), new(0.5f, 1, 1), new(0.5f, 0, 0), new(0, 0.5f, 0), 
+        new(0, 0, 0.5f), new(0.5f, 0.5f, 0), new(0.5f, 0, 0.5f), new(0, 0.5f, 0.5f),
     };
 
     [Header("Header UI")]
@@ -74,22 +75,6 @@ public class StageManager : MonoBehaviour
     [Header("Shop")]
     [SerializeField] TextMeshProUGUI shopFreeRerollText;
     [SerializeField] TextMeshProUGUI shopRerollCostText;
-    int shopRerollStack;
-    public int RerollCost => shopFreeReroll > 0 ? 0 : (shopRerollStack + 1) * (shopRerollStack + 2);
-
-    int shopFreeReroll;
-    public int ShopFreeReroll
-    {
-        get => shopFreeReroll;
-        set
-        {
-            shopFreeReroll = Mathf.Max(value, 0);
-            //shopFreeRerollText.text = $"Free Reroll x {shopFreeReroll}";
-            //if (Coin < RerollCost) shopRerollCostText.color = Color.red;
-            //else shopRerollCostText.color = RerollCost > 0 ? Color.black : Color.green;
-            //shopRerollCostText.text = $"{RerollCost}";
-        }
-    }
 
     RewardFormat[] randomRewards = new RewardFormat[] { new(RewardType.AttackDamage, 0.2f) };
 
@@ -122,6 +107,8 @@ public class StageManager : MonoBehaviour
     public bool beadRefill;
     const float beadRefillTime = 1f;
     float curBeadRefillTime;
+    float curStageTime;
+    float totalStageTime;
 
     bool stageClear;
 
@@ -135,15 +122,23 @@ public class StageManager : MonoBehaviour
     {
         public BlockType blockType;
         public Vector2Int size;
-        // MovableBlock
+        // MovableBlock = moveType, ShieldBlock = ShieldPos
         public int moveType;
         public float maxHP;
+        public float shieldDurability;
 
         public BlockForm(BlockType blockType)
         {
             this.blockType = blockType;
             size = new Vector2Int(1,1);
             maxHP = 1f;
+        }
+
+        public BlockForm(BlockType blockType, float maxHP)
+        {
+            this.blockType = blockType;
+            size = new Vector2Int(1, 1);
+            this.maxHP = maxHP;
         }
 
         public BlockForm(BlockType blockType, Vector2Int size)
@@ -167,41 +162,22 @@ public class StageManager : MonoBehaviour
             this.moveType = moveType;
             maxHP = 1f;
         }
+
+        public BlockForm Clone()
+        {
+            return (BlockForm)this.MemberwiseClone();
+        }
     }
 
     public class EnemyArrangementInfo
     {
-        public BlockType blockType;
+        public BlockForm blockForm;
         public Vector2Int position;
-        public Vector2Int size;
-        public float maxHP;
-        // Shield block
-        public int shieldPosition;
 
-        public EnemyArrangementInfo(BlockType blockType, Vector2Int position, float maxHP)
+        public EnemyArrangementInfo(BlockForm blockForm, Vector2Int position)
         {
-            this.blockType = blockType;
+            this.blockForm = blockForm;
             this.position = position;
-            size = new Vector2Int(1, 1);
-            this.maxHP = maxHP;
-        }
-
-        public EnemyArrangementInfo(BlockType blockType, Vector2Int position, Vector2Int size, float maxHP)
-        {
-            this.blockType = blockType;
-            this.position = position;
-            this.size = size;
-            this.maxHP = maxHP;
-        }
-
-        public EnemyArrangementInfo(BlockType blockType, Vector2Int position, int shieldPos)
-        {
-            this.blockType = blockType;
-            this.position = position;
-            if (blockType == BlockType.Shield) size = new Vector2Int(4, 2);
-            else size = new Vector2Int(1, 1);
-            maxHP = 1;
-            shieldPosition = shieldPos;
         }
     }
 
@@ -242,17 +218,18 @@ public class StageManager : MonoBehaviour
             //GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1)), 1)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
             //GenerateRandomStage((new(BlockType.Attacker, new Vector2Int(2,1), 1), 10)),
+            //GenerateRandomStage((new(BlockType.Shield, new Vector2Int(4,2), 1f), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15)),
             GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5)),
             
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 3)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 2)),
-            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 4), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 15), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 10), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 6), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 5), (new(BlockType.Counter, new Vector2Int(2,2), 1), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 4), 5),(new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Shield, new Vector2Int(4, 2), 1f), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2,2), 1), 3)),
             //GenerateShopStage(),
             GenerateBossStage(BlockType.Boss1),
 
@@ -283,6 +260,14 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
+        curStageTime += Time.deltaTime;
+        totalStageTime += Time.deltaTime;
+
+        if(curStageTime > 30)
+        {
+            Time.timeScale = 2;
+        }
+
         if (wantDown > 0.1f)
         {
             board.transform.position += Vector3.down * 0.2f;
@@ -405,10 +390,10 @@ public class StageManager : MonoBehaviour
         currentStage = 0;
         Life = 3;
         Coin = 0;
-        shopRerollStack = 0;
-        ShopFreeReroll = 0;
         readyToReadyPhase = false; 
         curReadyToReadyPhaseTime = 0;
+        curStageTime = 0;
+        totalStageTime = 0;
         //GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
         ongoingQuests.Clear();
         bar.moveSpeed = 30f;
@@ -463,7 +448,7 @@ public class StageManager : MonoBehaviour
         foreach (EnemyArrangementInfo enemyArrangementInfo in nextStageInfo.enemyArrangementInfo)
         {
             Block block;
-            switch (enemyArrangementInfo.blockType)
+            switch (enemyArrangementInfo.blockForm.blockType)
             {
                 case BlockType.Shield:
                     block = PoolManager.Spawn(ResourceEnum.Prefab.ShieldBlock).GetComponent<ShieldBlock>();
@@ -473,7 +458,7 @@ public class StageManager : MonoBehaviour
                     bool downShield = false;
                     bool upShield = false;
 
-                    switch (enemyArrangementInfo.shieldPosition)
+                    switch (enemyArrangementInfo.blockForm.moveType)
                     {
                         case 0: downShield = true; break;
                         case 1: leftShield = true; break;
@@ -481,7 +466,7 @@ public class StageManager : MonoBehaviour
                         case 3: upShield = true; break;
                     }
 
-                    ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield);
+                    ((ShieldBlock)block).SetShield(leftShield, rightShield, downShield, upShield, 5);
                     break;
                 case BlockType.Counter:
                     block = PoolManager.Spawn(ResourceEnum.Prefab.CounterBlock).GetComponent<CounterBlock>();
@@ -500,29 +485,29 @@ public class StageManager : MonoBehaviour
                     break;
                 case BlockType.MucusDripper:
                     block = PoolManager.Spawn(ResourceEnum.Prefab.MucusDrippingBlock).GetComponent<DrippingBlock>();
-                    ((MovableBlock)block).movePattern = (MovableBlock.MovePattern)enemyArrangementInfo.shieldPosition;
+                    ((MovableBlock)block).movePattern = (MovableBlock.MovePattern)enemyArrangementInfo.blockForm.moveType;
                     break;
                 default:
                     block = PoolManager.Spawn(ResourceEnum.Prefab.NormalBlock).GetComponent<Block>();
-                    int colorIndex = (int)enemyArrangementInfo.maxHP < blockColors.Length
-                        ? (int)enemyArrangementInfo.maxHP
+                    int colorIndex = (int)enemyArrangementInfo.blockForm.maxHP < blockColors.Length
+                        ? (int)enemyArrangementInfo.blockForm.maxHP
                         : blockColors.Length - 1;
                     block.SetColor(blockColors[colorIndex]);
                     break;
             }
 
-            block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.size.y - 1) * 0.5f - 0.25f + row + 1 + term - 14);
+            block.transform.position = new(enemyArrangementInfo.position.x + (enemyArrangementInfo.blockForm.size.x - 1) * 0.5f - 10.5f, enemyArrangementInfo.position.y + (enemyArrangementInfo.blockForm.size.y - 1) * 0.5f - 0.25f + row + 1 + term - 14);
             
-            if(block.TryGetComponent(out BoxCollider2D _) && enemyArrangementInfo.blockType != BlockType.Shield)
+            if(block.TryGetComponent(out BoxCollider2D _) && enemyArrangementInfo.blockForm.blockType != BlockType.Shield)
             {
                 foreach(var boxCollider in block.GetComponentsInChildren<BoxCollider2D>())
                 {
-                    boxCollider.size = enemyArrangementInfo.size;
+                    boxCollider.size = enemyArrangementInfo.blockForm.size;
                 }
-                block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.size;
+                block.GetComponent<SpriteRenderer>().size = enemyArrangementInfo.blockForm.size;
             }
             block.transform.SetParent(board, true);
-            block.SetInfo(wantStage, enemyArrangementInfo.maxHP);
+            block.SetInfo(wantStage, enemyArrangementInfo.blockForm.maxHP);
             
             block.SetMaskLayer(layerMaskIndex++);
             currentStageEnemies.Add(block);
@@ -541,7 +526,7 @@ public class StageManager : MonoBehaviour
     void SpawnBoss(StageInfo stageInfo, int wantStage)
     {
         Enemy boss = null;
-        switch (stageInfo.enemyArrangementInfo[0].blockType)
+        switch (stageInfo.enemyArrangementInfo[0].blockForm.blockType)
         {
             case BlockType.Boss1:
                 boss = PoolManager.Spawn(ResourceEnum.Prefab.Boss1).GetComponent<Enemy>();
@@ -570,6 +555,7 @@ public class StageManager : MonoBehaviour
         {
             readyToReadyPhase = true;
             Time.timeScale = 0f;
+            curStageTime = 0;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
@@ -616,12 +602,16 @@ public class StageManager : MonoBehaviour
                 if (form.Item1.blockType == BlockType.Shield)
                 {
                     yPos = Random.Range(1, (row - form.Item1.size.y) * 2 / 3);
-                    shieldPos = Random.Range(0, 4);
+                    shieldPos = Random.Range(0, 3);
+                    if(shieldPos == 1 || shieldPos == 2)
+                    {
+                        if (xPos - form.Item1.size.x < column / 2) shieldPos = 2;
+                        else shieldPos = 1;
+                    }
                 }
                 else if(form.Item1.blockType == BlockType.MucusDripper)
                 {
                     yPos = Random.Range(0, row - form.Item1.size.y + 1);
-                    shieldPos = form.Item1.moveType;
                 }
                 else if (form.Item1.blockType == BlockType.Counter) yPos = Random.Range((row - form.Item1.size.y + 1) / 2, row - form.Item1.size.y + 1);
                 else yPos = Random.Range(0, row - form.Item1.size.y + 1);
@@ -694,10 +684,9 @@ public class StageManager : MonoBehaviour
                     continue;
                 }
                 // ¹èÄ¡
-                EnemyArrangementInfo info;
-                if (form.Item1.blockType == BlockType.Shield || form.Item1.blockType == BlockType.MucusDripper) info = new(form.Item1.blockType, new(xPos, yPos), shieldPos);
-                else if (form.Item1.blockType == BlockType.Splitter) info = new(form.Item1.blockType, new(xPos,yPos), 4f);
-                else info = new(form.Item1.blockType, new(xPos, yPos), form.Item1.size, form.Item1.maxHP);
+                BlockForm copiedForm = form.Item1.Clone();
+                copiedForm.moveType = shieldPos;
+                EnemyArrangementInfo info = new(copiedForm, new(xPos, yPos));
                 
                 if (result == null) result = new(new EnemyArrangementInfo[]{info});
                 else result.enemyArrangementInfo.Add(info);
@@ -767,10 +756,10 @@ public class StageManager : MonoBehaviour
         switch(wantBoss)
         {
             case BlockType.Boss1:
-                enemyArrangementInfo = new(BlockType.Boss1, new(0, 0), 100f);
+                enemyArrangementInfo = new(new(BlockType.Boss1, 100f), new(0, 0));
                 break;
             case BlockType.Boss2:
-                enemyArrangementInfo = new(BlockType.Boss2, new(0, 0), 60f);
+                enemyArrangementInfo = new(new(BlockType.Boss2, 60f), new(0, 0));
                 break;
         }
         if (enemyArrangementInfo == null) Debug.LogWarning("Null boss!");

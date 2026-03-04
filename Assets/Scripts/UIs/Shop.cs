@@ -4,8 +4,11 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     public MerchandiseOption[] merchandiseOptions;
+    [SerializeField] GameObject reroll;
+
     public void SetShop()
     {
+        reroll.SetActive(true);
         StageManager stageManager = GameManager.Instance.StageManager;
         foreach(MerchandiseOption option in merchandiseOptions)
         {
@@ -135,9 +138,8 @@ public class Shop : MonoBehaviour
 
     public void Reroll()
     {
-        if (GameManager.Instance.StageManager.Coin < GameManager.Instance.StageManager.RerollCost) return;
-        GameManager.Instance.StageManager.Coin -= GameManager.Instance.StageManager.RerollCost;
         SetShop();
+        reroll.SetActive(false);
     }
 
     public void ExitShop()

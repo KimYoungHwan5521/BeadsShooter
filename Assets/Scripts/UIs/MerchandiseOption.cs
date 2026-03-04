@@ -29,7 +29,7 @@ public class MerchandiseOption : MonoBehaviour
         abilityOption.SetOption(ability);
         priceText.text = price.ToString();
         this.price = price;
-        priceText.color = GameManager.Instance.StageManager.Coin < this.price ? Color.red : Color.black;
+        priceText.color = GameManager.Instance.StageManager.Coin < this.price ? Color.red : Color.white;
     }
 
     public void Buy()
@@ -38,7 +38,7 @@ public class MerchandiseOption : MonoBehaviour
         GameManager.Instance.StageManager.Coin -= price;
         foreach(MerchandiseOption merchandise in shop.merchandiseOptions)
         {
-            merchandise.priceText.color = GameManager.Instance.StageManager.Coin < merchandise.price ? Color.red : Color.black;
+            merchandise.priceText.color = GameManager.Instance.StageManager.Coin < merchandise.price ? Color.red : Color.white;
         }
         SoldOut = true;
     }
