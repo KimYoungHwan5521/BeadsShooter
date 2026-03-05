@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -107,8 +106,7 @@ public class StageManager : MonoBehaviour
     public bool beadRefill;
     const float beadRefillTime = 1f;
     float curBeadRefillTime;
-    float curStageTime;
-    float totalStageTime;
+    public float curStrikeTime;
 
     bool stageClear;
 
@@ -260,10 +258,9 @@ public class StageManager : MonoBehaviour
 
     private void Update()
     {
-        curStageTime += Time.deltaTime;
-        totalStageTime += Time.deltaTime;
+        curStrikeTime += Time.deltaTime;
 
-        if(curStageTime > 30)
+        if(curStrikeTime > 30)
         {
             Time.timeScale = 2;
         }
@@ -369,9 +366,10 @@ public class StageManager : MonoBehaviour
         }
         else if(beadRefill)
         {
-            curBeadRefillTime += Time.deltaTime;
+            curBeadRefillTime += Time.unscaledDeltaTime;
             if(curBeadRefillTime > beadRefillTime)
             {
+                Time.timeScale = 1;
                 BeadsRefill();
                 curBeadRefillTime = 0;
                 beadRefill = false;
@@ -392,8 +390,7 @@ public class StageManager : MonoBehaviour
         Coin = 0;
         readyToReadyPhase = false; 
         curReadyToReadyPhaseTime = 0;
-        curStageTime = 0;
-        totalStageTime = 0;
+        curStrikeTime = 0;
         //GameManager.Instance.readyPhaseUI.StoreCapacity = 1;
         ongoingQuests.Clear();
         bar.moveSpeed = 30f;
@@ -555,7 +552,7 @@ public class StageManager : MonoBehaviour
         {
             readyToReadyPhase = true;
             Time.timeScale = 0f;
-            curStageTime = 0;
+            curStrikeTime = 0;
             foreach(var bead in beads)
             {
                 bead.trail.emitting = false;
@@ -1234,6 +1231,52 @@ public class StageManager : MonoBehaviour
             case AbilityManager.AbilityName.BiggerBallLV2:
             case AbilityManager.AbilityName.BiggerBallLV3:
                 break;
+        }
+    }
+
+    [SerializeField] GameObject pickedCardsBoard;
+    [SerializeField] PickedCard[] pickedRootAbilities;
+    [SerializeField] AbilityOption[] pickedAbilitiesDetail;
+    List<AbilityManager.Ability> rootAbilities = new();
+
+    public void ShowPickedCards()
+    {
+        bool pauseUIOn = pauseUI.activeSelf;
+        Pause();
+        pauseUI.SetActive(pauseUIOn);
+
+        pickedCardsBoard.SetActive(true);
+        rootAbilities = selectedAbilities.FindAll(x => x.name == x.rootAbility);
+        for (int i = 0; i < pickedRootAbilities.Length; i++)
+        {
+            if(i < rootAbilities.Count)
+            {
+                pickedRootAbilities[i].gameObject.SetActive(true);
+                pickedRootAbilities[i].SetCard(rootAbilities[i], selectedAbilities.FindAll(x => x.rootAbility == rootAbilities[i].name).Count - 1);
+            }
+            else
+            {
+                pickedRootAbilities[i].gameObject.SetActive(false);
+            }
+        }
+        ShowPickedCardsDetail(0);
+    }
+
+    public void ShowPickedCardsDetail(int index)
+    {
+        List<AbilityManager.Ability> abilities = new();
+        if (rootAbilities.Count != 0) abilities = selectedAbilities.FindAll(x => x.rootAbility == rootAbilities[index].name);
+        for (int i = 0; i < pickedAbilitiesDetail.Length; i++)
+        {
+            if(i < abilities.Count)
+            {
+                pickedAbilitiesDetail[i].gameObject.SetActive(true);
+                pickedAbilitiesDetail[i].SetOption(abilities[i]);
+            }
+            else
+            {
+                pickedAbilitiesDetail[i].gameObject.SetActive(false);
+            }
         }
     }
 }

@@ -15,6 +15,8 @@ public class BoundaryEdge : CustomObject
                 PoolManager.Despawn(bead.gameObject);
                 if (GameManager.Instance.StageManager.beads.Count == 0)
                 {
+                    Time.timeScale = 0;
+                    GameManager.Instance.StageManager.curStrikeTime = 0;
                     GameManager.Instance.StageManager.Life--;
                     // if(GameManager.Instance.StageManager.Life == 0) GameManager.Instance.StageManager.GameOver();
                     // else

@@ -34,6 +34,6 @@ public class AbilityOption : MonoBehaviour
         }
         fitter.aspectRatio = (float) sprite.rect.width / sprite.rect.height;
         abilityIcon.sprite = sprite;
-        abilityExplain.text = ability.explain;
+        if(abilityExplain != null) abilityExplain.text = ability.explain;
     }
 }

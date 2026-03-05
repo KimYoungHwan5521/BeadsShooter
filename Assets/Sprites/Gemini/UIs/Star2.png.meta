@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: 5cc6335ef80e8a4438580629aa56c38d
+guid: 1ef2bc6dafd586e4fa261a2f504d9884
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2364888156558832470
-    second: Card 1_0
+      213: -6414411470175368871
+    second: Star2_0
+  - first:
+      213: 4124319853338681781
+    second: Star2_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +129,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Card 1_0
+      name: Star2_0
       rect:
         serializedVersion: 2
-        x: 112
-        y: 59
-        width: 266
-        height: 366
+        x: 68
+        y: 120
+        width: 200
+        height: 190
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 21, y: 21, z: 21, w: 21}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: aac48c650ca3e2fd0800000000000000
-      internalID: -2364888156558832470
+      spriteID: 959810db0ce6bf6a0800000000000000
+      internalID: -6414411470175368871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Star2_1
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 121
+        width: 202
+        height: 189
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b1e7561e078c3930800000000000000
+      internalID: 4124319853338681781
       vertices: []
       indices: 
       edges: []
@@ -151,7 +176,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 989b81964f91cb244b0afdec11bdb203
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +186,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Card 1_0: -2364888156558832470
+      Star2_0: -6414411470175368871
+      Star2_1: 4124319853338681781
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
