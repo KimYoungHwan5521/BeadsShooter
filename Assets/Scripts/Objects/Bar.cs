@@ -108,6 +108,9 @@ public class Bar : CustomObject
     public bool controllableFireball;
     public bool controllableIcicles;
 
+    [Header("Satellites Ability")]
+    public Orbit orbit;
+
     protected virtual void Start()
     {
         yPos = GameManager.Instance.barYPos;
@@ -290,6 +293,7 @@ public class Bar : CustomObject
         ElectricCharged = false;
         controllableFireball = false;
         controllableIcicles = false;
+        orbit.SetActiveSatellites(0);
     }
 
     public void RoundReset()

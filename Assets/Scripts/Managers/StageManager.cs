@@ -254,6 +254,25 @@ public class StageManager : MonoBehaviour
             GenerateBossStage(BlockType.Boss2),
         };
         stages.Add(stageInfos);
+
+        stageInfos = new StageInfo[]
+        {
+            // Stage 2
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.MucusDripper, 2), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.MucusDripper, 2), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 10), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.MucusDripper, 2), 5)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 8), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 3), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 4), (new(BlockType.Splitter, new Vector2Int(2, 1)), 2)),
+
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.MucusDripper, 2), 6), (new(BlockType.Shield, new Vector2Int(4, 2)), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 3)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 5), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 2)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 6), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 6), 3), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 4), (new(BlockType.Counter, new Vector2Int(2, 2)), 1)),
+            GenerateRandomStage((new(BlockType.Normal, new Vector2Int(2, 1), 1), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 2), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 3), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 4), 4), (new(BlockType.Normal, new Vector2Int(2, 1), 5), 5), (new(BlockType.Normal, new Vector2Int(2, 1), 6), 3), (new(BlockType.Normal, new Vector2Int(2, 1), 7), 3), (new(BlockType.MucusDripper, 2), 5), (new(BlockType.Splitter, new Vector2Int(2, 1)), 5), (new(BlockType.Attacker, new Vector2Int(2, 1)), 6), (new(BlockType.Counter, new Vector2Int(2, 2)), 3)),
+            //GenerateShopStage(),
+            GenerateBossStage(BlockType.Boss2),
+        };
+        stages.Add(stageInfos);
     }
 
     private void Update()
@@ -404,6 +423,7 @@ public class StageManager : MonoBehaviour
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Laser),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Electric),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Telekinesis),
+            AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.Satellites),
 
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBallLV1),
             AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.FasterBarLV1),
@@ -936,6 +956,9 @@ public class StageManager : MonoBehaviour
                             case AbilityManager.AbilityName.Telekinesis:
                                 possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempTelekinesisPromotion));
                                 break;
+                            case AbilityManager.AbilityName.Satellites:
+                                possibleToAppearAbilities.Add(AbilityManager.Abilities.Find(x => x.name == AbilityManager.AbilityName.TempSatellitesPromotion));
+                                break;
                         }
                     }
                 }
@@ -1186,6 +1209,31 @@ public class StageManager : MonoBehaviour
                 bar.controllableIcicles = true;
                 break;
             case AbilityManager.AbilityName.TempTelekinesisPromotion:
+                break;
+            // Satellites
+            case AbilityManager.AbilityName.Satellites:
+                bar.orbit.SetActiveSatellites(3);
+                bar.orbit.speed = 30;
+                break;
+            case AbilityManager.AbilityName.MoreSatellitesLV1:
+                bar.orbit.SetActiveSatellites(4);
+                break;
+            case AbilityManager.AbilityName.MoreSatellitesLV2:
+                bar.orbit.SetActiveSatellites(5);
+                break;
+            case AbilityManager.AbilityName.MoreSatellitesLV3:
+                bar.orbit.SetActiveSatellites(6);
+                break;
+            case AbilityManager.AbilityName.FasterSatellitesLV1:
+                bar.orbit.speed = 60;
+                break;
+            case AbilityManager.AbilityName.FasterSatellitesLV2:
+                bar.orbit.speed = 90;
+                break;
+            case AbilityManager.AbilityName.FasterSatellitesLV3:
+                bar.orbit.speed = 120;
+                break;
+            case AbilityManager.AbilityName.TempSatellitesPromotion:
                 break;
             // Passives
             case AbilityManager.AbilityName.FasterBarLV1:

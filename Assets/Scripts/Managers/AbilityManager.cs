@@ -14,7 +14,8 @@ public class AbilityManager
         MoreChainsLV3, MultipleDischargeLV1, MultipleDischargeLV2, MultipleDischargeLV3, ElectrostaticInductionLV1, ElectrostaticInductionLV2,
         ElectrostaticInductionLV3, FrequentTelekinesisLV1, FrequentTelekinesisLV2, FrequentTelekinesisLV3, StrongerTelekinesisLV1,
         StrongerTelekinesisLV2, StrongerTelekinesisLV3, GuidedBallsLV1, GuidedBallsLV2, GuidedBallsLV3, GuidedFireBall, GuidedIcicles,
-        TempIcePromotion, TempFirePromotion, TempElectricPromotion, TempTelekinesisPromotion, TempLaserPromotion
+        Satellites, MoreSatellitesLV1, MoreSatellitesLV2, MoreSatellitesLV3, FasterSatellitesLV1, FasterSatellitesLV2, FasterSatellitesLV3,
+        TempIcePromotion, TempFirePromotion, TempElectricPromotion, TempTelekinesisPromotion, TempLaserPromotion, TempSatellitesPromotion,
     }
     
     public enum CardType { Rare, Epic, Promotion }
@@ -364,7 +365,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.TempFirePromotion,
-            rootAbility = AbilityName.Ice,
+            rootAbility = AbilityName.Fire,
             cardType = CardType.Promotion,
             explain = "Temp"
         };
@@ -482,7 +483,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.TempLaserPromotion,
-            rootAbility = AbilityName.Ice,
+            rootAbility = AbilityName.Laser,
             cardType = CardType.Promotion,
             explain = "Temp"
         };
@@ -646,7 +647,7 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.TempElectricPromotion,
-            rootAbility = AbilityName.Ice,
+            rootAbility = AbilityName.Electric,
             cardType = CardType.Promotion,
             explain = "Temp"
         };
@@ -792,7 +793,92 @@ public class AbilityManager
         ability = new()
         {
             name = AbilityName.TempTelekinesisPromotion,
-            rootAbility = AbilityName.Ice,
+            rootAbility = AbilityName.Telekinesis,
+            cardType = CardType.Promotion,
+            explain = "Temp"
+        };
+        abilities.Add(ability);
+        #endregion
+        #region Satellites
+        ability = new()
+        {
+            name = AbilityName.Satellites,
+            rootAbility = AbilityName.Satellites,
+            cardType = CardType.Epic,
+            explain = "Summons a satellite that circles around and blocks enemy attacks."
+        };
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreSatellitesLV1,
+            rootAbility = AbilityName.Satellites,
+            explain = "More satellites (3 ¡æ 4)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreSatellitesLV2,
+            rootAbility = AbilityName.Satellites,
+            explain = "More satellites (4 ¡æ 5)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.MoreSatellitesLV3,
+            rootAbility = AbilityName.Satellites,
+            explain = "More satellites (5 ¡æ 6)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterSatellitesLV1,
+            rootAbility = AbilityName.Satellites,
+            explain = "Increase satellites rotation speed (30 ¡æ 60)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterSatellitesLV2,
+            rootAbility = AbilityName.Satellites,
+            explain = "Increase satellites rotation speed (60 ¡æ 90)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.FasterSatellitesLV3,
+            rootAbility = AbilityName.Satellites,
+            explain = "Increase satellites rotation speed (90 ¡æ 120)"
+        };
+        root = abilities.Find(x => x.name == AbilityName.Satellites);
+        ability.upperAbilities.Add(root);
+        root.lowerAbilities.Add(ability);
+        abilities.Add(ability);
+
+        ability = new()
+        {
+            name = AbilityName.TempSatellitesPromotion,
+            rootAbility = AbilityName.Satellites,
             cardType = CardType.Promotion,
             explain = "Temp"
         };
